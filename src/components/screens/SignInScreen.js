@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,
   Alert,
   Animated,
 } from 'react-native'
-
+import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 
 import {
@@ -25,7 +26,7 @@ import {
 import Auth from '@aws-amplify/auth'
 
 // Load the app logo
-const logo = require('../images/logo.png')
+const logo = require('../images/mb.png')
 
 export default class SignInScreen extends React.Component {
   state = {
@@ -83,6 +84,15 @@ export default class SignInScreen extends React.Component {
       }
     })
   }
+  // Change Password
+  passwordChange = async () => {
+    await Auth.signOut()
+    .then(() => {
+      console.log('Sign out complete')
+      this.props.navigation.navigate('PasswordScreen')
+    })
+    .catch(err => console.log('Error while signing out!', err))
+  }
   render() {
     let { fadeOut, fadeIn, isHidden } = this.state
     return (
@@ -99,11 +109,11 @@ export default class SignInScreen extends React.Component {
                   isHidden ?
                   <Animated.Image 
                       source={logo} 
-                      style={{ opacity: fadeIn, width: 160, height: 167 }}/>
+                      style={{ opacity: fadeIn, width: 250, height: 198 }}/>
                   :
                   <Animated.Image 
                       source={logo} 
-                      style={{ opacity: fadeOut, width: 120, height: 127 }}/>
+                      style={{ opacity: fadeOut, width: 168, height: 127 }}/>
                 }
               </View>
               <Container style={styles.infoContainer}>
@@ -147,6 +157,11 @@ export default class SignInScreen extends React.Component {
                       Sign In
                     </Text>
                   </TouchableOpacity>
+                  <TouchableOpacity 
+                    onPress={() => this.handleRoute('ForgetPassword')}
+                    style={styles.buttonStyle}>
+                    <Text style={styles.textStyle} onPress={() => this.handleRoute('ForgetPassword')}>Forget password ?</Text>
+                  </TouchableOpacity>
                 </View>
               </Container>
             </View>
@@ -159,15 +174,15 @@ export default class SignInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5059ae',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    marginTop: Constants.statusBarHeight
   },
   input: {
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#fff',
   },
   infoContainer: {
     position: 'absolute',
@@ -179,7 +194,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,
-    backgroundColor: '#5059ae',
   },
   itemStyle: {
     marginBottom: 20,
@@ -191,10 +205,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: 'center',
-    backgroundColor: '#b44666',
+    backgroundColor: '#adb4bc',
     padding: 14,
     marginBottom: 20,
-    borderRadius: 3,
+    borderRadius: 15,
   },
   buttonText: {
     fontSize: 18,
@@ -205,10 +219,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: 400,
+    height: 500,
     bottom: 180,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
 })

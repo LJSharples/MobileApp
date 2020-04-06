@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,
@@ -133,15 +134,7 @@ export default class SettingsScreen extends React.Component {
                       Submit
                     </Text>
                   </TouchableOpacity>
-                  <View 
-                    style={
-                      {
-                        justifyContent: 'center', 
-                        alignItems: 'center', 
-                        paddingBottom: 100
-                      }
-                    }
-                   />
+                  
                   <TouchableOpacity
                     style={
                       [styles.buttonStyle, 
@@ -170,7 +163,6 @@ export default class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#aa73b7',
     justifyContent: 'center',
     flexDirection: 'column'
   },
@@ -184,13 +176,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: 200,
+    height: 400,
     bottom: 25,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,
-    backgroundColor: '#aa73b7',
   },
   itemStyle: {
     marginBottom: 20,

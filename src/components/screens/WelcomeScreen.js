@@ -32,11 +32,6 @@ export default class WelcomeScreen extends React.Component {
           style={styles.buttonStyle}>
           <Text style={styles.textStyle}>Sign Up</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-          onPress={() => this.handleRoute('ForgetPassword')}
-          style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Forget password ?</Text>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -45,7 +40,6 @@ export default class WelcomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b44666', // #b13366
     alignItems: 'center',
     justifyContent: 'center',
   },

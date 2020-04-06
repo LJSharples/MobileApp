@@ -30,6 +30,7 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen'
 import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
+import ServicesScreen from './src/components/screens/ServicesScreen';
 
 const configurations = {
   Home: {
@@ -41,10 +42,22 @@ const configurations = {
       ),
     },
   },
-  Profile: {
+  Services: {
+    screen: ServicesScreen,
+    navigationOptions: {
+      tabBarLabel: 'Services',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 26, color: tintColor }}
+          name="ios-power"
+        />
+      ),
+    },
+  },
+  My_Account: {
     screen: ProfileScreen,
     navigationOptions: {
-      tabBarLabel: 'Profile',
+      tabBarLabel: 'My Account',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
           style={{ fontSize: 26, color: tintColor }}
@@ -76,16 +89,17 @@ const options = {
   },
   tabBarOptions: {
     showLabel: true,
-    activeTintColor: '#fff',
-    inactiveTintColor: '#fff9',
+    activeTintColor: '#87CEFA',
+    inactiveTintColor: '#87CEFA',
     style: {
-      backgroundColor: '#f16f69',
+      backgroundColor: '#FFFAFA'
     },
     labelStyle: {
       fontSize: 12,
       fontWeight: 'bold',
       marginBottom: 12,
       marginTop: 12,
+      color: '#87CEFA'
     },
     indicatorStyle: {
       height: 0,
@@ -126,7 +140,8 @@ const AppStackNavigator = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
   Pages: AppStackNavigator, // defined above
   Home: HomeScreen,
-  Profile: ProfileScreen,
+  Services: ServicesScreen,
+  My_Account: ProfileScreen,
   Settings: SettingsScreen,
 });
 
@@ -135,7 +150,7 @@ const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
     navigationOptions: () => ({
-      title: `Welcome to this App`, // for the header screen
+      title: `Welcome to Managed Bills`, // for the header screen
       headerBackTitle: 'Back',
     }),
   },
@@ -148,7 +163,7 @@ const AuthStackNavigator = createStackNavigator({
   SignIn: {
     screen: SignInScreen,
     navigationOptions: () => ({
-      title: `Log in to your account`,
+      title: `Log In`,
     }),
   },
   ForgetPassword: {

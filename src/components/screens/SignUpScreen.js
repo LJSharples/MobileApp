@@ -45,6 +45,7 @@ export default class SignUpScreen extends React.Component {
     password: '',
     email: '',
     phoneNumber: '',
+    companyName: '',
     fadeIn: new Animated.Value(0),  // Initial value for opacity: 0
     fadeOut: new Animated.Value(1),  // Initial value for opacity: 1
     isHidden: false,
@@ -113,13 +114,18 @@ export default class SignUpScreen extends React.Component {
     }
   }
   async signUp() {
-    const { username, password, email, phoneNumber } = this.state
+    const { username, password, email, phoneNumber, companyName } = this.state
     // rename variable to conform with Amplify Auth field phone attribute
     const phone_number = phoneNumber
+    const company_name = companyName
     await Auth.signUp({
       username,
       password,
-      attributes: { email, phone_number }
+      attributes: { 
+        'email': email, 
+        'phone_number': phone_number, 
+        'custom:company_name': company_name 
+      }
     })
     .then(() => {
       console.log('sign up successful!')
@@ -252,6 +258,25 @@ export default class SignUpScreen extends React.Component {
                       onEndEditing={() => this.fadeIn()}
                     />
                   </Item>
+                  {/* Company section */}
+                  <Item style={styles.itemStyle}>
+                    <Ionicons name="ios-mail" style={styles.iconStyle} />
+                    <Input
+                      style={styles.input}
+                      placeholder='Company name'
+                      placeholderTextColor='#adb4bc'
+                      keyboardType={'email-address'}
+                      returnKeyType='next'
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={false}
+                      ref='FourthInput'
+                      onSubmitEditing={(event) => {this.refs.FifthInput._root.focus()}}
+                      onChangeText={value => this.onChangeText('companyName', value)}
+                      onFocus={() => this.fadeOut()}
+                      onEndEditing={() => this.fadeIn()}
+                    />
+                  </Item>
                   {/* phone section  */}
                   <Item style={styles.itemStyle}>
                     <Ionicons name="ios-call" style={styles.iconStyle} />
@@ -272,7 +297,7 @@ export default class SignUpScreen extends React.Component {
                       autoCapitalize='none'
                       autoCorrect={false}
                       secureTextEntry={false}
-                      ref='FourthInput'
+                      ref='FifthInput'
                       value={this.state.phoneNumber}
                       onChangeText={(val) => {
                         if (this.state.phoneNumber===''){
