@@ -1,0 +1,22 @@
+type Service @model {
+  id: ID!
+  business: String!
+  name: String!
+  provider: String!
+  contracts: [Contract] @connection(name: "ServiceRequests")
+}
+type Contract @model {
+  id: ID!
+  eac: Float
+  length: String
+  contractStart: String
+  contractEnd: String
+  service: Service @connection(name: "ServiceRequests")
+  expenses: [Expense] @connection(name: "ContractDetails")
+}
+type Expense @model {
+  id: ID!
+  value: Float!
+  paidDate: String!
+  contract: Contract @connection(name: "ContractDetails")
+}

@@ -6,5 +6,23 @@
 			"dependsOn": [],
 			"customAuth": false
 		}
+	},
+	"api": {
+		"mbauth": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [],
+					"defaultAuthentication": {
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"description": "API_KEY",
+							"apiKeyExpirationDays": "7"
+						}
+					}
+				}
+			}
+		}
 	}
 }
