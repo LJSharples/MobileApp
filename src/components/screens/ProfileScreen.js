@@ -7,8 +7,6 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
 } from 'react-native'
 import {
   Container,
@@ -26,6 +24,23 @@ import Auth from '@aws-amplify/auth'
 // Load the app logo
 const logo = require('../images/mb.png')
 
+// custom queries
+const ListServicesComp = `query listServices($company: String!){
+  listServices(filter:{
+    business:{
+      contains:$company
+    }
+  }){
+    items{
+      id name, provider contracts {
+        items{
+          id eac length contractStart contractEnd
+        }
+      }
+    }
+  }
+}`;
+
 export default class ProfileScreen extends React.Component {
   state = {
     username: '',
@@ -34,6 +49,7 @@ export default class ProfileScreen extends React.Component {
     post_code: '',
     industry_sector: '',
     services: [],
+    contracts: [],
     modalVisible: false,
   };
 
@@ -62,14 +78,14 @@ export default class ProfileScreen extends React.Component {
     this.setState({ post_code: currentUserInfo.attributes['custom:post_code'] });
     this.setState({ industry_sector: currentUserInfo.attributes['custom:industry_sector'] });
 
-    const serviceData = await API.graphql(graphqlOperation(listServices, {
-      filter: {
-        business: {
-          contains: this.state.company_name
-        }
-      }
-    }))
+    const compDetails = {
+      company: this.state.company_name
+    };
+
+    const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
+    console.log(serviceData.data.listServices.items)
+    console.log(this.state.services)
   }
 
   async updateData(attribute, key){
@@ -157,28 +173,18 @@ export default class ProfileScreen extends React.Component {
             <Item style={styles.spacer}>
               <View style={styles.logoContainer}>
                 <Text>Services</Text>
-                {
-                  this.state.services.map((s, i) => 
-                  <>
-                    <Text key={i} onPress={() => this.showModal()}>{s.name} - {s.provider}</Text>
-                    <Modal
-                      animationType="slide" // fade
-                      transparent={false}
-                      visible={this.state.modalVisible}>
-                      <View style={{ flex: 1 }}>
-                        <ScrollView>
-                          <TouchableOpacity
-                            onPress={() => this.hideModal()} 
-                            style={styles.closeButtonStyle}>
-                            <Ionicons name="ios-close" style={styles.closeIconStyle}/>
-                            <Text>Your Contracts for this service.</Text>
-                          </TouchableOpacity>
-                        </ScrollView>
-                      </View>
-                    </Modal>
-                    </>
-                  )
-                }
+                  <View>
+                    { this.state.services.map((item, key) => {
+                      return (
+                        <View key={key}>
+                          <Text style={styles.serviceContainer} onPress={() => this.showModal()}>{item.name} {item.provider}</Text>
+                          { item.contracts.items.map((unit, key2) => {
+                            return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
+                          })}
+                        </View>
+                      );
+                    })} 
+                  </View>
               </View>
             </Item>
             <Item style={styles.spacer}>
@@ -230,5 +236,21 @@ const styles = StyleSheet.create({
   closeButtonStyle: {
     marginRight: 5,
     alignItems: "flex-end"
+  },
+  serviceContainer: {
+    backgroundColor: '#408C45',
+    flex: 1,
+    padding: 15,
+    margin: 5,
+    borderRadius: 10
+  },
+  financeContainer: {
+    backgroundColor: '#B9B9E3',
+    padding: 15,
+    margin: 5,
+    borderRadius: 10,
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
 })

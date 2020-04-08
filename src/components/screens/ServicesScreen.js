@@ -29,6 +29,23 @@ import utilityData from '../utilitiesData';
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
 
+//custom queries
+const ListServicesComp = `query listServices($company: String!){
+  listServices(filter:{
+    business:{
+      contains:$company
+    }
+  }){
+    items{
+      name, provider contracts {
+        items{
+          id eac length contractStart contractEnd
+        }
+      }
+    }
+  }
+}`
+
 export default class ServicesScreen extends React.Component {
   state = {
     username: '',
@@ -36,21 +53,31 @@ export default class ServicesScreen extends React.Component {
     newService: '',
     isHidden: false,
     modalVisible: false,
+    modalVisibleService: false,
     makeRequest: false,
     serviceProvider: '',
     contractEndDate: '',
     partnerCallBack: '',
     callBack: '',
     services: [],
+    contracts: [],
   };
 
   showModal(){
     this.setState({ modalVisible: true})
   }
 
+  showModalService(){
+    this.setState({ modalVisibleService: true})
+  }
+
   hideModal(){
     this.setState({ modalVisible: false});
     this.setState({ makeRequest: false });
+  }
+
+  hideModalService(){
+    this.setState({ modalVisibleService: false});
   }
 
   // Get user input
@@ -87,14 +114,12 @@ export default class ServicesScreen extends React.Component {
     const currentUserInfo = await Auth.currentUserInfo();
     this.setState({ company_name: currentUserInfo.attributes['custom:company_name'] });
 
-    const serviceData = await API.graphql(graphqlOperation(listServices, {
-      filter: {
-        business: {
-          contains: this.state.company_name
-        }
-      }
-    }))
+    const compDetails = {
+      company: this.state.company_name
+    };
+    const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
+    this.setState({ contracts: serviceData.data.listServices.items[0].contracts.items})
   }
 
   makeRequest(){
@@ -263,22 +288,7 @@ export default class ServicesScreen extends React.Component {
                   {
                     this.state.services.map((s, i) => 
                     <>
-                      <Text key={i} onPress={() => this.showModal()} style={styles.serviceContainer}>{s.name} - {s.provider}</Text>
-                      <Modal
-                        animationType="slide" // fade
-                        transparent={false}
-                        visible={this.state.modalVisible}>
-                        <View style={{ flex: 1 }}>
-                          <ScrollView>
-                            <TouchableOpacity
-                              onPress={() => this.hideModal()} 
-                              style={styles.closeButtonStyle}>
-                              <Ionicons name="ios-close" style={styles.closeIconStyle}/>
-                              <Text>Your Contracts for this service.</Text>
-                            </TouchableOpacity>
-                          </ScrollView>
-                        </View>
-                      </Modal>
+                      <Text key={i} onPress={() => this.showModalService()} style={styles.serviceContainer}>{s.name} - {s.provider}</Text>
                       </>
                     )
                   }
