@@ -22,6 +22,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listServices } from '../../graphql/queries';
+import { createService } from '../../graphql/mutations'
 
 // Modal data
 import utilityData from '../utilitiesData';
@@ -88,7 +89,22 @@ export default class ServicesScreen extends React.Component {
   }
 
   async submitRequest(){
-    console.log("Request submitted");
+    const serviceDetails = {
+      input: {
+        business: this.state.company_name,
+        name: this.state.newService,
+        provider: this.state.serviceProvider, 
+      }
+    }
+    console.log(serviceDetails)
+    try {
+      const existingServices = [this.state.services, {serviceDetails}];
+      this.setState({ existingServices, newService: '', serviceProvider: '' });
+      await API.graphql(graphqlOperation(createService, serviceDetails));
+      console.log("Request submitted");
+    } catch (err){
+      console.log(err)
+    }
     this.hideModal()
   }
 
@@ -198,7 +214,7 @@ export default class ServicesScreen extends React.Component {
                   />
               </Item>
                 <TouchableOpacity
-                  onPress={() => this.hideModal()} 
+                  onPress={() => this.submitRequest()} 
                   style={styles.submitButtonStyle}>
                   <Text style={styles.textStyle}>
                     Submit
@@ -401,7 +417,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#fff',
   },
   valueCentered: {
     display: "flex",
