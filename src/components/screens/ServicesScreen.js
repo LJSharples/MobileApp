@@ -96,7 +96,6 @@ export default class ServicesScreen extends React.Component {
         provider: this.state.serviceProvider, 
       }
     }
-    console.log(serviceDetails)
     try {
       const existingServices = [this.state.services, {serviceDetails}];
       this.setState({ existingServices, newService: '', serviceProvider: '' });

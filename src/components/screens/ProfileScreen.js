@@ -16,7 +16,6 @@ import {
 } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
-import { listServices } from '../../graphql/queries';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
@@ -84,8 +83,6 @@ export default class ProfileScreen extends React.Component {
 
     const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
-    console.log(serviceData.data.listServices.items)
-    console.log(this.state.services)
   }
 
   async updateData(attribute, key){
