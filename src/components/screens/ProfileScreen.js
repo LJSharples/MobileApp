@@ -34,7 +34,11 @@ const ListServicesComp = `query listServices($company: String!){
     items{
       id name, provider contracts {
         items{
-          id eac length contractStart contractEnd
+          id eac length contractStart contractEnd expenses{
+            items{
+              id value paidDate
+            }
+          }
         }
       }
     }
@@ -91,6 +95,7 @@ export default class ProfileScreen extends React.Component {
 
     const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
+    console.log(this.state.services)
   }
 
   async updateData(attribute, key){
@@ -202,6 +207,24 @@ export default class ProfileScreen extends React.Component {
             <Item style={styles.spacer}>
               <View style={styles.logoContainer}>
                 <Text>Expenses</Text>
+                { this.state.services.map((item, key) => {
+                  return (
+                    <View key={key}>
+                      <Text style={styles.serviceContainer}> {item.provider} - {item.name}</Text>
+                      <Text style={styles.financeContainer} >
+                        {item.contracts.items.map((unit,key2) => 
+                          <Text style={styles.financeContainer} key={key2}>
+                            {unit.expenses.items.map((cost,key3) => 
+                              <Text key={key3}>
+                                {cost.paidDate}: £{cost.value}
+                              </Text>
+                            )}
+                          </Text>
+                        )}
+                        </Text>
+                    </View>
+                  );
+                })} 
               </View>
             </Item>
             </ScrollView>

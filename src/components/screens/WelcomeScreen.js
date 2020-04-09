@@ -50,6 +50,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     padding: 10,
-    color: '#fff'
   }
 })
