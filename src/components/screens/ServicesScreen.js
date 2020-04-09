@@ -97,10 +97,16 @@ export default class ServicesScreen extends React.Component {
       }
     }
     try {
-      const existingServices = [this.state.services, {serviceDetails}];
-      this.setState({ existingServices, newService: '', serviceProvider: '' });
-      await API.graphql(graphqlOperation(createService, serviceDetails));
+      const result = await API.graphql(graphqlOperation(createService, serviceDetails));
+
+      const newRecord = result.data.createService
+      //add to existing services.
+      this.setState(prevState => ({
+        services: [...prevState.services, newRecord]
+      }))
+
       console.log("Request submitted");
+      console.log(this.state.services)
     } catch (err){
       console.log(err)
     }
@@ -134,7 +140,6 @@ export default class ServicesScreen extends React.Component {
     };
     const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
-    this.setState({ contracts: serviceData.data.listServices.items[0].contracts.items})
   }
 
   makeRequest(){

@@ -7,6 +7,7 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native'
 import {
   Container,
@@ -48,9 +49,16 @@ export default class ProfileScreen extends React.Component {
     post_code: '',
     industry_sector: '',
     services: [],
-    contracts: [],
     modalVisible: false,
+    refreshing: false,
   };
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
 
   // Get user input
   onChangeText(key, value) {
@@ -97,7 +105,14 @@ export default class ProfileScreen extends React.Component {
       <View style={styles.container}>
         <View style={{flex: 1}}>
           <View style={{flex: 1}}>
-            <ScrollView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh}
+                />
+              }
+            >
             <Item style={styles.spacer}>
               <View style={styles.logoContainer}>
                 <Animated.Image 
