@@ -14,6 +14,7 @@ import {
 } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
+import { t } from 'react-native-tailwindcss';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'

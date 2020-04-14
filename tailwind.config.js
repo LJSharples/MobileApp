@@ -325,7 +325,6 @@ module.exports = {
       '5xl': '64rem',
       '6xl': '72rem',
       full: '100%',
-      ...breakpoints(theme('screens')),
     }),
     minHeight: {
       '0': '0',
