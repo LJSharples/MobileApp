@@ -33,10 +33,10 @@ import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import ServicesScreen from './src/components/screens/ServicesScreen';
 
 const configurations = {
-  Home: {
+  Dashboard: {
     screen: HomeScreen,
     navigationOptions: {
-      tabBarLabel: 'Home',
+      tabBarLabel: 'Dashboard',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons style={{ fontSize: 26, color: tintColor }} name="ios-home" />
       ),
@@ -139,7 +139,7 @@ const AppStackNavigator = createStackNavigator({
 // App stack for the drawer
 const AppDrawerNavigator = createDrawerNavigator({
   Pages: AppStackNavigator, // defined above
-  Home: HomeScreen,
+  Dashboard: HomeScreen,
   Services: ServicesScreen,
   My_Account: ProfileScreen,
   Settings: SettingsScreen,

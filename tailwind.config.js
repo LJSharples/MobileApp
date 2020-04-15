@@ -3,6 +3,14 @@ module.exports = {
   important: false,
   separator: ':',
   theme: {
+    extend: {
+      colors: {
+        blue: '#2F82EC',
+        green: '#5FCD6A',
+        purple: '#B0377B',
+        lightBlue: '#B9CCE3'
+      },
+    },
     screens: {
       sm: '640px',
       md: '768px',
@@ -91,6 +99,7 @@ module.exports = {
         700: '#2b6cb0',
         800: '#2c5282',
         900: '#2a4365',
+        101: '#B9CCE3',
       },
       indigo: {
         100: '#ebf4ff',

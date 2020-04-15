@@ -1,0 +1,20 @@
+@tailwind base;
+
+.font-roboto {
+    font-family: Roboto;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url(fonts/Roboto-Regular.ttf) format("truetype");
+}
+
+/* overrides */
+
+h1, h2, h3 {
+    @apply font-roboto;
+}
+
+@tailwind components;
+
+@tailwind utilities;
