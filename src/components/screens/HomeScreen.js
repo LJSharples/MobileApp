@@ -82,8 +82,8 @@ export default class HomeScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.pX6, t.pY4, t.pt8]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
                 <Ionicons name="ios-bulb" style={styles.iconStyle}> Suggestions</Ionicons>
               </Item>
@@ -99,8 +99,8 @@ export default class HomeScreen extends React.Component {
               </Item>
             </View>
           </Item>
-          <Item style={[t.pX6, t.pY4, t.pt8]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
                 <Ionicons name="ios-cash" style={styles.iconStyle}> Monthly Expense Breakdown</Ionicons>
               </Item>
@@ -116,9 +116,8 @@ export default class HomeScreen extends React.Component {
               </Item>
             </View>
           </Item>
-
-          <Item style={[t.pX8, t.pY8, t.pt8]}>
-            <View style={[t.pX8, t.pY8, t.pt8, t.roundedLg, t.bgIndigo200]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Ionicons name="ios-power" style={styles.iconStyle}> Services</Ionicons>
               <View>
               { this.state.services.map((item, key) => {

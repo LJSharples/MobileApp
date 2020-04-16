@@ -3,14 +3,7 @@ module.exports = {
   important: false,
   separator: ':',
   theme: {
-    extend: {
-      colors: {
-        blue: '#2F82EC',
-        green: '#5FCD6A',
-        purple: '#B0377B',
-        lightBlue: '#B9CCE3'
-      },
-    },
+
     screens: {
       sm: '640px',
       md: '768px',
@@ -19,6 +12,10 @@ module.exports = {
     },
     colors: {
       transparent: 'transparent',
+      bblue: '#2F82EC',
+      ggreen: '#5FCD6A',
+      ppurple: '#B0377B',
+      lightBlue: '#B9CCE3',
 
       black: '#000',
       white: '#fff',
@@ -90,7 +87,7 @@ module.exports = {
         900: '#234e52',
       },
       blue: {
-        100: '#ebf8ff',
+        100: '#39F',
         200: '#bee3f8',
         300: '#90cdf4',
         400: '#63b3ed',
