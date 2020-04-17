@@ -235,7 +235,7 @@ export default class ServicesScreen extends React.Component {
             <View style={[t.w5]}/>
           </Item>
           <Item style={[t.hFull, t.bgWhite, t.mT5]}>
-            <View rounded style={[t.c]}>
+            <View rounded>
               {
                 this.state.services.map((s, i) => 
                   <>

@@ -100,24 +100,20 @@ export default class HomeScreen extends React.Component {
             </View>
           </Item>
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Ionicons name="ios-cash" style={styles.iconStyle}> Monthly Expense Breakdown</Ionicons>
-              </Item>
-              <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
-                <Text style={[t.textSm]}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
-              </Item>
-              <Item style={[t.itemsEnd, t.justifyEnd]}>
-                <TouchableOpacity 
-                  onPress={() => this.handleRoute('Services')}
-                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgIndigo100, t.justifyStart]}>
-                  <Text onPress={() => this.handleRoute('Services')}>Services</Text>
-                </TouchableOpacity>
-              </Item>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
+              <TouchableOpacity 
+                  onPress={() => this.handleRoute('Expenses')}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                  <Ionicons name="ios-cash" style={styles.iconStyle}> Monthly Expense Breakdown</Ionicons>
+                </Item>
+                <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
+                  <Text style={[t.textSm]} onPress={() => this.handleRoute('Expenses')}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
+                </Item>
+              </TouchableOpacity>
             </View>
           </Item>
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgRed300, t.itemsCenter]}>
               <Ionicons name="ios-power" style={styles.iconStyle}> Services</Ionicons>
               <View>
               { this.state.services.map((item, key) => {

@@ -117,7 +117,7 @@ export default class SignInScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.p20]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.itemsCenter]}>
                 <TouchableOpacity 

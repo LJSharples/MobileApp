@@ -31,6 +31,7 @@ import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import ServicesScreen from './src/components/screens/ServicesScreen';
+import ExpensesScreen from './src/components/screens/ExpensesScreen';
 
 const configurations = {
   Dashboard: {
@@ -74,6 +75,18 @@ const configurations = {
         <Ionicons
           style={{ fontSize: 26, color: tintColor }}
           name="ios-settings"
+        />
+      ),
+    },
+  },
+  Expenses: {
+    screen: ExpensesScreen,
+    navigationOptions: {
+      tabBarLabel: 'Annual Expenses',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 26, color: tintColor }}
+          name="ios-cash"
         />
       ),
     },
@@ -143,6 +156,7 @@ const AppDrawerNavigator = createDrawerNavigator({
   Services: ServicesScreen,
   My_Account: ProfileScreen,
   Settings: SettingsScreen,
+  Expenses: ExpensesScreen,
 });
 
 // Auth stack
