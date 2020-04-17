@@ -11,10 +11,11 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Alert,
-  Animated,
+  Image,
 } from 'react-native'
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
+import { t } from 'react-native-tailwindcss';
 
 import {
   Container,
@@ -32,34 +33,8 @@ export default class SignInScreen extends React.Component {
   state = {
     username: '',
     password: '',
-    fadeIn: new Animated.Value(0),
-    fadeOut: new Animated.Value(0),  
-    isHidden: false
   }
   componentDidMount() {
-    this.fadeIn()
-  }
-  fadeIn() {
-    Animated.timing(
-      this.state.fadeIn,
-      {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      }
-    ).start()
-    this.setState({isHidden: true})
-  }
-  fadeOut() {
-    Animated.timing(
-      this.state.fadeOut,
-      {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      }
-    ).start()
-    this.setState({isHidden: false})
   }
   onChangeText(key, value) {
     this.setState({
@@ -94,136 +69,65 @@ export default class SignInScreen extends React.Component {
     .catch(err => console.log('Error while signing out!', err))
   }
   render() {
-    let { fadeOut, fadeIn, isHidden } = this.state
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar/>
-        <KeyboardAvoidingView style={styles.container} behavior='padding' enabled>
-          <TouchableWithoutFeedback 
-            style={styles.container} 
-            onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-              {/* App Logo */}
-              <View style={styles.logoContainer}>
-                {
-                  isHidden ?
-                  <Animated.Image 
-                      source={logo} 
-                      style={{ opacity: fadeIn, width: 250, height: 198 }}/>
-                  :
-                  <Animated.Image 
-                      source={logo} 
-                      style={{ opacity: fadeOut, width: 168, height: 127 }}/>
-                }
-              </View>
-              <Container style={styles.infoContainer}>
-                <View style={styles.container}>
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-person" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Username'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      onSubmitEditing={(event) => {this.refs.SecondInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('username', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <Item style={styles.itemStyle}>
-                    <Ionicons style={styles.iconStyle} name="ios-lock" />
-                    <Input
-                      style={styles.input}
-                      placeholder='Password'
-                      placeholderTextColor='#adb4bc'
-                      returnKeyType='go'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      ref='SecondInput'
-                      onChangeText={value => this.onChangeText('password', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <TouchableOpacity
-                    onPress={() => this.signIn()}
-                    style={styles.buttonStyle}>
-                    <Text style={styles.buttonText}>
-                      Sign In
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    onPress={() => this.handleRoute('ForgetPassword')}
-                    style={styles.buttonStyle}>
-                    <Text style={styles.textStyle} onPress={() => this.handleRoute('ForgetPassword')}>Forget password ?</Text>
-                  </TouchableOpacity>
-                </View>
-              </Container>
+      <View style={[ t.bgWhite, t.hFull]}>
+        <Item style={[t.pX8, t.pY8, t.pT16, t.alignCenter, t.justifyCenter]}>
+          <Image 
+            source={logo}
+            style={[t.alignCenter, t.justifyCenter]}
+          />
+        </Item>
+        <Item style={[t.itemsCenter, t.justifyCenter]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+              <Input
+                style={[t.alignCenter, t.bgGray100]}
+                placeholder='Username'
+                keyboardType={'email-address'}
+                returnKeyType='next'
+                autoCapitalize='none'
+                autoCorrect={false}
+                onSubmitEditing={(event) => {this.refs.SecondInput._root.focus()}}
+                onChangeText={value => this.onChangeText('username', value)}
+
+              />
+            </Item>
+          </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+              <Input
+                style={[t.alignCenter, t.bgGray100]}
+                placeholder='Password'
+                returnKeyType='go'
+                autoCapitalize='none'
+                autoCorrect={false}
+                secureTextEntry={true}
+                ref='SecondInput'
+                onChangeText={value => this.onChangeText('password', value)}
+              />
+            </Item>
+          </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
+              <Text style={[t.textBlue500, t.textBase]}>
+                If you are having trouble logging in
+              </Text>
+              <TouchableOpacity 
+                onPress={() => this.handleRoute('ForgetPassword')}>
+                <Text style={[t.textBlue500, t.textBase, t.fontBold]} onPress={() => this.handleRoute('ForgetPassword')}>Click Here</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+          </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.itemsCenter]}>
+                <TouchableOpacity 
+                  onPress={() => this.signIn()}>
+                  <Text style={[t.textWhite, t.textXl]}>Log in</Text>
+                </TouchableOpacity>
+              </View>
+            </Item>
+          </Item>
+      </View>
     )
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    marginTop: Constants.statusBarHeight
-  },
-  input: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  infoContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 200,
-    bottom: 25,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-  itemStyle: {
-    marginBottom: 20,
-  },
-  iconStyle: {
-    color: '#fff',
-    fontSize: 30,
-    marginRight: 15
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    backgroundColor: '#adb4bc',
-    padding: 14,
-    marginBottom: 20,
-    borderRadius: 15,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "#fff",
-  },
-  logoContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 500,
-    bottom: 180,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-  },
-})

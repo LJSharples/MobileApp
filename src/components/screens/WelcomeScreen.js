@@ -68,7 +68,7 @@ export default class WelcomeScreen extends React.Component {
               <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignIn')}>
-                  <Text style={[t.textBlue500, t.textXl]}>Already got one</Text>
+                  <Text style={[t.textBlue500, t.textXl]}>Already got an account?</Text>
                 </TouchableOpacity>
               </View>
             </Item>
