@@ -38,7 +38,7 @@ const ListServicesComp = `query listServices($company: String!){
   }
 }`
 
-export default class ExpensesScreen extends React.Component {
+export default class NotificationsScreen extends React.Component {
     state = {
         username: '',
         company_name: '',
@@ -51,7 +51,7 @@ export default class ExpensesScreen extends React.Component {
   }
   render() {
     return (
-      <View style={[t.h]}>
+      <View style={[ t.bgGray300, t.h]}>
         <View style={[t.bgWhite, t.hAuto, t.roundedLg, t.pB4 ]}>
           <Item>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter]}>
