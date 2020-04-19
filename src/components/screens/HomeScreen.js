@@ -6,6 +6,8 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  Button,
+  Image,
 } from 'react-native'
 import {
   Container,
@@ -19,6 +21,9 @@ import { t } from 'react-native-tailwindcss';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
+
+// Load the app logo
+const logo = require('../images/Graph.png')
 
 // custom queries
 const ListServicesComp = `query listServices($company: String!){
@@ -85,7 +90,7 @@ export default class HomeScreen extends React.Component {
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Ionicons name="ios-bulb" style={styles.iconStyle}> Suggestions</Ionicons>
+                <Ionicons name="ios-bulb" style={[ t.text2xl]}> Suggestions</Ionicons>
               </Item>
               <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
                 <Text style={[t.textSm]}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
@@ -101,10 +106,9 @@ export default class HomeScreen extends React.Component {
           </Item>
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
-              <TouchableOpacity 
-                  onPress={() => this.handleRoute('Expenses')}>
+              <TouchableOpacity>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                  <Ionicons name="ios-cash" style={styles.iconStyle}> Monthly Expense Breakdown</Ionicons>
+                  <Ionicons name="ios-cash"onPress={() => this.handleRoute('Expenses')} style={[ t.textXl]}> Monthly Expense Breakdown</Ionicons>
                 </Item>
                 <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
                   <Text style={[t.textSm]} onPress={() => this.handleRoute('Expenses')}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
@@ -114,19 +118,18 @@ export default class HomeScreen extends React.Component {
           </Item>
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgRed300, t.itemsCenter]}>
-              <Ionicons name="ios-power" style={styles.iconStyle}> Services</Ionicons>
-              <View>
-              { this.state.services.map((item, key) => {
-                  return (
-                    <View key={key}>
-                      <Text style={styles.serviceContainer} onPress={() => this.showModal()}>{item.name} {item.provider}</Text>
-                      { item.contracts.items.map((unit, key2) => {
-                        return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
-                      })}
-                    </View>
-                  );
-                })} 
-              </View>
+              <TouchableOpacity 
+                  onPress={() => this.handleRoute('Expenses')}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                  <Ionicons name="ios-cash" style={[ t.textXl]}> Annual Expenses</Ionicons>
+                </Item>
+                <Item style={[t.pX4, t.pY4, t.pT8, t.alignCenter, t.justifyCenter]}>
+                  <Image 
+                    source={logo}
+                    style={[t.alignCenter, t.justifyCenter]}
+                  />
+                </Item>
+              </TouchableOpacity>
             </View>
           </Item>
         </ScrollView>
@@ -151,9 +154,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     alignItems: 'center',
     justifyContent: 'space-between'
-  },
-  iconStyle: {
-    fontSize: 20,
-    marginRight: 15
   },
 })
