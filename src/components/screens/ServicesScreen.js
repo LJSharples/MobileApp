@@ -178,10 +178,55 @@ export default class ServicesScreen extends React.Component {
           >
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgYellow400, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]} onPress={() => this.showModal()}>
                 <Text style={[ t.textXl]}> Utilities</Text>
+                <Modal
+                  animationType="slide" // fade
+                  transparent={false}
+                  visible={this.state.modalVisible}>
+                  <View style={[ t.flex1 ]}>
+                    <ScrollView>
+                      <TouchableOpacity
+                        onPress={() => this.hideModal()} 
+                        >
+                        <Ionicons name="ios-close"/>
+                      </TouchableOpacity>
+                      <Text >Request Quote </Text>
+                      <View style={{ flex: 10, paddingTop: 10 }}>
+                      <Text style={{fontSize: 20, padding: 15,}}>Which of the following services do you want to reciecve a quote for?</Text>
+                        <FlatList
+                          data={utilityData}
+                          keyExtractor={(item, index) => index.toString()}
+                          renderItem={
+                            ({ item }) =>
+                              <TouchableWithoutFeedback 
+                                onPress={() => this.getService(item.service)}>
+                                <View 
+                                  style={
+                                    [ 
+                                      {
+                                        flexDirection: 'row', 
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                      }
+                                    ]
+                                  }>
+                                  <Text style={{fontSize: 20}}>
+                                    {item.service} - {item.brief}
+                                  </Text>
+                                </View>
+                              </TouchableWithoutFeedback>
+                          }
+                        />
+                      </View>
+                      <View>
+                        {this.makeRequest()}
+                      </View>
+                    </ScrollView>
+                  </View>
+                </Modal>
               </Item>
-            </View>
+            </View> 
             <View style={[t.w5]}/>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgIndigo300, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
