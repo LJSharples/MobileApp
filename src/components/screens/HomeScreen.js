@@ -99,7 +99,7 @@ export default class HomeScreen extends React.Component {
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('Services')}
                   style={[ t.pX2, t.pY2,t.roundedLg, t.bgIndigo100, t.justifyStart]}>
-                  <Text onPress={() => this.handleRoute('Services')}>Services</Text>
+                  <Text onPress={() => this.handleRoute('Services')}>Request Quotes</Text>
                 </TouchableOpacity>
               </Item>
             </View>
@@ -108,7 +108,7 @@ export default class HomeScreen extends React.Component {
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
               <TouchableOpacity>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                  <Ionicons name="ios-cash"onPress={() => this.handleRoute('Expenses')} style={[ t.textXl]}> Monthly Expense Breakdown</Ionicons>
+                  <Text style={[ t.textXl]}> Monthly Expense Breakdown</Text>
                 </Item>
                 <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
                   <Text style={[t.textSm]} onPress={() => this.handleRoute('Expenses')}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
@@ -121,7 +121,7 @@ export default class HomeScreen extends React.Component {
               <TouchableOpacity 
                   onPress={() => this.handleRoute('Expenses')}>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                  <Ionicons name="ios-cash" style={[ t.textXl]}> Annual Expenses</Ionicons>
+                  <Text style={[ t.textXl]}> Annual Expenses</Text>
                 </Item>
                 <Item style={[t.pX4, t.pY4, t.pT8, t.alignCenter, t.justifyCenter]}>
                   <Image 
