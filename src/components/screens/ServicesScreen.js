@@ -32,6 +32,11 @@ import utilityData from '../utilitiesData';
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
 
+//modal components
+import ServiceData from '../forms/ServiceDetails';
+import CostData from '../forms/CostDeatils';
+import CallbackData from '../forms/CallbackDetails';
+
 //custom queries
 const ListServicesComp = `query listServices($company: String!){
   listServices(filter:{
@@ -56,32 +61,31 @@ export default class ServicesScreen extends React.Component {
     newService: '',
     isHidden: false,
     modalVisible: false,
-    modalVisibleService: false,
-    makeRequest: false,
-    serviceProvider: '',
-    contractEndDate: '',
-    partnerCallBack: '',
-    callBack: '',
     services: [],
     contracts: [],
+    currentStep: 1,
+    serviceType: '',
+    contractLength: '',
+    costType: '',
+    switchValue: true,
+    callbackMinutes: '',
+    callbackHour: ''
   };
 
   showModal(){
     this.setState({ modalVisible: true})
   }
 
-  showModalService(){
-    this.setState({ modalVisibleService: true})
-  }
-
   hideModal(){
     this.setState({ modalVisible: false});
     this.setState({ makeRequest: false });
+    this.setState({ currentStep: 1});
   }
 
-  hideModalService(){
-    this.setState({ modalVisibleService: false});
-  }
+  toggleSwitch(value){
+    this.setState({ switchValue: value });
+  };
+
 
   // Get user input
   onChangeText(key, value) {
@@ -115,19 +119,6 @@ export default class ServicesScreen extends React.Component {
     this.hideModal()
   }
 
-  async getService(service){
-    const utilData = await utilityData
-    try {
-      const new_service = await utilData.filter(
-        obj => obj.service === service
-      )[0].service
-      this.setState({ newService: new_service });
-      this.setState({ makeRequest: true});
-    } catch (err){
-      console.log(err)
-    }
-  }
-
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser(); 
     const username = user.username;
@@ -152,16 +143,24 @@ export default class ServicesScreen extends React.Component {
     });
   }
 
-  makeRequest(){
-    if(this.state.makeRequest == true){
-      return (
-        <View>
-            
-        </View>
-      );
-    } else {
-      return null;
-    }
+  // Test current step with ternary
+  // _next and _previous functions will be called on button click
+  _next() {
+    let currentStep = this.state.currentStep
+    // If the current step is 1 or 2, then add one on "next" button click
+    currentStep = currentStep >= 2? 3: currentStep + 1
+    this.setState({
+      currentStep: currentStep
+    })
+  }
+    
+  _prev() {
+    let currentStep = this.state.currentStep
+    // If the current step is 2 or 3, then subtract one on "previous" button click
+    currentStep = currentStep <= 1? 1: currentStep - 1
+    this.setState({
+      currentStep: currentStep
+    })
   }
 
   render() {
@@ -186,42 +185,55 @@ export default class ServicesScreen extends React.Component {
                   visible={this.state.modalVisible}>
                   <View style={[ t.flex1 ]}>
                     <ScrollView>
-                      <TouchableOpacity
-                        onPress={() => this.hideModal()} 
-                        >
-                        <Ionicons name="ios-close"/>
-                      </TouchableOpacity>
-                      <Text >Request Quote </Text>
-                      <View style={{ flex: 10, paddingTop: 10 }}>
-                      <Text style={{fontSize: 20, padding: 15,}}>Which of the following services do you want to reciecve a quote for?</Text>
-                        <FlatList
-                          data={utilityData}
-                          keyExtractor={(item, index) => index.toString()}
-                          renderItem={
-                            ({ item }) =>
-                              <TouchableWithoutFeedback 
-                                onPress={() => this.getService(item.service)}>
-                                <View 
-                                  style={
-                                    [ 
-                                      {
-                                        flexDirection: 'row', 
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between'
-                                      }
-                                    ]
-                                  }>
-                                  <Text style={{fontSize: 20}}>
-                                    {item.service} - {item.brief}
-                                  </Text>
-                                </View>
-                              </TouchableWithoutFeedback>
-                          }
-                        />
-                      </View>
-                      <View>
-                        {this.makeRequest()}
-                      </View>
+                    <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
+                          <Item style={[t.pX2, t.pY8, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <Text style={[ t.textXl]}> Annual Expenses</Text>
+                          </Item>
+                        </View>
+                        <View style={[t.w5]}/>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
+                          <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
+                            <TouchableOpacity
+                              onPress={() => this.hideModal()} 
+                              >
+                              <Ionicons name="ios-close"/>
+                            </TouchableOpacity>
+                          </Item>
+                        </View>
+                      </Item>
+                      <ServiceData
+                        currentStep={this.state.currentStep}
+                        handleChange={this.onChangeText}
+                        serviceType={this.state.serviceType}/>
+                      <CostData
+                        currentStep={this.state.currentStep}
+                        handleChange={this.onChangeText}
+                        contractLength={this.state.contractLength}
+                        costType={this.state.switchValue}
+                        toggleSwitch={this.toggleSwitch}/>
+                      <CallbackData
+                        currentStep={this.state.currentStep}
+                        handleChange={this.onChangeText}/>
+                      <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.wAuto, t.itemsCenter]}>
+                          <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <TouchableOpacity
+                              onPress={() => this._prev()} 
+                              >
+                                <Text>Previous</Text>
+                            </TouchableOpacity>
+                          </Item>
+                        </View>
+                        <View style={[t.w5]}/>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgGreen400, t.itemsCenter]}>
+                          <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <TouchableOpacity onPress={() => this._next()}>
+                                <Text>Next</Text>
+                            </TouchableOpacity>
+                          </Item>
+                        </View>
+                      </Item>
                     </ScrollView>
                   </View>
                 </Modal>

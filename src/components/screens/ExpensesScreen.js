@@ -143,7 +143,8 @@ export default class ExpensesScreen extends React.Component {
                     <>
                       <View style={[t.roundedLg, t.w1_2, t.wAuto, t.mT2, t.itemsCenter]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                          <Text key={i} onPress={() => this.showModalService()}>{s} - £{this.state.monthCost}</Text>
+                          <Text key={i} onPress={() => this.showModalService()} style={[t.itemsStart, t.contentStart]}>{s} - </Text>
+                          <Text key={i} onPress={() => this.showModalService()}>£{this.state.monthCost}</Text>
                         </Item>
                       </View>
                     </>
