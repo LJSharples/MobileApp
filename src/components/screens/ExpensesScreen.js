@@ -29,6 +29,9 @@ const graph = require('../images/Graph.png');
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
 
+//modal components
+import ExpenseDetails from '../forms/ExpenseDetails';
+
 //custom queries
 const ListServicesComp = `query listServices($company: String!){
   listServices(filter:{
@@ -101,6 +104,13 @@ export default class ExpensesScreen extends React.Component {
     //set months
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   handleRoute = async (destination) => {
     await this.props.navigation.navigate(destination)
   }
@@ -134,7 +144,7 @@ export default class ExpensesScreen extends React.Component {
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
                 <Text style={[ t.textXl]}> Monthly Breakdown for: {this.state.year}</Text>
               </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text>Your annual expenses are broken down to each month:</Text>
               </Item>
               <View rounded>
@@ -142,9 +152,41 @@ export default class ExpensesScreen extends React.Component {
                   this.state.monthNames.map((s, i) => 
                     <>
                       <View style={[t.roundedLg, t.w1_2, t.wAuto, t.mT2, t.itemsCenter]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                          <Text key={i} onPress={() => this.showModalService()} style={[t.itemsStart, t.contentStart]}>{s} - </Text>
-                          <Text key={i} onPress={() => this.showModalService()}>£{this.state.monthCost}</Text>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text key={i} onPress={() => this.showModal()} style={[t.itemsStart, t.contentStart]}>{s} - </Text>
+                          <Text key={i} onPress={() => this.showModal()}>£{this.state.monthCost}</Text>
+                          <Modal
+                            animationType="slide" // fade
+                            transparent={false}
+                            visible={this.state.modalVisible}>
+                            <View style={[ t.flex1, t.bgGray100 ]}>
+                              <ScrollView>
+                                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite]}>
+                                  <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
+                                    <Item style={[t.pX2, t.pY4, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                      <Text style={[ t.textXl]}> {s} {this.state.year}</Text>
+                                    </Item>
+                                  </View>
+                                  <View style={[t.w5]}/>
+                                  <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
+                                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
+                                      <TouchableOpacity
+                                        onPress={() => this.hideModal()} 
+                                        >
+                                        <Ionicons name="ios-close"/>
+                                      </TouchableOpacity>
+                                    </Item>
+                                  </View>
+                                </Item>
+                                <ExpenseDetails
+                                  year={this.state.year}
+                                  month={s}
+                                  notice="Your energy has increaed by 7%"
+                                  services={this.state.services}
+                                  monthCost/>
+                              </ScrollView>
+                            </View>
+                          </Modal>
                         </Item>
                       </View>
                     </>

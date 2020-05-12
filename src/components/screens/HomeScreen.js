@@ -74,7 +74,6 @@ export default class HomeScreen extends React.Component {
     }
     const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
-    console.log(this.state.services)
   }
   render() {
     return (
@@ -89,8 +88,8 @@ export default class HomeScreen extends React.Component {
           >
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Ionicons name="ios-bulb" style={[ t.text2xl]}> Suggestions</Ionicons>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Ionicons name="ios-bulb" style={[ t.text2xl]}> Test</Ionicons>
               </Item>
               <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
                 <Text style={[t.textSm]}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
@@ -107,10 +106,10 @@ export default class HomeScreen extends React.Component {
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
               <TouchableOpacity>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                   <Text style={[ t.textXl]}> Monthly Expense Breakdown</Text>
                 </Item>
-                <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
+                <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
                   <Text style={[t.textSm]} onPress={() => this.handleRoute('Expenses')}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
                 </Item>
               </TouchableOpacity>
@@ -120,10 +119,10 @@ export default class HomeScreen extends React.Component {
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgRed300, t.itemsCenter]}>
               <TouchableOpacity 
                   onPress={() => this.handleRoute('Expenses')}>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                   <Text style={[ t.textXl]}> Annual Expenses</Text>
                 </Item>
-                <Item style={[t.pX4, t.pY4, t.pT8, t.alignCenter, t.justifyCenter]}>
+                <Item style={[t.pX4, t.pY4, t.pT8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
                   <Image 
                     source={logo}
                     style={[t.alignCenter, t.justifyCenter]}
