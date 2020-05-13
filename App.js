@@ -67,18 +67,6 @@ const configurations = {
       ),
     },
   },
-  Settings: {
-    screen: SettingsScreen,
-    navigationOptions: {
-      tabBarLabel: 'Settings',
-      tabBarIcon: ({ tintColor }) => (
-        <Ionicons
-          style={{ fontSize: 26, color: tintColor }}
-          name="ios-settings"
-        />
-      ),
-    },
-  },
   Expenses: {
     screen: ExpensesScreen,
     navigationOptions: {
@@ -155,7 +143,6 @@ const AppDrawerNavigator = createDrawerNavigator({
   Dashboard: HomeScreen,
   Services: ServicesScreen,
   My_Account: ProfileScreen,
-  Settings: SettingsScreen,
   Expenses: ExpensesScreen,
 });
 

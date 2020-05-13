@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   RefreshControl,
+  Alert
 } from 'react-native'
 import {
   Container,
@@ -59,6 +60,8 @@ export default class ProfileScreen extends React.Component {
     modalVisible: false,
     refreshing: false,
     collapse: false,
+    password1: '',
+    password2: '',
   };
 
   _onRefresh = () => {
@@ -68,21 +71,57 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  // Get user input
+  // Change state input
   onChangeText(key, value) {
     this.setState({
       [key]: value
     })
   }
 
-  showModal(){
-    this.setState({ modalVisible: true})
+  //Setting section
+  // Sign out from the app
+  signOutAlert = async () => {
+    await Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out from the app?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Canceled'), style: 'cancel'},
+        // Calling signOut
+        {text: 'OK', onPress: () => this.signOut()}, 
+      ],
+      { cancelable: false }
+    )
+  }
+  // Confirm sign out
+  signOut = async () => {
+    await Auth.signOut()
+    .then(() => {
+      console.log('Sign out complete')
+      this.props.navigation.navigate('Authloading')
+    })
+    .catch(err => console.log('Error while signing out!', err))
   }
 
-  hideModal(){
-    this.setState({ modalVisible: false});
+  // Change user password for the app
+  changePassword = async () => {
+    const { password1, password2 } = this.state
+    await Auth.currentAuthenticatedUser()
+    .then(user => {
+      return Auth.changePassword(user, password1, password2)
+    })
+    .then(data => console.log('Password changed successfully', data))
+    .catch(err => {
+      if (! err.message) {
+        console.log('Error changing password: ', err)
+        Alert.alert('Error changing password: ', err)
+      } else {
+        console.log('Error changing password: ', err.message)
+        Alert.alert('Error changing password: ', err.message)
+      }
+    })
   }
 
+  //load default values from server
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     const username = user.username;
@@ -102,6 +141,7 @@ export default class ProfileScreen extends React.Component {
     console.log(this.state.services)
   }
 
+  //update profile details
   async updateData(attribute, key){
     const user = await Auth.currentAuthenticatedUser();
     const result = await Auth.updateUserAttributes(user,{
@@ -190,7 +230,7 @@ export default class ProfileScreen extends React.Component {
                       />
                     </Item>
                   <Item style={[t.borderTransparent]}>
-                      <Ionicons name="ios-mail" style={styles.iconStyle} />
+                      <Ionicons name="ios-mail"/>
                       <Input
                         style={styles.input}
                         placeholder={this.state.industry_sector}
@@ -227,7 +267,7 @@ export default class ProfileScreen extends React.Component {
                 { this.state.services.map((item, key) => {
                   return (
                     <View key={key} style={styles.collapsibleItem}>
-                      <Text style={styles.serviceContainer} onPress={() => this.showModal()}>{item.name} {item.provider}</Text>
+                      <Text style={styles.serviceContainer}>{item.name} {item.provider}</Text>
                       { item.contracts.items.map((unit, key2) => {
                         return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
                       })}
@@ -271,6 +311,78 @@ export default class ProfileScreen extends React.Component {
               </CollapsibleList>
             </View>
           </Item>      
+          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
+              <CollapsibleList
+                numberOfVisibleItems={1}
+                buttonContent={
+                  <View>
+                    <Text>Show</Text>
+                  </View>
+                }
+              >
+                <View style={styles.collapsibleItem}>
+                  <Text style={[t.textXl, t.textBlue600]}>Settings</Text>
+                </View>
+                <View style={[t.pX2, t.pY2, t.pt4, t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                  <Text style={[ t.textXl]}>Change password</Text>              
+                </View>
+                <View style={styles.collapsibleItem}>
+                  {/* Old password */}
+                  <Item rounded style={[t.mT5]}>
+                    <Icon
+                      active
+                      name='lock'
+                    />
+                    <Input
+                      placeholder='Old password'
+                      placeholderTextColor='#adb4bc'
+                      returnKeyType='next'
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                      onSubmitEditing={(event) => { this.refs.SecondInput._root.focus()}}
+                      onChangeText={value => this.onChangeText('password1', value)}
+                    />
+                  </Item>    
+                  {/* New password */}              
+                  <Item rounded>
+                    <Icon
+                      active
+                      name='lock'
+                    />
+                    <Input
+                      placeholder='New password'
+                      placeholderTextColor='#adb4bc'
+                      returnKeyType='go'
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                      ref='SecondInput'
+                      onChangeText={value => this.onChangeText('password2', value)}
+                    />
+                  </Item>
+                  <TouchableOpacity
+                    onPress={this.changePassword}
+                    style={[t.mT5, t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                    <Text style={[t.textXl]}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.collapsibleItem}>
+                  <TouchableOpacity
+                    style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
+                    onPress={this.signOutAlert}>
+                    <Icon name='md-power'/>
+                    <Text>
+                      Sign out
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </CollapsibleList>
+            </View>
+          </Item>
         </ScrollView>
       </View>
     )
