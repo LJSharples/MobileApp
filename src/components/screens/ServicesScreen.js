@@ -269,7 +269,7 @@ export default class ServicesScreen extends React.Component {
                     <>
                       <View style={[t.roundedLg, t.w1_2, t.bgYellow500, t.wAuto, t.mT2, t.itemsCenter]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text key={i} onPress={() => this.showModalService()}>{s.name}</Text>
+                          <Text key={i}>{s.name}</Text>
                         </Item>
                       </View>
                     </>

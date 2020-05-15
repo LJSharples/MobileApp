@@ -89,7 +89,7 @@ export default class HomeScreen extends React.Component {
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Ionicons name="ios-bulb" style={[ t.text2xl]}> Test</Ionicons>
+                <Ionicons name="ios-bulb" style={[ t.text2xl]}> Suggestions</Ionicons>
               </Item>
               <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
                 <Text style={[t.textSm]}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>

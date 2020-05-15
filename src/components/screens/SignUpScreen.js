@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
+  ScrollView,
+  RefreshControl,
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,
@@ -22,97 +24,170 @@ import {
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Auth from '@aws-amplify/auth';
+import { t } from 'react-native-tailwindcss';
 
-// Import data for countries
-import data from '../countriesData'
-
-// Load the app logo
-const logo = require('../images/logo.png')
-
-// Default render of country flag
-const defaultFlag = data.filter(
-  obj => obj.name === 'United Kingdom'
-  )[0].flag
-
-// Default render of country code
-const defaultCode = data.filter(
-  obj => obj.name === 'United Kingdom'
-  )[0].dial_code
+//Signup sections
+import UserDetails from '../forms/RegisterUserDetails';
+import UserPhone from '../forms/RegisterUserPhone';
+import CompanyDetails from '../forms/RegisterCompanyDetails';
+import CompanyAddress from '../forms/RegisterCompanyAddress';
+import RefferalDetails from '../forms/RegisterRefferalDetails';
+import TermsConditions from '../forms/RegisterTermsConditions';
 
 export default class SignUpScreen extends React.Component {
+  constructor(){
+    super();
+    this.onChangeText = this.onChangeText.bind(this);
+  }
   state = {
+    firstName: '',
+    lastName: '',
     username: '',
     password: '',
     email: '',
     phoneNumber: '',
     companyName: '',
-    fadeIn: new Animated.Value(0),  // Initial value for opacity: 0
-    fadeOut: new Animated.Value(1),  // Initial value for opacity: 1
+    companyNumber: '',
+    industrySector: '',
+    buildingNumber: '',
+    postCode: '',
+    refferalCode: '',
     isHidden: false,
-    flag: defaultFlag,
-    modalVisible: false,
+    currentStep: 1,
     authCode: '',
   }
   // Get user input
-  onChangeText(key, value) {
+  onChangeText(name, value){
+    this.setState({name: value.nativeEvent['text']}).bind(this);
+  }
+  onUpdate = (key, value) => {
     this.setState({
       [key]: value
     })
-  }
+  };
   // Methods for logo animation
   componentDidMount() {
-    this.fadeIn()
   }
-  fadeIn() {
-    Animated.timing(
-      this.state.fadeIn,
-      {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      }
-    ).start()
-    this.setState({isHidden: true})
+
+  // Test current step with ternary
+  // _next and _previous functions will be called on button click
+  _next() {
+    let currentStep = this.state.currentStep
+    // If the current step is 1 or 2, then add one on "next" button click
+    currentStep = currentStep >= 6? 7: currentStep + 1
+    this.setState({
+      currentStep: currentStep
+    })
+    console.log(this.state);
   }
-  fadeOut() {
-    Animated.timing(
-      this.state.fadeOut,
-      {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true
-      }
-    ).start()
-    this.setState({isHidden: false})
-  }
-  // Functions for Phone Input
-  showModal() {
-    this.setState({ modalVisible: true })
-    // console.log('Shown')
-  }
-  hideModal() {
-    this.setState({ modalVisible: false })
-    // refocus on phone Input after selecting country and/or closing Modal
-    this.refs.FourthInput._root.focus()
-    // console.log('Hidden')
-  }
-  async getCountry(country) {
-    const countryData = await data
-    try {
-      const countryCode = await countryData.filter(
-        obj => obj.name === country
-      )[0].dial_code
-      const countryFlag = await countryData.filter(
-        obj => obj.name === country
-      )[0].flag
-      // Set data from user choice of country
-      this.setState({ phoneNumber: countryCode, flag: countryFlag })
-      await this.hideModal()
-    }
-    catch (err) {
-      console.log(err)
+
+  get nextButton(){
+    if(this.state.currentStep !== 6){
+      return (
+        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+            <TouchableOpacity
+                onPress={() => this._next()} 
+                >
+                  <Text style={[t.textWhite, t.textXl]}>Continue</Text>
+              </TouchableOpacity>
+            </Item>
+          </View>
+        </Item>
+      )
+    } else {
+      return (
+        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+            <TouchableOpacity
+                onPress={() => this.signUp()} 
+                >
+                  <Text style={[t.textWhite, t.textXl]}>Agree and create</Text>
+              </TouchableOpacity>
+              
+            </Item>
+          </View>
+        </Item>
+      )
     }
   }
+
+  get authCode(){
+    if(this.state.currentStep == 6){
+      return (
+        <View>
+          <Item style={[t.bgWhite, t.borderTransparent]}>
+              <View style={[ t.pX4, t.pY4, t.wFull]}>
+                <Item>
+                  <Input
+                    style={[t.alignCenter, t.bgGray100]}
+                    id="confirmationCode"
+                    name="confirmationCode"
+                    placeholder="Confirmation code"
+                    onChangeText={value => this.onChangeText('authCode', value)}/>
+                </Item>
+              </View>
+          </Item>
+          <Item style={[t.bgWhite, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <TouchableOpacity
+                  onPress={() => this.confirmSignUp()}>
+                  <Text>
+                    Confirm Sign Up
+                  </Text>
+                </TouchableOpacity>
+              </Item>
+            </View>
+          </Item>
+          <Item style={[t.bgWhite, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <TouchableOpacity
+                  onPress={() => this.resendSignUp()}>
+                  <Text>
+                    Resend code
+                  </Text>
+                </TouchableOpacity>
+              </Item>
+            </View>
+          </Item>
+        </View>
+      )
+    }
+  }
+    
+  _prev() {
+    let currentStep = this.state.currentStep
+    // If the current step is 2 or 3, then subtract one on "previous" button click
+    currentStep = currentStep <= 1? 1: currentStep - 1
+    this.setState({
+      currentStep: currentStep
+    })
+  }
+
+  get backButton(){
+    if(this.state.currentStep !== 1){
+      return (
+        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.wFull, t.itemsCenter]}>
+            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+            <TouchableOpacity
+                onPress={() => this._prev()} 
+                >
+                  <Text style={[t.textBlue600, t.textXl]}>Back</Text>
+              </TouchableOpacity>
+            </Item>
+          </View>
+        </Item>
+      )
+    } else {
+      return null;
+    }
+  }
+
   async signUp() {
     const { username, password, email, phoneNumber, companyName } = this.state
     // rename variable to conform with Amplify Auth field phone attribute
@@ -176,229 +251,59 @@ export default class SignUpScreen extends React.Component {
       }
     })
   }
+
   render() {
-    let { fadeOut, fadeIn, isHidden, flag } = this.state
-    const countryData = data
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[t.flex1]}>
         <StatusBar/>
         <KeyboardAvoidingView 
-          style={styles.container} 
+          style={[t.flex1]} 
           behavior='padding' 
           enabled>
-          <TouchableWithoutFeedback style={styles.container} onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-              {/* App Logo */}
-              <View style={styles.logoContainer}>
-                {
-                  isHidden ?
-                  <Animated.Image 
-                    source={logo} 
-                    style={{ opacity: fadeIn, width: 110.46, height: 117 }}/>
-                  :
-                  <Animated.Image 
-                    source={logo} 
-                    style={{ opacity: fadeOut, width: 110.46, height: 117 }}/>
-                }
-              </View>
-              <Container style={styles.infoContainer}>
-                <View style={styles.container}>
-                  {/* username section  */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-person" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Username'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      onSubmitEditing={(event) => {this.refs.SecondInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('username', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
+          <TouchableWithoutFeedback style={[t.flex1]} onPress={Keyboard.dismiss}>
+            <ScrollView
+              style={[t.hFull, t.bgWhite]}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.refreshing}
+                      onRefresh={this._onRefresh}
                     />
-                  </Item>
-                  {/*  password section  */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-lock" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Password'
-                      placeholderTextColor='#adb4bc'
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      // ref={c => this.SecondInput = c}
-                      ref='SecondInput'
-                      onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('password', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* email section */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-mail" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Email'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref='ThirdInput'
-                      onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('email', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* Company section */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-mail" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Company name'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref='FourthInput'
-                      onSubmitEditing={(event) => {this.refs.FifthInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('companyName', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  {/* phone section  */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="ios-call" style={styles.iconStyle} />
-                    {/* country flag */}
-                    <View><Text style={{fontSize: 40}}>{flag}</Text></View>
-                    {/* open modal */}
-                    <Ionicons 
-                      name="md-arrow-dropdown" 
-                      style={[styles.iconStyle, { marginLeft: 5 }]}
-                      onPress={() => this.showModal()}
-                    />
-                    <Input
-                      style={styles.input}
-                      placeholder='+44766554433'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'phone-pad'}
-                      returnKeyType='done'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref='FifthInput'
-                      value={this.state.phoneNumber}
-                      onChangeText={(val) => {
-                        if (this.state.phoneNumber===''){
-                          // render UK phone code by default when Modal is not open
-                          this.onChangeText('phoneNumber', defaultCode + val)
-                        } else {
-                          // render country code based on users choice with Modal
-                          this.onChangeText('phoneNumber', val)
-                        }}
-                      }
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                    {/* Modal for country code and flag */}
-                    <Modal
-                      animationType="slide" // fade
-                      transparent={false}
-                      visible={this.state.modalVisible}>
-                      <View style={{ flex: 1 }}>
-                        <View style={{ flex: 10, paddingTop: 80, backgroundColor: '#5059ae' }}>
-                          <FlatList
-                            data={countryData}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={
-                              ({ item }) =>
-                                <TouchableWithoutFeedback 
-                                  onPress={() => this.getCountry(item.name)}>
-                                  <View 
-                                    style={
-                                      [
-                                        styles.countryStyle, 
-                                        {
-                                          flexDirection: 'row', 
-                                          alignItems: 'center',
-                                          justifyContent: 'space-between'
-                                        }
-                                      ]
-                                    }>
-                                    <Text style={{fontSize: 45}}>
-                                      {item.flag}
-                                    </Text>
-                                    <Text style={{fontSize: 20, color: '#fff'}}>
-                                      {item.name} ({item.dial_code})
-                                    </Text>
-                                  </View>
-                                </TouchableWithoutFeedback>
-                            }
-                          />
-                        </View>
-                        <TouchableOpacity
-                          onPress={() => this.hideModal()} 
-                          style={styles.closeButtonStyle}>
-                          <Text style={styles.textStyle}>
-                            Close
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </Modal>
-                  </Item>
-                  {/* End of phone input */}
-                  <TouchableOpacity
-                    onPress={() => this.signUp()}
-                    style={styles.buttonStyle}>
-                    <Text style={styles.buttonText}>
-                      Sign Up
-                    </Text>
-                  </TouchableOpacity>
-                  {/* code confirmation section  */}
-                  <Item style={styles.itemStyle}>
-                    <Ionicons name="md-apps" style={styles.iconStyle} />
-                    <Input
-                      style={styles.input}
-                      placeholder='Confirmation code'
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'numeric'}
-                      returnKeyType='done'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      onChangeText={value => this.onChangeText('authCode', value)}
-                      onFocus={() => this.fadeOut()}
-                      onEndEditing={() => this.fadeIn()}
-                    />
-                  </Item>
-                  <TouchableOpacity
-                    onPress={() => this.confirmSignUp()}
-                    style={styles.buttonStyle}>
-                    <Text style={styles.buttonText}>
-                      Confirm Sign Up
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => this.resendSignUp()}
-                    style={styles.buttonStyle}>
-                    <Text style={styles.buttonText}>
-                      Resend code
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </Container>
-            </View>
+                  }
+                >
+                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                  <UserDetails
+                    currentStep={this.state.currentStep}
+                    onUpdate={this.onUpdate}
+                    firstName={this.state.firstName}
+                    lastName={this.state.lastName}
+                    email={this.state.email}/>
+                  <UserPhone
+                    currentStep={this.state.currentStep}
+                    phoneNumber={this.state.phoneNumber}
+                    onUpdate={this.onUpdate}/>
+                  <CompanyDetails
+                    currentStep={this.state.currentStep}
+                    companyName={this.state.companyName}
+                    companyNumber={this.state.companyNumber}
+                    industrySector={this.state.industrySector}
+                    onUpdate={this.onUpdate}/>
+                  <CompanyAddress
+                    currentStep={this.state.currentStep}
+                    buildingNumber={this.state.buildingNumber}
+                    postCode={this.state.postCode}
+                    onUpdate={this.onUpdate}/>
+                  <RefferalDetails
+                    currentStep={this.state.currentStep}
+                    refferalCode={this.state.refferalCode}
+                    onUpdate={this.onUpdate}/>
+                  <TermsConditions
+                    currentStep={this.state.currentStep}
+                    onUpdate={this.onUpdate}/>
+                </Item>
+                {this.nextButton}
+                {this.authCode}
+                {this.backButton}
+              </ScrollView>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -406,78 +311,3 @@ export default class SignUpScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#5059ae',
-    justifyContent: 'center',
-    flexDirection: 'column'
-  },
-  input: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  infoContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 370,
-    bottom: 25,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-    backgroundColor: '#5059ae',
-  },
-  itemStyle: {
-    marginBottom: 10,
-  },
-  iconStyle: {
-    color: '#fff',
-    fontSize: 28,
-    marginRight: 15
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    backgroundColor: '#b44666',
-    padding: 14,
-    marginBottom: 10,
-    borderRadius: 3,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "#fff",
-  },
-  logoContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 600,
-    bottom: 270,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  textStyle: {
-    padding: 5,
-    fontSize: 20,
-    color: '#fff',
-    fontWeight: 'bold'
-  },
-  countryStyle: {
-    flex: 1,
-    backgroundColor: '#5059ae',
-    borderTopColor: '#211f',
-    borderTopWidth: 1,
-    padding: 12,
-  },
-  closeButtonStyle: {
-    flex: 1,
-    padding: 12,
-    alignItems: 'center', 
-    backgroundColor: '#b44666',
-  }
-})

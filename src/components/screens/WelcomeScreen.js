@@ -28,7 +28,6 @@ export default class WelcomeScreen extends React.Component {
         <Item style={[t.pX4, t.pT4, t.alignCenter]}>
           <Image 
             source={logo}
-            style={[t.alignCenter]}
           />
         </Item>
         <View style={[t.bgWhite, t.hFull, t.roundedLg ]}>
