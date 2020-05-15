@@ -71,14 +71,14 @@ export default class SignInScreen extends React.Component {
   render() {
     return (
       <View style={[ t.bgWhite, t.hFull]}>
-        <Item style={[t.pX8, t.pY8, t.pT16, t.alignCenter, t.justifyCenter]}>
+        <Item style={[t.pX8, t.pY8, t.pT16, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
           <Image 
             source={logo}
             style={[t.alignCenter, t.justifyCenter]}
           />
         </Item>
-        <Item style={[t.itemsCenter, t.justifyCenter]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <Input
                 style={[t.alignCenter, t.bgGray100]}
                 placeholder='Username'
@@ -92,8 +92,8 @@ export default class SignInScreen extends React.Component {
               />
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <Input
                 style={[t.alignCenter, t.bgGray100]}
                 placeholder='Password'
@@ -106,7 +106,7 @@ export default class SignInScreen extends React.Component {
               />
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
               <Text style={[t.textBlue500, t.textBase]}>
                 If you are having trouble logging in
@@ -117,9 +117,9 @@ export default class SignInScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.p20]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.itemsCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.p20, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.signIn()}>
                   <Text style={[t.textWhite, t.textXl]}>Log in</Text>

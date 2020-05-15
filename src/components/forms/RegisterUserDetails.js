@@ -96,6 +96,22 @@ export default class RegisterUserDetails extends React.Component {
                         </Item>
                     </View>
                 </Item>
+                <Item style={[t.bgWhite, t.borderTransparent]}>
+                    <View style={[ t.pX4, t.pY2, t.wFull]}>
+                        <Item>
+                            <Input
+                                style={[t.alignCenter, t.bgGray100]}
+                                id="password"
+                                name="password"
+                                placeholder='Password'
+                                returnKeyType='go'
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                secureTextEntry={true}
+                                onChange={(value) => this.update('password', value)}/>
+                        </Item>
+                    </View>
+                </Item>
             </View>
         )
     }

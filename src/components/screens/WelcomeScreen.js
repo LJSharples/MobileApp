@@ -31,8 +31,8 @@ export default class WelcomeScreen extends React.Component {
           />
         </Item>
         <View style={[t.bgWhite, t.hFull, t.roundedLg ]}>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
                 <Text style={[t.textBlue500, t.textXl]}>
                   Welcome to
@@ -43,8 +43,8 @@ export default class WelcomeScreen extends React.Component {
               </View>
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
                 <Text style={[t.textBlue500, t.textXl, t.textCenter]}>
                 The simple way to manage all of your business services in one place!
@@ -52,8 +52,8 @@ export default class WelcomeScreen extends React.Component {
               </View>
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignUp')}>

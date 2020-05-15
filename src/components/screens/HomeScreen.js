@@ -86,7 +86,7 @@ export default class HomeScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Ionicons name="ios-bulb" style={[ t.text2xl]}> Suggestions</Ionicons>
@@ -103,7 +103,7 @@ export default class HomeScreen extends React.Component {
               </Item>
             </View>
           </Item>
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
               <TouchableOpacity>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -115,7 +115,7 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgRed300, t.itemsCenter]}>
               <TouchableOpacity 
                   onPress={() => this.handleRoute('Expenses')}>

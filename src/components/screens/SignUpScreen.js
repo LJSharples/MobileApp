@@ -57,8 +57,10 @@ export default class SignUpScreen extends React.Component {
     authCode: '',
   }
   // Get user input
-  onChangeText(name, value){
-    this.setState({name: value.nativeEvent['text']}).bind(this);
+  onChangeText(key, value) {
+    this.setState({
+      [key]: value
+    })
   }
   onUpdate = (key, value) => {
     this.setState({
@@ -189,17 +191,25 @@ export default class SignUpScreen extends React.Component {
   }
 
   async signUp() {
-    const { username, password, email, phoneNumber, companyName } = this.state
+    const { firstName, lastName, password, email, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
     // rename variable to conform with Amplify Auth field phone attribute
-    const phone_number = phoneNumber
+    const username = email
+    const phone_number = `+44 ${phoneNumber}`
+    console.log(username);
+    this.onUpdate("username", username);
     const company_name = companyName
     await Auth.signUp({
       username,
       password,
       attributes: { 
-        'email': email, 
-        'phone_number': phone_number, 
-        'custom:company_name': company_name 
+        'email': email,
+        'custom:first_name': firstName,
+        'custom:last_name': lastName,
+        'custom:company_name': company_name,
+        'custom:company_number': companyNumber,
+        'custom:industry_sector': industrySector,
+        'custom:building_number': buildingNumber,
+        'custom:post_code': postCode
       }
     })
     .then(() => {
