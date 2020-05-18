@@ -105,7 +105,7 @@ export default class SignUpScreen extends React.Component {
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-              <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => this.signUp()} 
                   >
                     <Text style={[t.textWhite, t.textXl]}>Agree</Text>

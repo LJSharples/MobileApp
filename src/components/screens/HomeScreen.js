@@ -61,6 +61,10 @@ export default class HomeScreen extends React.Component {
     });
   }
 
+  handleRoute = async (destination) => {
+    await this.props.navigation.navigate(destination)
+  }
+
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser(); 
     const username = user.username;

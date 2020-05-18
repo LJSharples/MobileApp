@@ -1,9 +1,6 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
-  Text,
-  AsyncStorage,
   TouchableOpacity
 } from 'react-native';
 import { 
@@ -13,7 +10,6 @@ import {
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-import { Icon } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 
 import Amplify from '@aws-amplify/core';

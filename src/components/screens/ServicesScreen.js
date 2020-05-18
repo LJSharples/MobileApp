@@ -1,32 +1,24 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  Alert,
   Modal,
-  FlatList,
-  Switch
+  FlatList
 } from 'react-native'
 import {
-  Container,
-  Item,
-  Icon,
-  Input,
-  DatePicker
+  Item
 } from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
 
-// Modal data
-import utilityData from '../utilitiesData';
+// Service colors and icons
+import serviceIcons from '../ServiceIcons';
+import serviceColors from '../ServiceColours';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
@@ -132,7 +124,6 @@ export default class ServicesScreen extends React.Component {
     };
     const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
     this.setState({ services: serviceData.data.listServices.items })
-    console.log(this.state.services);
   }
 
   _onRefresh = () => {
@@ -267,9 +258,10 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.services.map((s, i) => 
                     <>
-                      <View style={[t.roundedLg, t.w1_2, t.bgYellow500, t.wAuto, t.mT2, t.itemsCenter]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text key={i}>{s.name}</Text>
+                      <View style={[t.roundedLg, `${serviceColors[s.name]}`, t.itemsCenter, t.wAuto, t.mT2]}>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                          <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
+                          <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
                         </Item>
                       </View>
                     </>
