@@ -33,6 +33,7 @@ import CompanyDetails from '../forms/RegisterCompanyDetails';
 import CompanyAddress from '../forms/RegisterCompanyAddress';
 import RefferalDetails from '../forms/RegisterRefferalDetails';
 import TermsConditions from '../forms/RegisterTermsConditions';
+import ConfirmCode from '../forms/RegisterConfirmCode';
 
 export default class SignUpScreen extends React.Component {
   constructor(){
@@ -76,7 +77,7 @@ export default class SignUpScreen extends React.Component {
   _next() {
     let currentStep = this.state.currentStep
     // If the current step is 1 or 2, then add one on "next" button click
-    currentStep = currentStep >= 6? 7: currentStep + 1
+    currentStep = currentStep >= 7? 8: currentStep + 1
     this.setState({
       currentStep: currentStep
     })
@@ -84,7 +85,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   get nextButton(){
-    if(this.state.currentStep !== 6){
+    if(this.state.currentStep < 6){
       return (
         <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
           <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
@@ -98,26 +99,28 @@ export default class SignUpScreen extends React.Component {
           </View>
         </Item>
       )
-    } else {
-      return (
-        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
-            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-            <TouchableOpacity
-                onPress={() => this.signUp()} 
-                >
-                  <Text style={[t.textWhite, t.textXl]}>Agree and create</Text>
-              </TouchableOpacity>
-              
-            </Item>
-          </View>
-        </Item>
-      )
+    } else{
+      if(this.state.currentStep == 6){
+        return (
+          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+              <TouchableOpacity
+                  onPress={() => this.signUp()} 
+                  >
+                    <Text style={[t.textWhite, t.textXl]}>Agree</Text>
+                </TouchableOpacity>
+                
+              </Item>
+            </View>
+          </Item>
+        )
+      }
     }
   }
 
   get authCode(){
-    if(this.state.currentStep == 6){
+    if(this.state.currentStep == 7){
       return (
         <View>
           <Item style={[t.bgWhite, t.borderTransparent]}>
@@ -309,6 +312,8 @@ export default class SignUpScreen extends React.Component {
                   <TermsConditions
                     currentStep={this.state.currentStep}
                     onUpdate={this.onUpdate}/>
+                  <ConfirmCode
+                    currentStep={this.state.currentStep}/>
                 </Item>
                 {this.nextButton}
                 {this.authCode}

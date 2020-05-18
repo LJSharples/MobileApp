@@ -86,7 +86,7 @@ export default class HomeScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Ionicons name="ios-bulb" style={[ t.text2xl]}> Suggestions</Ionicons>
@@ -103,7 +103,7 @@ export default class HomeScreen extends React.Component {
               </Item>
             </View>
           </Item>
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
               <TouchableOpacity>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -115,15 +115,15 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-          <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgRed300, t.itemsCenter]}>
+          <Item style={[t.pX3, t.pY2, t.pt6, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY2, t.pt6, t.roundedLg, t.bgRed300, t.itemsCenter]}>
               <TouchableOpacity 
                   onPress={() => this.handleRoute('Expenses')}>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                   <Text style={[ t.textXl]}> Annual Expenses</Text>
                 </Item>
-                <Item style={[t.pX4, t.pY4, t.pT8, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                  <Image 
+                <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                  <Image
                     source={logo}
                     style={[t.alignCenter, t.justifyCenter]}
                   />
