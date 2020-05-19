@@ -77,7 +77,6 @@ export default class ServicesScreen extends React.Component {
     this.setState({ switchValue: value });
   };
 
-
   // Get user input
   onChangeText(key, value) {
     this.setState({
@@ -258,7 +257,7 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.services.map((s, i) => 
                     <>
-                      <View style={[t.roundedLg, `${serviceColors[s.name]}`, t.itemsCenter, t.wAuto, t.mT2]}>
+                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                           <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
                           <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
