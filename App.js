@@ -28,6 +28,7 @@ import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import ServicesScreen from './src/components/screens/ServicesScreen';
 import ExpensesScreen from './src/components/screens/ExpensesScreen';
+import NotificationsScreen from './src/components/screens/NotificationsScreen';
 
 const configurations = {
   Dashboard: {
@@ -63,14 +64,14 @@ const configurations = {
       ),
     },
   },
-  Expenses: {
-    screen: ExpensesScreen,
+  Notifications: {
+    screen: NotificationsScreen,
     navigationOptions: {
-      tabBarLabel: 'Annual Expenses',
+      tabBarLabel: 'Notifications',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
           style={{ fontSize: 26, color: tintColor }}
-          name="ios-cash"
+          name="ios-mail"
         />
       ),
     },
@@ -94,8 +95,8 @@ const options = {
     labelStyle: {
       fontSize: 12,
       fontWeight: 'bold',
-      marginBottom: 12,
-      marginTop: 12,
+      marginBottom: 11,
+      marginTop: 11,
       color: '#87CEFA'
     },
     indicatorStyle: {
@@ -139,7 +140,7 @@ const AppDrawerNavigator = createDrawerNavigator({
   Dashboard: HomeScreen,
   Services: ServicesScreen,
   My_Account: ProfileScreen,
-  Expenses: ExpensesScreen,
+  Notifications: NotificationsScreen,
 });
 
 // Auth stack

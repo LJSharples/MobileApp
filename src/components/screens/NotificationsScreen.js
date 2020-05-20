@@ -4,19 +4,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image
+  ScrollView,
+  RefreshControl
 } from 'react-native'
 import {
-  Container,
   Item,
-  Icon,
-  Input,
-  DatePicker
 } from 'native-base'
 import { t } from 'react-native-tailwindcss';
-
-// Load the app logo
-const logo = require('../images/office.png')
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
@@ -51,40 +45,24 @@ export default class NotificationsScreen extends React.Component {
   }
   render() {
     return (
-      <View style={[ t.bgGray300, t.h]}>
-        <View style={[t.bgWhite, t.hAuto, t.roundedLg, t.pB4 ]}>
-          <Item>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg]}>
+      <View style={[t.flex1]}>
+        <ScrollView
+        style={[t.hFull]}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+          >
+          <View style={[t.bgWhite, t.roundedLg, t.pB4 ]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.borderTransparent]}>
                 <Text style={[t.text2xl]}>
                   Annual Expenses
                 </Text>
-              </View>
             </Item>
-          </Item>
-        </View>
-        <View style={[ t.h3]}></View>
-        <View style={[t.bgWhite, t.hAuto, t.roundedLg, t.pB4 ]}>
-          <Item>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                <Text style={[t.text2xl]}>
-                  Monthly Breakdown for: {this.state.year}
-                </Text>
-                <Text>
-                    Your annual expenses are broken down to each month:
-                </Text>
-                {
-                    this.state.services.map((s, i) => 
-                    <>
-                        <Text key={i}>{s.name} - {s.provider}</Text>
-                    </>
-                    )
-                }
-              </View>
-            </Item>
-          </Item>
-        </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }

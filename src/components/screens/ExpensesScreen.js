@@ -74,7 +74,9 @@ export default class ExpensesScreen extends React.Component {
         "October",
         "November", 
         "December"
-      ]
+      ],
+      selectedMonth: '',
+      selectedExpenses: []
   };
 
   showModal(){
@@ -117,6 +119,11 @@ export default class ExpensesScreen extends React.Component {
   render() {
     return (
       <View style={[t.flex1]}>
+        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyStart, t.bgWhite, t.wFull, t.mT5,]}>
+          <TouchableOpacity onPress={() => this.handleRoute('My_Account')}>
+            <Text>Back</Text>
+          </TouchableOpacity>
+        </Item>
         <ScrollView
         style={[t.hFull]}
             refreshControl={
@@ -151,42 +158,12 @@ export default class ExpensesScreen extends React.Component {
                 {
                   this.state.monthNames.map((s, i) => 
                     <>
-                      <View style={[t.roundedLg, t.w1_2, t.wAuto, t.mT2, t.itemsCenter]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text key={i} onPress={() => this.showModal()} style={[t.itemsStart, t.contentStart]}>{s} - </Text>
-                          <Text key={i} onPress={() => this.showModal()}>£{this.state.monthCost}</Text>
-                          <Modal
-                            animationType="slide" // fade
-                            transparent={false}
-                            visible={this.state.modalVisible}>
-                            <View style={[ t.flex1, t.bgGray100 ]}>
-                              <ScrollView>
-                                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite]}>
-                                  <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
-                                    <Item style={[t.pX2, t.pY4, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                      <Text style={[ t.textXl]}> {s} {this.state.year}</Text>
-                                    </Item>
-                                  </View>
-                                  <View style={[t.w5]}/>
-                                  <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
-                                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
-                                      <TouchableOpacity
-                                        onPress={() => this.hideModal()} 
-                                        >
-                                        <Ionicons name="ios-close"/>
-                                      </TouchableOpacity>
-                                    </Item>
-                                  </View>
-                                </Item>
-                                <ExpenseDetails
-                                  year={this.state.year}
-                                  month={s}
-                                  notice="Your energy has increaed by 7%"
-                                  services={this.state.services}
-                                  monthCost/>
-                              </ScrollView>
-                            </View>
-                          </Modal>
+                      <View style={[t.roundedLg, t.pX2, t.pY2, t.pt4, t.wAuto, t.mT2, t.flexRow, t.itemsCenter, t.justifyCenter]}>
+                        <Item style={[t.borderTransparent, t.itemsStart, t.justifyStart]}>
+                          <Text key={i} onPress={() => this.showModal()}>{s} - </Text>
+                        </Item>
+                        <Item style={[t.borderTransparent, t.itemsEnd, t.justifyEnd]}>
+                          <Text key={i} onPress={() => this.showModal()} style={[t.textRight]}>£{this.state.monthCost}</Text>
                         </Item>
                       </View>
                     </>

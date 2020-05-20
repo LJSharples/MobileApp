@@ -64,6 +64,18 @@ export default class ProfileScreen extends React.Component {
     password2: '',
   };
 
+  showModal(){
+    this.setState({
+      modalVisible: true
+    });
+  }
+
+  closeModal(){
+    this.setState({
+      modalVisible: false
+    });
+  }
+
   _onRefresh = () => {
     this.setState({refreshing: true});
     this.componentDidMount().then(() => {
@@ -147,6 +159,10 @@ export default class ProfileScreen extends React.Component {
     const result = await Auth.updateUserAttributes(user,{
       [attribute]:  this.state[key]
     })
+  }
+
+  handleRoute = async (destination) => {
+    await this.props.navigation.navigate(destination)
   }
 
   render() {
@@ -276,41 +292,7 @@ export default class ProfileScreen extends React.Component {
                 })} 
               </CollapsibleList>
             </View>
-          </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
-              <CollapsibleList
-                numberOfVisibleItems={1}
-                buttonContent={
-                  <View>
-                    <Text>Show</Text>
-                  </View>
-                }
-              >
-                <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>Expenses</Text>
-                </View>
-                { this.state.services.map((item, key) => {
-                  return (
-                    <View key={key} style={styles.collapsibleItem}>
-                      <Text style={styles.serviceContainer}> {item.provider} - {item.name}</Text>
-                      <Text style={styles.financeContainer} >
-                        {item.contracts.items.map((unit,key2) => 
-                          <Text style={styles.financeContainer} key={key2}>
-                            {unit.expenses.items.map((cost,key3) => 
-                              <Text key={key3}>
-                                {cost.paidDate}: £{cost.value}
-                              </Text>
-                            )}
-                          </Text>
-                        )}
-                        </Text>
-                    </View>
-                  );
-                })} 
-              </CollapsibleList>
-            </View>
-          </Item>      
+          </Item>    
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
               <CollapsibleList
@@ -381,6 +363,22 @@ export default class ProfileScreen extends React.Component {
                   </TouchableOpacity>
                 </View>
               </CollapsibleList>
+            </View>
+          </Item>
+          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
+            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
+                <View style={styles.collapsibleItem}>
+                  <Text style={[t.textXl, t.textBlue600]}>Expenses</Text>
+                </View>
+                <View style={styles.collapsibleItem}>
+                  <TouchableOpacity
+                    style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
+                    onPress={() => this.handleRoute('Expenses')}>
+                    <Text>
+                      View Expenses
+                    </Text>
+                  </TouchableOpacity>
+                </View>
             </View>
           </Item>
         </ScrollView>

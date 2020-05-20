@@ -6,7 +6,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   Modal,
-  FlatList
+  StyleSheet
 } from 'react-native'
 import {
   Item
@@ -15,6 +15,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
+import CollapsibleList from "react-native-collapsible-list";
 
 // Service colors and icons
 import serviceIcons from '../ServiceIcons';
@@ -257,12 +258,28 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.services.map((s, i) => 
                     <>
-                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                          <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
-                          <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
-                        </Item>
-                      </View>
+                      <CollapsibleList
+                        numberOfVisibleItems={1}
+                        buttonContent={
+                          <View>
+                            <Text>Show</Text>
+                          </View>
+                        }
+                      >
+                        <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
+                          <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                            <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
+                            <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
+                          </Item>
+                        </View>
+                        <View style={[t.roundedLg, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
+                          <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                            { s.contracts.items.map((unit, key2) => {
+                              return <Text key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
+                            })}
+                          </Item>
+                        </View>
+                      </CollapsibleList>
                     </>
                   )
                 }
@@ -274,3 +291,11 @@ export default class ServicesScreen extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  collapsibleItem: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "#CCC",
+    padding: 10
+  }
+})

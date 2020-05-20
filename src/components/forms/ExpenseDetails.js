@@ -25,41 +25,83 @@ import { t } from 'react-native-tailwindcss';
 
 
 export default class ExpenseDetails extends React.Component {
+    state = {
+        username: '',
+        company_name: '',
+        year: '2020',
+        modalVisible: false,
+        monthCost: '750.23',
+        services: [],
+        monthNames: [
+        "January",
+        "February", 
+        "March", 
+        "April", 
+        "May", 
+        "June", 
+        "July", 
+        "August", 
+        "September",
+        "October",
+        "November", 
+        "December"
+        ],
+        selectedMonth: '',
+        selectedExpenses: []
+    };
+
     render(){
         return (
-            <View style={t.mT5}>
-                <Item style={[t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY4, t.wFull, t.bgWhite]}>
-                        <Item style={[ t.borderTransparent]}>
-                            <Text style={[ t.textXl]}> {this.props.month} - {this.props.year}</Text>
-                        </Item>
-                        <Item style={[ t.borderTransparent, t.mT5, t.alignCenter, t.justifyCenter, t.itemsCenter]}>
-                            <Text>{this.props.notice}</Text>
-                        </Item>
-                        <Item style={[ t.mT5, t.borderTransparent]}/>
+            <View style={[t.flex1]}>
+                <ScrollView
+                style={[t.hFull]}
+                    refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                    />
+                    }
+                >
+                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.mT5,]}>
+                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
+                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                        <Text style={[ t.textXl]}> Annual Expenses</Text>
+                    </Item>
+                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                        <Image 
+                        source={graph}
+                        style={[t.alignCenter, t.justifyCenter]}
+                        />
+                    </Item>
                     </View>
                 </Item>
-                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.wFull, t.hFull]}>
-                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>   
-                        { this.props.services.map((item, key) => {
-                            return (
-                                <View key={key} style={[t.roundedLg, t.w1_2, t.bgYellow500, t.wAuto, t.mT2, t.itemsCenter]}>
-                                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        {item.contracts.items.map((unit,key2) => 
-                                        <Text key={key2}>
-                                            {unit.expenses.items.map((cost,key3) => 
-                                            <Text key={key3}>
-                                                {item.name}: £{cost.value}
-                                            </Text>
-                                            )}
-                                        </Text>
-                                        )}
-                                    </Item>
-                                </View>
-                            );
-                        })} 
+                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
+                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>
+                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
+                        <Text style={[ t.textXl]}> Monthly Breakdown for: {this.state.year}</Text>
+                    </Item>
+                    <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Text>Your annual expenses are broken down to each month:</Text>
+                    </Item>
+                    <View rounded>
+                        {
+                        this.state.monthNames.map((s, i) => 
+                            <>
+                            <View style={[t.roundedLg, t.pX2, t.pY2, t.pt4, t.wAuto, t.mT2, t.flexRow, t.itemsCenter, t.justifyCenter]}>
+                                <Item style={[t.borderTransparent, t.itemsStart, t.justifyStart]}>
+                                <Text key={i} onPress={() => this.showModal()}>{s} - </Text>
+                                </Item>
+                                <Item style={[t.borderTransparent, t.itemsEnd, t.justifyEnd]}>
+                                <Text key={i} onPress={() => this.showModal()} style={[t.textRight]}>£{this.state.monthCost}</Text>
+                                </Item>
+                            </View>
+                            </>
+                        )
+                        }
+                    </View>
                     </View>
                 </Item>
+                </ScrollView>
             </View>
         )
     }
