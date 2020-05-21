@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  StyleSheet,
+  Modal,
   View,
   Text,
   ScrollView,
@@ -10,10 +10,7 @@ import {
   Image,
 } from 'react-native'
 import {
-  Container,
   Item,
-  Icon,
-  Input
 } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -21,6 +18,8 @@ import { t } from 'react-native-tailwindcss';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
+
+import ExpensesDetails from '../forms/ExpenseDetails'
 
 // Load the app logo
 const logo = require('../images/Graph.png')
@@ -52,7 +51,20 @@ export default class HomeScreen extends React.Component {
     company_name: '',
     refreshing: false,
     services: [],
+    modalVisible: false,
   };
+
+  showModal(){
+    this.setState({
+      modalVisible: true
+    });
+  }
+
+  closeModal(){
+    this.setState({
+      modalVisible: false
+    });
+  }
 
   _onRefresh = () => {
     this.setState({refreshing: true});
@@ -114,15 +126,43 @@ export default class HomeScreen extends React.Component {
                   <Text style={[ t.textXl]}> Monthly Expense Breakdown</Text>
                 </Item>
                 <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-                  <Text style={[t.textSm]} onPress={() => this.handleRoute('Expenses')}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
+                  <Text style={[t.textSm]} onPress={() => this.showModal()}>As we enter the new financical year, take some time to review your business needs and ensure long term sustainability</Text>
                 </Item>
               </TouchableOpacity>
+              <Modal
+                    animationType="slide" // fade
+                    transparent={false}
+                    visible={this.state.modalVisible}>
+                    <View style={[ t.flex1 ]}>
+                      <ScrollView>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
+                            <Item style={[t.pX2, t.pY8, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}> Annual Expenses</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.w5]}/>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
+                              <TouchableOpacity
+                                onPress={() => this.closeModal()} 
+                                >
+                                <Ionicons name="ios-close"/>
+                              </TouchableOpacity>
+                            </Item>
+                          </View>
+                        </Item>
+                        <ExpensesDetails
+                          services={this.state.services}/>
+                      </ScrollView>
+                    </View>
+                  </Modal>
             </View>
           </Item>
           <Item style={[t.pX3, t.pY2, t.pt6, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX3, t.pY2, t.pt6, t.roundedLg, t.bgRed300, t.itemsCenter]}>
               <TouchableOpacity 
-                  onPress={() => this.handleRoute('Expenses')}>
+                  onPress={() => this.showModal()}>
                 <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                   <Text style={[ t.textXl]}> Annual Expenses</Text>
                 </Item>
@@ -140,22 +180,3 @@ export default class HomeScreen extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  serviceContainer: {
-    backgroundColor: '#408C45',
-    flex: 1,
-    padding: 15,
-    margin: 5,
-    borderRadius: 10
-  },
-  financeContainer: {
-    backgroundColor: '#B9B9E3',
-    padding: 15,
-    margin: 5,
-    borderRadius: 10,
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-})

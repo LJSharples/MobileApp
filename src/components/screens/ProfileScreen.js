@@ -23,7 +23,9 @@ import { t } from 'react-native-tailwindcss';
 import CollapsibleList from "react-native-collapsible-list";
 
 // AWS Amplify modular import
-import Auth from '@aws-amplify/auth'
+import Auth from '@aws-amplify/auth';
+
+import ExpensesDetails from '../forms/ExpenseDetails'
 
 // Load the app logo
 const logo = require('../images/Building.png')
@@ -209,7 +211,7 @@ export default class ProfileScreen extends React.Component {
                   <Text style={[t.textXl, t.textBlue600]}>My Details</Text>
                 </View>
                 <View style={styles.collapsibleItem}>
-                  <Item style={[t.borderTransparent]}>
+                  <Item>
                     <Ionicons name="ios-mail"/>
                     <Input
                       style={styles.input}
@@ -227,7 +229,7 @@ export default class ProfileScreen extends React.Component {
                       onEndEditing={() => this.updateData('custom:company_name', 'company_name')}
                     />
                   </Item>
-                  <Item style={[t.borderTransparent]}>
+                  <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
                         style={styles.input}
@@ -245,7 +247,7 @@ export default class ProfileScreen extends React.Component {
                         onEndEditing={() => this.updateData('custom:post_code', 'post_code')}
                       />
                     </Item>
-                  <Item style={[t.borderTransparent]}>
+                  <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
                         style={styles.input}
@@ -373,11 +375,39 @@ export default class ProfileScreen extends React.Component {
                 <View style={styles.collapsibleItem}>
                   <TouchableOpacity
                     style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
-                    onPress={() => this.handleRoute('Expenses')}>
+                    onPress={() => this.showModal()}>
                     <Text>
                       View Expenses
                     </Text>
                   </TouchableOpacity>
+                  <Modal
+                    animationType="slide" // fade
+                    transparent={false}
+                    visible={this.state.modalVisible}>
+                    <View style={[ t.flex1 ]}>
+                      <ScrollView>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
+                            <Item style={[t.pX2, t.pY8, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}> Annual Expenses</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.w5]}/>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
+                              <TouchableOpacity
+                                onPress={() => this.closeModal()} 
+                                >
+                                <Ionicons name="ios-close"/>
+                              </TouchableOpacity>
+                            </Item>
+                          </View>
+                        </Item>
+                        <ExpensesDetails
+                          services={this.state.services}/>
+                      </ScrollView>
+                    </View>
+                  </Modal>
                 </View>
             </View>
           </Item>

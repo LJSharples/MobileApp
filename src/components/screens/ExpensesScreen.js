@@ -23,7 +23,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { t } from 'react-native-tailwindcss';
 
 // Load the app logo
-const logo = require('../images/office.png');
 const graph = require('../images/Graph.png');
 
 // AWS Amplify modular import
