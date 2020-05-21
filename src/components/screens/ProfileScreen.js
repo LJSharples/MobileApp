@@ -17,7 +17,7 @@ import {
   Icon,
   Input
 } from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { t } from 'react-native-tailwindcss';
 import CollapsibleList from "react-native-collapsible-list";
@@ -25,6 +25,11 @@ import CollapsibleList from "react-native-collapsible-list";
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth';
 
+// Service colors and icons
+import serviceIcons from '../ServiceIcons';
+import serviceColors from '../ServiceColours';
+
+//additonal screens
 import ExpensesDetails from '../forms/ExpenseDetails'
 
 // Load the app logo
@@ -282,13 +287,18 @@ export default class ProfileScreen extends React.Component {
                 <View style={styles.collapsibleItem}>
                   <Text style={[t.textXl, t.textBlue600]}>Services</Text>
                 </View>
-                { this.state.services.map((item, key) => {
+                { this.state.services.map((s, i) => {
                   return (
-                    <View key={key} style={styles.collapsibleItem}>
-                      <Text style={styles.serviceContainer}>{item.name} {item.provider}</Text>
-                      { item.contracts.items.map((unit, key2) => {
-                        return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
-                      })}
+                    <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
+                      <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                        <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
+                        <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
+                      </Item>
+                      <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                        { s.contracts.items.map((unit, key2) => {
+                          return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
+                        })}
+                      </Item>
                     </View>
                   );
                 })} 
