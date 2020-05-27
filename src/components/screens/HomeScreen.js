@@ -15,12 +15,15 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { t } from 'react-native-tailwindcss';
+import { BarChart, XAxis, PieChart } from 'react-native-svg-charts';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
 
 //additional sccreens and views
-import ExpensesDetails from '../forms/ExpenseDetails'
+import ExpensesDetails from '../forms/ExpenseDetails';
+import ExpenseChart from '../forms/ExpenseChart';
+import ServiceExpense from '../forms/ServiceExpense';
 
 // Load the app logo
 const logo = require('../images/Graph.png')
@@ -93,6 +96,9 @@ export default class HomeScreen extends React.Component {
     this.setState({ services: serviceData.data.listServices.items })
   }
   render() {
+
+    const data = [ 14, 80, 100, 55 ]
+
     return (
       <View style={[t.wFull]}>
         <ScrollView
@@ -160,22 +166,8 @@ export default class HomeScreen extends React.Component {
               </Modal>
             </View>
           </Item>
-          <Item style={[t.pX3, t.pY2, t.pt6, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt6, t.roundedLg, t.bgRed300, t.itemsCenter]}>
-              <TouchableOpacity 
-                  onPress={() => this.showModal()}>
-                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.textXl]}> Annual Expenses</Text>
-                </Item>
-                <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                  <Image
-                    source={logo}
-                    style={[t.alignCenter, t.justifyCenter]}
-                  />
-                </Item>
-              </TouchableOpacity>
-            </View>
-          </Item>
+          <ExpenseChart/>
+          <ServiceExpense/>
         </ScrollView>
       </View>
     )
