@@ -26,6 +26,7 @@ import { t } from 'react-native-tailwindcss';
 
 //get expense breakdown
 import ExpenseBreakdown from '../forms/ExpenseBreakDown';
+import YearExpense from '../forms/ExpenseChart';
 
 // Load the app logo
 const graph = require('../images/Graph.png');
@@ -74,16 +75,7 @@ export default class ExpenseDetails extends React.Component {
     render(){
         return (
             <View style={[t.flex1]}>
-                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.mT5,]}>
-                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                            <Image 
-                            source={graph}
-                            style={[t.alignCenter, t.justifyCenter]}
-                            />
-                        </Item>
-                    </View>
-                </Item>
+                <YearExpense/>
                 <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
                     <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>

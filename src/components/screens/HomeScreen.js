@@ -7,7 +7,6 @@ import {
   RefreshControl,
   TouchableOpacity,
   Button,
-  Image,
 } from 'react-native'
 import {
   Item,
@@ -15,7 +14,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import { t } from 'react-native-tailwindcss';
-import { BarChart, XAxis, PieChart } from 'react-native-svg-charts';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
@@ -23,7 +21,6 @@ import Auth from '@aws-amplify/auth'
 //additional sccreens and views
 import ExpensesDetails from '../forms/ExpenseDetails';
 import ExpenseChart from '../forms/ExpenseChart';
-import ServiceExpense from '../forms/ServiceExpense';
 
 // Load the app logo
 const logo = require('../images/Graph.png')
@@ -167,7 +164,6 @@ export default class HomeScreen extends React.Component {
             </View>
           </Item>
           <ExpenseChart/>
-          <ServiceExpense/>
         </ScrollView>
       </View>
     )
