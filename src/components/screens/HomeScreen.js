@@ -94,8 +94,6 @@ export default class HomeScreen extends React.Component {
   }
   render() {
 
-    const data = [ 14, 80, 100, 55 ]
-
     return (
       <View style={[t.wFull]}>
         <ScrollView
@@ -125,7 +123,7 @@ export default class HomeScreen extends React.Component {
           </Item>
           <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgGreen200, t.itemsCenter]}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.showModal()}>
                 <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                   <Text style={[ t.textXl]}> Monthly Expense Breakdown</Text>
                 </Item>
