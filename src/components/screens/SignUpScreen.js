@@ -194,6 +194,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   async signUp() {
+    let currentStep = this.state.currentStep
     const { firstName, lastName, password, email, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
     // rename variable to conform with Amplify Auth field phone attribute
     const username = email
@@ -217,7 +218,7 @@ export default class SignUpScreen extends React.Component {
     })
     .then(() => {
       console.log('sign up successful!')
-      Alert.alert('Enter the confirmation code you received.')
+      Alert.alert('Please enter the confirmation code you received.')
     })
     .catch(err => {
       if (! err.message) {
@@ -227,6 +228,10 @@ export default class SignUpScreen extends React.Component {
         console.log('Error when signing up: ', err.message)
         Alert.alert('Error when signing up: ', err.message)
       }
+    })
+    currentStep = currentStep >= 7? 8: currentStep + 1
+    this.setState({
+      currentStep: currentStep
     })
   }
   

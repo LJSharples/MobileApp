@@ -11,22 +11,26 @@ class ExenseChart extends React.PureComponent{
         const data = [ 14, 80, 100, 55 ]
 
         return (
-            <View style={[ t.h48, t.p5 ]}>
-                <BarChart
-                    style={{ flex: 1 }}
-                    data={data}
-                    gridMin={0}
-                    svg={{ fill: 'rgb(134, 65, 244)' }}
-                >
-                    <Grid />
-                </BarChart>
-                <XAxis
-                    style={{ marginTop: 10 }}
-                    data={data}
-                    xAccessor={({ index }) => index}
-                    scale={scale.ScaleBand}
-                    formatLabel={(_, index) => data[index]}
-                />
+            
+            <View style={[ t.pX6,  t.p5, t.wAuto, t.borderTransparent ]}>
+                <View style={[ t.h48, t.bgRed300, t.roundedLg]}>
+                    <BarChart
+                        style={[ t.flex1 ]}
+                        data={data}
+                        gridMin={0}
+                        svg={{ fill: 'rgb(134, 65, 244)' }}
+                    >
+                        <Grid 
+                        style={[t.bgRed300]}/>
+                    </BarChart>
+                    <XAxis
+                        style={[ t.mT3 ]}
+                        data={data}
+                        xAccessor={({ index }) => index}
+                        scale={scale.ScaleBand}
+                        formatLabel={(_, index) => data[index]}
+                    />
+                </View>
             </View>
         )
     }
