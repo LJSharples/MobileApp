@@ -11,6 +11,7 @@ import {
   Item,
 } from 'native-base'
 import { t } from 'react-native-tailwindcss';
+import { Ionicons } from '@expo/vector-icons';
 
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
@@ -33,16 +34,19 @@ const ListServicesComp = `query listServices($company: String!){
 }`
 
 export default class NotificationsScreen extends React.Component {
-    state = {
-        username: '',
-        company_name: '',
-        year: '2020',
-        services: [],
-    };
+  state = {
+      notices: [
+        {
+          "Header": "Update",
+          "brief": "Advanced notice"
+        },
+        {
+          "Header": "New",
+          "brief": "New procedure"
+        }
+      ],
+  };
 
-  handleRoute = async (destination) => {
-    await this.props.navigation.navigate(destination)
-  }
   render() {
     return (
       <View style={[t.flex1]}>
@@ -55,13 +59,22 @@ export default class NotificationsScreen extends React.Component {
               />
             }
           >
-          <View style={[t.bgWhite, t.roundedLg, t.pB4 ]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.borderTransparent]}>
-                <Text style={[t.text2xl]}>
-                  Annual Expenses
-                </Text>
-            </Item>
-          </View>
+          {
+            this.state.notices.map((s, i) => 
+              <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
+                  <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                    <Ionicons name="ios-bulb" style={[ t.text2xl]}> {s.Header}</Ionicons>
+                  </Item>
+                  <Item style={[t.pX6, t.pY2, t.pt8,t.itemsCenter, t.justifyCenter]}>
+                    <Text style={[t.textSm]}>{s.brief}</Text>
+                  </Item>
+                </View>
+              </Item>
+            )
+          }
+          
+          
         </ScrollView>
       </View>
     )

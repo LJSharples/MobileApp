@@ -289,7 +289,7 @@ export default class ProfileScreen extends React.Component {
                 </View>
                 { this.state.services.map((s, i) => {
                   return (
-                    <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
+                    <View key={i} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
                       <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                         <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
                         <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
@@ -428,13 +428,6 @@ export default class ProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  serviceContainer: {
-    backgroundColor: '#408C45',
-    flex: 1,
-    padding: 15,
-    margin: 5,
-    borderRadius: 10
-  },
   financeContainer: {
     backgroundColor: '#B9B9E3',
     padding: 15,
@@ -443,13 +436,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     alignItems: 'center',
     justifyContent: 'space-between'
-  },
-  wrapperCollapsibleList: {
-    flex: 1,
-    marginTop: 20,
-    overflow: "hidden",
-    backgroundColor: "#FFF",
-    borderRadius: 5
   },
   collapsibleItem: {
     borderBottomWidth: StyleSheet.hairlineWidth,
