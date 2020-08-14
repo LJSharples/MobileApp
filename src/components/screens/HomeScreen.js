@@ -6,13 +6,11 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  Button,
 } from 'react-native'
 import {
   Item,
 } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
-import { API, graphqlOperation } from 'aws-amplify';
 import { t } from 'react-native-tailwindcss';
 
 // AWS Amplify modular import
@@ -25,31 +23,9 @@ import ExpenseChart from '../forms/ExpenseChart';
 // Load the app logo
 const logo = require('../images/Graph.png')
 
-// custom queries
-const ListServicesComp = `query listServices($company: String!){
-  listServices(filter:{
-    business:{
-      contains:$company
-    }
-  }){
-    items{
-      id name, provider contracts {
-        items{
-          id eac length contractStart contractEnd expenses{
-            items{
-              id value paidDate
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-
 export default class HomeScreen extends React.Component {
   state = {
     username: '',
-    company_name: '',
     refreshing: false,
     services: [],
     modalVisible: false,
@@ -79,18 +55,8 @@ export default class HomeScreen extends React.Component {
   }
 
   async componentDidMount(){
-    let user = await Auth.currentAuthenticatedUser(); 
-    const username = user.username;
-    this.setState({ username: username});
-
-    const currentUserInfo = await Auth.currentUserInfo();
-    this.setState({ company_name: currentUserInfo.attributes['custom:company_name'] });
-
-    const compDetails = {
-      company: this.state.company_name
-    }
-    const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
-    this.setState({ services: serviceData.data.listServices.items })
+    let user = await Auth.currentAuthenticatedUser();
+    this.setState({ username: user.username});
   }
   render() {
 
