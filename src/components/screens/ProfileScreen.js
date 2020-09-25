@@ -18,12 +18,11 @@ import {
   Input
 } from 'native-base'
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { API, graphqlOperation } from 'aws-amplify';
+import { getUserDetails, } from "../../graphql/queries";
+import { Auth, API, graphqlOperation } from "aws-amplify";
+import { updateUser, updateCompany, addProfile, addCompany } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
 import CollapsibleList from "react-native-collapsible-list";
-
-// AWS Amplify modular import
-import Auth from '@aws-amplify/auth';
 
 // Service colors and icons
 import serviceIcons from '../ServiceIcons';
@@ -35,34 +34,26 @@ import ExpensesDetails from '../forms/ExpenseDetails'
 // Load the app logo
 const logo = require('../images/Building.png')
 
-// custom queries
-const ListServicesComp = `query listServices($company: String!){
-  listServices(filter:{
-    business:{
-      contains:$company
-    }
-  }){
-    items{
-      id name, provider contracts {
-        items{
-          id eac length contractStart contractEnd expenses{
-            items{
-              id value paidDate
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-
 export default class ProfileScreen extends React.Component {
   state = {
-    username: '',
-    company_name: '',
-    industry_sector: '',
-    post_code: '',
-    industry_sector: '',
+    userProfile: {},
+    userCompany: {},
+    full_name: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    company_name: "",
+    company_number: "",
+    address1: "",
+    address2: "",
+    city: "",
+    postcode: "",
+    region: "",
+    num_employees: "",
+    years_trading: "",
+    yearly_turnover: "",
+    industry: "",
+    user_name: "",
     services: [],
     modalVisible: false,
     refreshing: false,
@@ -143,21 +134,35 @@ export default class ProfileScreen extends React.Component {
   //load default values from server
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-    const username = user.username;
-    this.setState({ username: username});
-
-    const currentUserInfo = await Auth.currentUserInfo();
-    this.setState({ company_name: currentUserInfo.attributes['custom:company_name'] });
-    this.setState({ post_code: currentUserInfo.attributes['custom:post_code'] });
-    this.setState({ industry_sector: currentUserInfo.attributes['custom:industry_sector'] });
-
-    const compDetails = {
-      company: this.state.company_name
-    };
-
-    const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
-    this.setState({ services: serviceData.data.listServices.items })
-    console.log(this.state.services)
+    console.log(user)
+    //get userprofile and services
+    const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+    console.log(userProfile)
+    this.setState({ userProfile: userProfile.data["user"]});
+    this.setState({
+      user_name: user.username,
+      full_name: userProfile.data["user"].full_name,
+      first_name: userProfile.data["user"].first_name,
+      last_name: userProfile.data["user"].last_name,
+      phone: userProfile.data["user"].phone
+    });
+    this.setState({ userCompany: userProfile.data["getCompany"]});
+    this.setState({
+      company_name: userProfile.data["getCompany"].Data,
+      address1: userProfile.data["getCompany"].address1,
+      address2: userProfile.data["getCompany"].address2,
+      city: userProfile.data["getCompany"].city,
+      postcode: userProfile.data["getCompany"].postcode,
+      region: userProfile.data["getCompany"].region,
+      company_number: userProfile.data["getCompany"].company_number,
+      years_trading: userProfile.data["getCompany"].years_trading,
+      yearly_turnover: userProfile.data["getCompany"].yearly_turnover,
+      num_employees: userProfile.data["getCompany"].num_employees,
+      industry: userProfile.data["getCompany"].industry
+    });
+    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+    this.setState({ services: userServices});
+    console.log(this.state);
   }
 
   //update profile details
@@ -220,26 +225,24 @@ export default class ProfileScreen extends React.Component {
                     <Ionicons name="ios-mail"/>
                     <Input
                       style={styles.input}
-                      placeholder={this.state.company_name}
+                      placeholder={this.state.first_name}
                       placeholderTextColor='#adb4bc'
                       keyboardType={'email-address'}
                       returnKeyType='next'
-                      value={this.state.company_name}
+                      value={this.state.first_name}
                       autoCapitalize='none'
                       autoCorrect={false}
                       secureTextEntry={false}
                       ref='SecondInput'
                       onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('company_name', value)}
-                      onEndEditing={() => this.updateData('custom:company_name', 'company_name')}
                     />
                   </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
                         style={styles.input}
-                        placeholder={this.state.post_code}
-                        value={this.state.post_code}
+                        placeholder={this.state.last_name}
+                        value={this.state.last_name}
                         placeholderTextColor='#adb4bc'
                         keyboardType={'email-address'}
                         returnKeyType='next'
@@ -248,16 +251,14 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='ThirdInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('post_code', value)}
-                        onEndEditing={() => this.updateData('custom:post_code', 'post_code')}
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
                         style={styles.input}
-                        placeholder={this.state.industry_sector}
-                        value={this.state.industry_sector}
+                        placeholder={this.state.phone}
+                        value={this.state.phone}
                         placeholderTextColor='#adb4bc'
                         keyboardType={'email-address'}
                         returnKeyType='next'
@@ -266,14 +267,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='FourthInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('industry_sector', value)}
-                        onEndEditing={() => this.updateData('custom:industry_sector', 'industry_sector')}
                       />
                     </Item>
                 </View>
               </CollapsibleList>
             </View>
-          </Item>
+          </Item> 
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
               <CollapsibleList
@@ -285,26 +284,109 @@ export default class ProfileScreen extends React.Component {
                 }
               >
                 <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>Services</Text>
+                  <Text style={[t.textXl, t.textBlue600]}>About your Company</Text>
                 </View>
-                { this.state.services.map((s, i) => {
-                  return (
-                    <View key={i} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.name]}>
-                      <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                        <FontAwesome5 name={serviceIcons[s.name]} size={24} color="black" style={[t.pE8]}/>
-                        <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.name}</Text>
-                      </Item>
-                      <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                        { s.contracts.items.map((unit, key2) => {
-                          return <Text style={styles.financeContainer} key={key2}>{unit.contractStart} - {unit.contractEnd}: Total length: {unit.length}</Text>
-                        })}
-                      </Item>
-                    </View>
-                  );
-                })} 
+                <View style={styles.collapsibleItem}>
+                  <Item>
+                    <Ionicons name="ios-mail"/>
+                    <Input
+                      style={styles.input}
+                      placeholder={this.state.company_name}
+                      placeholderTextColor='#adb4bc'
+                      keyboardType={'email-address'}
+                      returnKeyType='next'
+                      value={this.state.company_name}
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={false}
+                      ref='SecondInput'
+                      onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
+                    />
+                  </Item>
+                  <Item>
+                      <Ionicons name="ios-mail"/>
+                      <Input
+                        style={styles.input}
+                        placeholder={this.state.address1}
+                        value={this.state.address1}
+                        placeholderTextColor='#adb4bc'
+                        keyboardType={'email-address'}
+                        returnKeyType='next'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={false}
+                        ref='ThirdInput'
+                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                      />
+                    </Item>
+                  <Item>
+                      <Ionicons name="ios-mail"/>
+                      <Input
+                        style={styles.input}
+                        placeholder={this.state.address2}
+                        value={this.state.address2}
+                        placeholderTextColor='#adb4bc'
+                        keyboardType={'email-address'}
+                        returnKeyType='next'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={false}
+                        ref='FourthInput'
+                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                      />
+                    </Item>
+                  <Item>
+                      <Ionicons name="ios-mail"/>
+                      <Input
+                        style={styles.input}
+                        placeholder={this.state.city}
+                        value={this.state.city}
+                        placeholderTextColor='#adb4bc'
+                        keyboardType={'email-address'}
+                        returnKeyType='next'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={false}
+                        ref='FourthInput'
+                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                      />
+                    </Item>
+                  <Item>
+                      <Ionicons name="ios-mail"/>
+                      <Input
+                        style={styles.input}
+                        placeholder={this.state.region}
+                        value={this.state.region}
+                        placeholderTextColor='#adb4bc'
+                        keyboardType={'email-address'}
+                        returnKeyType='next'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={false}
+                        ref='FourthInput'
+                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                      />
+                    </Item>
+                  <Item>
+                      <Ionicons name="ios-mail"/>
+                      <Input
+                        style={styles.input}
+                        placeholder={this.state.postcode}
+                        value={this.state.postcode}
+                        placeholderTextColor='#adb4bc'
+                        keyboardType={'email-address'}
+                        returnKeyType='next'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={false}
+                        ref='FithInput'
+                        onSubmitEditing={(event) => {this.refs.FithInput._root.focus()}}
+                      />
+                    </Item>
+                </View>
               </CollapsibleList>
             </View>
-          </Item>    
+          </Item> 
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
               <CollapsibleList
