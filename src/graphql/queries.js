@@ -10,7 +10,6 @@ export const user = /* GraphQL */ `
       last_name
       phone
       company {
-        Data
         user_name
         site_id
         address1
@@ -20,8 +19,13 @@ export const user = /* GraphQL */ `
         postcode
         region
         years_trading
-        yearly_turnover
-        num_employees
+        user {
+          user_name
+          full_name
+          first_name
+          last_name
+          phone
+        }
       }
     }
   }
@@ -29,7 +33,6 @@ export const user = /* GraphQL */ `
 export const getCompany = /* GraphQL */ `
   query GetCompany($user_name: String!) {
     getCompany(user_name: $user_name) {
-      Data
       user_name
       site_id
       address1
@@ -39,14 +42,23 @@ export const getCompany = /* GraphQL */ `
       postcode
       region
       years_trading
-      yearly_turnover
-      num_employees
       user {
         user_name
         full_name
         first_name
         last_name
         phone
+        company {
+          user_name
+          site_id
+          address1
+          address2
+          city
+          company_number
+          postcode
+          region
+          years_trading
+        }
       }
     }
   }
@@ -54,7 +66,6 @@ export const getCompany = /* GraphQL */ `
 export const getLeads = /* GraphQL */ `
   query GetLeads($user_name: String!) {
     getLeads(user_name: $user_name) {
-      id
       first_name
       last_name
       phone
@@ -74,8 +85,11 @@ export const getServices = /* GraphQL */ `
         contract_length
         cost_month
         cost_year
+        new_cost_month
+        new_cost_year
         current_supplier
         request_costs
+        uploaded_documents
         id
         PK
       }
@@ -105,9 +119,19 @@ export const getProfile = /* GraphQL */ `
         first_name
         last_name
         phone
+        company {
+          user_name
+          site_id
+          address1
+          address2
+          city
+          company_number
+          postcode
+          region
+          years_trading
+        }
       }
       companydetails {
-        Data
         user_name
         site_id
         address1
@@ -117,9 +141,41 @@ export const getProfile = /* GraphQL */ `
         postcode
         region
         years_trading
-        yearly_turnover
-        num_employees
+        user {
+          user_name
+          full_name
+          first_name
+          last_name
+          phone
+        }
       }
     }
   }
 `;
+export const getUserDetails = `query getUserProfile($user_name: String!){
+  getCompany(
+      user_name: $user_name
+  ) {
+      Data
+      company_name
+      address1
+      address2
+      city
+      company_number
+      postcode
+      region
+      years_trading
+      num_employees
+      yearly_turnover
+      industry
+  }
+  user (
+      user_name: $user_name
+  ) {
+      user_name
+      full_name
+      first_name
+      last_name
+      phone
+  }
+}`;

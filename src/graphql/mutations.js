@@ -3,12 +3,14 @@
 
 export const addProfile = /* GraphQL */ `
   mutation AddProfile(
+    $user_name: String
     $full_name: String
     $first_name: String
     $last_name: String
     $phone: String
   ) {
     addProfile(
+      user_name: $user_name
       full_name: $full_name
       first_name: $first_name
       last_name: $last_name
@@ -19,26 +21,13 @@ export const addProfile = /* GraphQL */ `
       first_name
       last_name
       phone
-      company {
-        Data
-        user_name
-        site_id
-        address1
-        address2
-        city
-        company_number
-        postcode
-        region
-        years_trading
-        yearly_turnover
-        num_employees
-      }
     }
   }
 `;
 export const addCompany = /* GraphQL */ `
   mutation AddCompany(
     $user_name: String
+    $company_name: String
     $site_id: Int
     $address1: String
     $address2: String
@@ -47,9 +36,13 @@ export const addCompany = /* GraphQL */ `
     $postcode: String
     $region: String
     $years_trading: String
+    $num_employees: String
+    $yearly_turnover: String
+    $industry: String
   ) {
     addCompany(
       user_name: $user_name
+      company_name: $company_name 
       site_id: $site_id
       address1: $address1
       address2: $address2
@@ -58,8 +51,10 @@ export const addCompany = /* GraphQL */ `
       postcode: $postcode
       region: $region
       years_trading: $years_trading
+      num_employees: $num_employees
+      yearly_turnover: $yearly_turnover
+      industry: $industry
     ) {
-      Data
       user_name
       site_id
       address1
@@ -69,15 +64,7 @@ export const addCompany = /* GraphQL */ `
       postcode
       region
       years_trading
-      yearly_turnover
-      num_employees
-      user {
-        user_name
-        full_name
-        first_name
-        last_name
-        phone
-      }
+      
     }
   }
 `;
@@ -96,7 +83,6 @@ export const addLead = /* GraphQL */ `
       full_name: $full_name
       phone: $phone
     ) {
-      id
       first_name
       last_name
       phone
@@ -115,6 +101,7 @@ export const addService = /* GraphQL */ `
     $current_supplier: String
     $cost_month: String
     $cost_year: String
+    $uploaded_documents: String
   ) {
     addService(
       user_name: $user_name
@@ -126,6 +113,7 @@ export const addService = /* GraphQL */ `
       current_supplier: $current_supplier
       cost_month: $cost_month
       cost_year: $cost_year
+      uploaded_documents: $uploaded_documents
     ) {
       user_name
       status
@@ -137,123 +125,83 @@ export const addService = /* GraphQL */ `
       cost_year
       current_supplier
       request_costs
-      id
-      PK
+      uploaded_documents
     }
   }
 `;
 export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
+  mutation updateUser(
     $user_name: String
     $full_name: String
     $first_name: String
     $last_name: String
     $phone: String
-  ) {
+  ){
     updateUser(
       user_name: $user_name
       full_name: $full_name
       first_name: $first_name
       last_name: $last_name
       phone: $phone
-    ) {
-      user_name
-      full_name
-      first_name
-      last_name
-      phone
-      company {
-        Data
-        user_name
-        site_id
-        address1
-        address2
-        city
-        company_number
-        postcode
-        region
-        years_trading
-        yearly_turnover
-        num_employees
-      }
-    }
+  ) {
+    user_name
+    full_name
+    first_name
+    last_name
+    phone
   }
+}
 `;
 export const updateCompany = /* GraphQL */ `
-  mutation UpdateCompany(
+  mutation upateCompany(
     $user_name: String
-    $site_id: Int
+    $company_name: String
+    $company_number: String
     $address1: String
     $address2: String
     $city: String
-    $company_number: String
     $postcode: String
     $region: String
     $years_trading: String
-    $yearly_turnover: String
     $num_employees: String
-  ) {
+    $yearly_turnover: String
+    $industry: String
+  ){
     updateCompany(
       user_name: $user_name
-      site_id: $site_id
+      company_name: $company_name
+      company_number: $company_number
       address1: $address1
       address2: $address2
       city: $city
-      company_number: $company_number
       postcode: $postcode
       region: $region
       years_trading: $years_trading
-      yearly_turnover: $yearly_turnover
       num_employees: $num_employees
-    ) {
-      Data
-      user_name
-      site_id
-      address1
-      address2
-      city
-      company_number
-      postcode
-      region
-      years_trading
-      yearly_turnover
-      num_employees
-      user {
-        user_name
-        full_name
-        first_name
-        last_name
-        phone
-      }
-    }
+      yearly_turnover: $yearly_turnover
+      industry: $industry
+  ) {
+    user_name
+    address1
+    address2
+    city
+    postcode
+    region
+    num_employees
   }
+}
 `;
-export const deleteLead = /* GraphQL */ `
-  mutation DeleteLead($user_name: String, $id: String) {
-    deleteLead(user_name: $user_name, id: $id) {
-      id
-      first_name
-      last_name
-      phone
-      full_name
-    }
+export const removeService = /* GraphQL */ `
+  mutation removeService(
+    $user_name: String
+    $id: String
+  ){
+    deleteService(
+      id: $id
+      user_name: $user_name
+  ){
+    user_name
+    id
   }
-`;
-export const deleteService = /* GraphQL */ `
-  mutation DeleteService($user_name: String, $id: String) {
-    deleteService(user_name: $user_name, id: $id) {
-      user_name
-      status
-      service_name
-      callback_time
-      contract_end
-      contract_length
-      cost_month
-      cost_year
-      current_supplier
-      request_costs
-      id
-      PK
-    }
-  }
+}
 `;
