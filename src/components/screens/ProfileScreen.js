@@ -81,7 +81,7 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  // Change state input
+  // for password reset
   onChangeText(key, value) {
     this.setState({
       [key]: value
@@ -134,10 +134,9 @@ export default class ProfileScreen extends React.Component {
   //load default values from server
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-    console.log(user)
+
     //get userprofile and services
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
-    console.log(userProfile)
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({
       user_name: user.username,
@@ -160,9 +159,6 @@ export default class ProfileScreen extends React.Component {
       num_employees: userProfile.data["getCompany"].num_employees,
       industry: userProfile.data["getCompany"].industry
     });
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    this.setState({ services: userServices});
-    console.log(this.state);
   }
 
   //update profile details
@@ -175,6 +171,46 @@ export default class ProfileScreen extends React.Component {
 
   handleRoute = async (destination) => {
     await this.props.navigation.navigate(destination)
+  }
+
+  updateUserProfile = async () => {
+    const data = {
+        user_name: this.state.user_name,
+        full_name: this.state.first_name + " " + this.state.last_name,
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        phone: this.state.phone
+    }
+    try {
+        await API.graphql(graphqlOperation(updateUser, data));
+      } catch (err) {
+        console.log("Error:")
+        console.log(err);
+    }
+  }
+
+
+  updateCompany = async () => {
+    const data = {
+      user_name: this.state.user_name,
+      company_name: this.state.company_name,
+      company_number: this.state.company_number,
+      address1: this.state.address1,
+      address2: this.state.address2,
+      city: this.state.city,
+      postcode: this.state.postcode,
+      region: this.state.region,
+      years_trading: this.state.years_trading,
+      num_employees: this.state.num_employees,
+      yearly_turnover: this.state.yearly_turnover,
+      industry: this.state.industry
+    }
+    try{
+      await API.graphql(graphqlOperation(updateCompany, data));
+    }catch(err){
+      console.log("Error:");
+      console.log(err);
+    }
   }
 
   render() {
@@ -224,7 +260,6 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     <Ionicons name="ios-mail"/>
                     <Input
-                      style={styles.input}
                       placeholder={this.state.first_name}
                       placeholderTextColor='#adb4bc'
                       keyboardType={'email-address'}
@@ -235,12 +270,12 @@ export default class ProfileScreen extends React.Component {
                       secureTextEntry={false}
                       ref='SecondInput'
                       onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
+                      onChangeText={value => this.onChangeText('first_name', value)}
                     />
                   </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.last_name}
                         value={this.state.last_name}
                         placeholderTextColor='#adb4bc'
@@ -251,12 +286,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='ThirdInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('last_name', value)}
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.phone}
                         value={this.state.phone}
                         placeholderTextColor='#adb4bc'
@@ -267,8 +302,18 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='FourthInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('phone', value)}
                       />
                     </Item>
+                  <View style={styles.collapsibleItem}>
+                    <TouchableOpacity
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
+                      onPress={this.updateUserProfile}>
+                      <Text style={[t.textXl, t.textBlue600, t.textCenter]}>
+                        Update User Details
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </CollapsibleList>
             </View>
@@ -290,7 +335,6 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     <Ionicons name="ios-mail"/>
                     <Input
-                      style={styles.input}
                       placeholder={this.state.company_name}
                       placeholderTextColor='#adb4bc'
                       keyboardType={'email-address'}
@@ -301,12 +345,11 @@ export default class ProfileScreen extends React.Component {
                       secureTextEntry={false}
                       ref='SecondInput'
                       onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
-                    />
+                      onChangeText={value => this.onChangeText('company_name', value)}                    />
                   </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.address1}
                         value={this.state.address1}
                         placeholderTextColor='#adb4bc'
@@ -317,12 +360,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='ThirdInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('address1', value)}    
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.address2}
                         value={this.state.address2}
                         placeholderTextColor='#adb4bc'
@@ -333,12 +376,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='FourthInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('address2', value)}
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.city}
                         value={this.state.city}
                         placeholderTextColor='#adb4bc'
@@ -349,12 +392,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='FourthInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('city', value)}
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.region}
                         value={this.state.region}
                         placeholderTextColor='#adb4bc'
@@ -365,12 +408,12 @@ export default class ProfileScreen extends React.Component {
                         secureTextEntry={false}
                         ref='FourthInput'
                         onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('region', value)}
                       />
                     </Item>
                   <Item>
                       <Ionicons name="ios-mail"/>
                       <Input
-                        style={styles.input}
                         placeholder={this.state.postcode}
                         value={this.state.postcode}
                         placeholderTextColor='#adb4bc'
@@ -380,9 +423,20 @@ export default class ProfileScreen extends React.Component {
                         autoCorrect={false}
                         secureTextEntry={false}
                         ref='FithInput'
+                        name="postcode"
                         onSubmitEditing={(event) => {this.refs.FithInput._root.focus()}}
+                        onChangeText={value => this.onChangeText('postcode', value)}
                       />
                     </Item>
+                  <View style={styles.collapsibleItem}>
+                    <TouchableOpacity
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
+                      onPress={this.updateCompany}>
+                      <Text style={[t.textXl, t.textBlue600, t.textCenter]}>
+                        Update Company Details
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </CollapsibleList>
             </View>
@@ -510,15 +564,6 @@ export default class ProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  financeContainer: {
-    backgroundColor: '#B9B9E3',
-    padding: 15,
-    margin: 5,
-    borderRadius: 10,
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
   collapsibleItem: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: "#CCC",

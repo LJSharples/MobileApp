@@ -4,97 +4,96 @@ import {
   Text,
   ScrollView,
   RefreshControl,
+  Modal,
+  StyleSheet,
+  TouchableHighlight,
+  TextInput,
 } from 'react-native'
 import {
   Item
 } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { createService } from '../../graphql/mutations';
-import { getServices } from '../../graphql/queries'
+import { addService } from '../../graphql/mutations';
+import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 // Service colors, icons and components
 import serviceIcons from '../ServiceIcons';
 import serviceColors from '../ServiceColours';
-import ServiceModal from '../forms/ServicesModal';
+import DateTimePickerForm from '../forms/DateTimePickerForm';
 
 export default class ServicesScreen extends React.Component {
   state = {
-    company_name: '',
-    newService: '',
-    isHidden: false,
-    modalVisible: false,
+    userProfile: {},
+    userCompany: {},
     services: [],
-    currentStep: 1,
-    serviceType: '',
-    contractLength: '',
-    costType: '',
-    switchValue: true,
-    callbackMinutes: '',
-    callbackHour: ''
+    service_name: '',
+    callback_time: '29/10/2020',
+    contract_end: '',
+    contract_length: '',
+    current_supplier: '',
+    cost_year: '',
+    cost_month: '',
+    uploaded_documents: [],
+    modalVisible: false,
+    mode: 'datetime'
   };
 
-  showModal(){
-    this.setState({ modalVisible: true})
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
   }
 
   hideModal(){
     this.setState({ modalVisible: false});
-    this.setState({ makeRequest: false });
-    this.setState({ currentStep: 1});
   }
 
-  toggleSwitch(value){
-    this.setState({ switchValue: value });
-  };
-
-  // Get user input
   onChangeText(key, value) {
+    console.log(value);
     this.setState({
-      [key]: value
+      [key]: value.nativeEvent.text
     })
   }
 
-  onInput = (key, event) => {
-      console.log(key);
-      console.log(event.target.value);
-      this.setState({ [key]: event.target.value})
-      console.log(this.state);
+  onChange = (event, selectedDate) => {
+    this.setState({ contract_end: selectedDate})
+    console.log(this.state);
   };
 
-  async submitService(){
-    const serviceDetails = {
-      input: {
-        business: this.state.company_name,
-        name: this.state.newService,
-        provider: this.state.serviceProvider, 
-      }
+  submitService = async () => {
+    const data = {
+        user_name: this.state.userProfile.user_name,
+        status: "FROMMVP",
+        service_name: this.state.service_name,
+        callback_time: this.state.callback_time,
+        contract_end: this.state.contract_end,
+        contract_length: this.state.contract_length,
+        current_supplier: this.state.current_supplier,
+        cost_year: this.state.cost_year,
+        cost_month: this.state.cost_month,
+        uploaded_documents: this.state.uploaded_documents
     }
+    console.log(data)
     try {
-      const result = await API.graphql(graphqlOperation(createService, serviceDetails));
-
-      const newRecord = result.data.createService
-      //add to existing services.
-      this.setState(prevState => ({
-        services: [...prevState.services, newRecord]
-      }))
-
-      console.log("Request submitted");
-      console.log(this.state.services)
-    } catch (err){
-      console.log(err)
-    }
-    this.hideModal()
+        const re = await API.graphql(graphqlOperation(addService, data));
+        console.log("Success");
+    } catch (err) {
+        console.log("Error:")
+        console.log(err);
+    } 
   }
 
   async componentDidMount(){
-    let user = await Auth.currentAuthenticatedUser();    
-    this.setState({ callBack: new Date()}) 
-    const serviceData = await API.graphql(graphqlOperation(getServices, {
-      user_name: user.username
-    }))
-    this.setState({ services: serviceData.data["getServices"].items });
+    let user = await Auth.currentAuthenticatedUser();
+    const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+    this.setState({ userProfile: userProfile.data["user"]});
+    this.setState({ userCompany: userProfile.data["getCompany"]});
+
+    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+    this.setState({ services: userServices.data["getServices"].items});
+    const newDate = new Date(1598051730000);
+    this.setState({ contract_end: newDate})
   }
 
   _onRefresh = () => {
@@ -102,26 +101,6 @@ export default class ServicesScreen extends React.Component {
     this.componentDidMount().then(() => {
       this.setState({refreshing: false});
     });
-  }
-
-  // Test current step with ternary
-  // _next and _previous functions will be called on button click
-  _next() {
-    let currentStep = this.state.currentStep
-    // If the current step is 1 or 2, then add one on "next" button click
-    currentStep = currentStep >= 2? 3: currentStep + 1
-    this.setState({
-      currentStep: currentStep
-    })
-  }
-    
-  _prev() {
-    let currentStep = this.state.currentStep
-    // If the current step is 2 or 3, then subtract one on "previous" button click
-    currentStep = currentStep <= 1? 1: currentStep - 1
-    this.setState({
-      currentStep: currentStep
-    })
   }
 
   render() {
@@ -138,10 +117,167 @@ export default class ServicesScreen extends React.Component {
           >
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgYellow400, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]} onPress={() => this.showModal()}>
-                <Text style={[ t.textXl]}> Utilities</Text>
-                <ServiceModal show={this.state.modalVisible} onClose={this.hideModal} onInput={this.onInput} submitLead={this.submitService}>
-                </ServiceModal>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                  }}
+                >
+                  <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+                    <View style={styles.modalView}>
+                      <Text style={styles.modalText}>Add Service</Text>
+
+                      <ScrollView style={[t.hFull]}>
+                        <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
+                          <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
+                            <View rounded>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>SERVICE NAME</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                    <DropDownPicker
+                                      items={[
+                                        { label: 'Electricity', value: 'Electric' },
+                                        { label: 'Gas', value: 'Gas' },
+                                        { label: 'Oil', value: 'Oil' },
+                                        { label: 'Water', value: 'Water' },
+                                        { label: 'Energy Reduction', value: 'Energy Reduction' },
+                                        { label: 'Waste Management', value: 'Waste Management' },
+                                        { label: 'Business Rates Review', value: 'Business Rates Review' },
+                                        { label: 'Fuel Cards', value: 'Fuel Cards' },
+                                        { label: 'Telecomms & Broadband', value: 'Telecomms & Broadband' },
+                                        { label: 'Cyber Security', value: 'Cyber Security' },
+                                        { label: 'Printers', value: 'Printers' },
+                                        { label: 'Merchant Services', value: 'Merchant Services' },
+                                        { label: 'Insolvency', value: 'Insolvency' },
+                                      ]}
+                                      placeholder="Please Select a Service"
+                                      containerStyle={{height: 40, width: 250}}
+                                      style={{ backgroundColor: '#fafafa' }}
+                                      dropDownStyle={{ backgroundColor: '#fafafa' }}
+                                      onChangeItem={item => this.setState({
+                                          service_name: item.value
+                                      })}
+                                    />
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>PROVIDER</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  <TextInput style={[ t.textXl]} placeholder="Your current Supplier"
+                                    onChange={event => this.onChangeText('current_supplier', event)}
+                                    value={this.state.current_supplier}/> 
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  <DropDownPicker
+                                      items={[
+                                        { label: '12 Months', value: '12 Months' },
+                                        { label: '18 Months', value: '18 Months' },
+                                        { label: '24 Months', value: '24 Months' },
+                                        { label: '36 Months', value: '36 Months' },
+                                        { label: '48 Months', value: '48 Months' },
+                                        { label: '60 Months', value: '60 Months' },
+                                      ]}
+                                      placeholder="Enter Contract Length"
+                                      containerStyle={{height: 40, width: 250}}
+                                      style={{ backgroundColor: '#fafafa' }}
+                                      dropDownStyle={{ backgroundColor: '#fafafa',
+                                      color: 'black' }}
+                                      onChangeItem={item => this.setState({
+                                          contract_length: item.value
+                                      })}
+                                    />
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                    <DateTimePickerForm/>
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£)</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  <TextInput style={[ t.textXl]} placeholder="£0.00"
+                                    onChange={event => this.onChangeText('cost_year', event)}
+                                    value={this.state.cost_year}/> 
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>COST PER MONTH(£)</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                    <TextInput style={[ t.textXl]} placeholder="£0.00"
+                                      onChange={event => this.onChangeText('cost_month', event)}
+                                      value={this.state.cost_month}/> 
+                                  </Item>
+                                </View>
+                              </>
+                              <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                                <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.itemsCenter]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <TouchableHighlight
+                                      onPress={() => {
+                                        this.setModalVisible(!this.state.modalVisible);
+                                      }}
+                                    >
+                                      <Text style={styles.textStyle}>Close</Text>
+                                    </TouchableHighlight>
+                                  </Item>
+                                </View>
+                                <View style={[t.w5]}/>
+                                <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgBlue400, t.itemsCenter]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <TouchableHighlight
+                                      onPress={() => {
+                                        this.submitService();
+                                      }}
+                                    >
+                                      <Text style={styles.textStyle}>Submit</Text>
+                                    </TouchableHighlight>
+                                  </Item>
+                                </View>
+                              </Item>
+                            </View>
+                          </View>
+                        </Item>
+                      </ScrollView>
+                    </View>
+                  </View>
+                </Modal>
+
+                <TouchableHighlight
+                  onPress={() => {
+                    this.setModalVisible(true);
+                  }}
+                >
+                  <Text style={[ t.textXl]}>Utilities</Text>
+                </TouchableHighlight>
+
+
               </Item>
             </View> 
             <View style={[t.w5]}/>
@@ -176,7 +312,7 @@ export default class ServicesScreen extends React.Component {
                       <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                           <FontAwesome5 name={serviceIcons[s.service_name]} size={24} color="black" style={[t.pE8]}/>
-                          <Text key={i} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
+                          <Text key={s.PK} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
                         </Item>
                       </View>
                     </>
@@ -189,4 +325,37 @@ export default class ServicesScreen extends React.Component {
       </View>
     )
   }
+  
 }
+const styles = StyleSheet.create({
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});

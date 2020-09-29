@@ -8,6 +8,8 @@ const awsmobile = {
     "aws_user_pools_id": "eu-west-2_zuXp6xWTL",
     "aws_user_pools_web_client_id": "2kd0vl8jbjjn9ahuaidj0b6nhu",
     "oauth": {},
+    "aws_user_files_s3_bucket": "managedbillsupload100003-dev",
+    "aws_user_files_s3_bucket_region": "eu-west-2",
     "aws_appsync_graphqlEndpoint": "https://qa3cou2ygnbtfgcwewn4jgiezy.appsync-api.eu-west-2.amazonaws.com/graphql",
     "aws_appsync_region": "eu-west-2",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
