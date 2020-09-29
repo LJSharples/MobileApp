@@ -23,6 +23,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import serviceIcons from '../ServiceIcons';
 import serviceColors from '../ServiceColours';
 import DateTimePickerForm from '../forms/DateTimePickerForm';
+import DateTimePickerContract from '../forms/DateTimePickerContract';
 
 export default class ServicesScreen extends React.Component {
   state = {
@@ -56,9 +57,12 @@ export default class ServicesScreen extends React.Component {
     })
   }
 
-  onChange = (event, selectedDate) => {
-    this.setState({ contract_end: selectedDate})
-    console.log(this.state);
+  onChange = (key, value) => {
+    this.setState({
+      [key]: value
+    })
+    console.log(key);
+    console.log(value);
   };
 
   submitService = async () => {
@@ -180,6 +184,7 @@ export default class ServicesScreen extends React.Component {
                                 <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                    <DateTimePickerContract onChange={this.onChange}/>
                                   </Item>
                                 </View>
                               </>
@@ -212,7 +217,7 @@ export default class ServicesScreen extends React.Component {
                                 <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerForm/>
+                                    <DateTimePickerForm onChange={this.onChange}/>
                                   </Item>
                                 </View>
                               </>
