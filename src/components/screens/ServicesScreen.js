@@ -86,6 +86,7 @@ export default class ServicesScreen extends React.Component {
         console.log("Error:")
         console.log(err);
     } 
+    this.hideModal();
   }
 
   async componentDidMount(){
@@ -96,8 +97,6 @@ export default class ServicesScreen extends React.Component {
 
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     this.setState({ services: userServices.data["getServices"].items});
-    const newDate = new Date(1598051730000);
-    this.setState({ contract_end: newDate})
   }
 
   _onRefresh = () => {
@@ -204,8 +203,7 @@ export default class ServicesScreen extends React.Component {
                                       placeholder="Enter Contract Length"
                                       containerStyle={{height: 40, width: 250}}
                                       style={{ backgroundColor: '#fafafa' }}
-                                      dropDownStyle={{ backgroundColor: '#fafafa',
-                                      color: 'black' }}
+                                      dropDownStyle={{ backgroundColor: '#fafafa'}}
                                       onChangeItem={item => this.setState({
                                           contract_length: item.value
                                       })}

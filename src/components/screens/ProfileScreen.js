@@ -549,8 +549,7 @@ export default class ProfileScreen extends React.Component {
                             </Item>
                           </View>
                         </Item>
-                        <ExpensesDetails
-                          services={this.state.services}/>
+                        <ExpensesDetails/>
                       </ScrollView>
                     </View>
                   </Modal>

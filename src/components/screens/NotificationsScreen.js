@@ -16,22 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 // AWS Amplify modular import
 import Auth from '@aws-amplify/auth'
 
-//custom queries
-const ListServicesComp = `query listServices($company: String!){
-  listServices(filter:{
-    business:{
-      contains:$company
-    }
-  }){
-    items{
-      name, provider contracts {
-        items{
-          id eac length contractStart contractEnd
-        }
-      }
-    }
-  }
-}`
+
 
 export default class NotificationsScreen extends React.Component {
   state = {
@@ -61,7 +46,7 @@ export default class NotificationsScreen extends React.Component {
           >
           {
             this.state.notices.map((s, i) => 
-              <Item style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+              <Item key={i} style={[t.pX6, t.pY4, t.pt8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                 <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.bgIndigo200, t.itemsCenter]}>
                   <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                     <Ionicons name="ios-bulb" style={[ t.text2xl]}> {s.Header}</Ionicons>
