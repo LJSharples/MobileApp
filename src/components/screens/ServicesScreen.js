@@ -24,6 +24,7 @@ import serviceIcons from '../ServiceIcons';
 import serviceColors from '../ServiceColours';
 import DateTimePickerForm from '../forms/DateTimePickerForm';
 import DateTimePickerContract from '../forms/DateTimePickerContract';
+import FileUpload from "../forms/FileUpload";
 
 export default class ServicesScreen extends React.Component {
   state = {
@@ -119,7 +120,7 @@ export default class ServicesScreen extends React.Component {
             }
           >
           <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgYellow400, t.itemsCenter]}>
+            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.w1_2, t.bgBlue400, t.itemsCenter]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 
                 <Modal
@@ -215,6 +216,14 @@ export default class ServicesScreen extends React.Component {
                                 <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                      <FileUpload/>
+                                  </Item>
+                                </View>
+                              </>
+                              <>
+                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
+                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                     <DateTimePickerForm onChange={this.onChange}/>
                                   </Item>
                                 </View>
@@ -277,33 +286,14 @@ export default class ServicesScreen extends React.Component {
                     this.setModalVisible(true);
                   }}
                 >
-                  <Text style={[ t.textXl]}>Utilities</Text>
+                  <Text style={[ t.textXl]}>Add Service</Text>
                 </TouchableHighlight>
 
 
               </Item>
-            </View> 
-            <View style={[t.w5]}/>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgIndigo300, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl]}> General Office</Text>
-              </Item>
             </View>
           </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.wAuto, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl]}> Telecoms & IT</Text>
-              </Item>
-            </View>
-            <View style={[t.w5]}/>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgGreen400, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl]}> Finance</Text>
-              </Item>
-            </View>
-          </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
+          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT2,]}>
             <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.textXl]}> All Services</Text>
@@ -312,10 +302,10 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.services.map((s, i) => 
                     <>
-                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
+                      <View key={s.PK} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                           <FontAwesome5 name={serviceIcons[s.service_name]} size={24} color="black" style={[t.pE8]}/>
-                          <Text key={s.PK} style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
+                          <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
                         </Item>
                       </View>
                     </>

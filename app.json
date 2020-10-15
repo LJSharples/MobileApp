@@ -24,7 +24,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "mbtest"
+    },
+    "android": {
+      "package": "com.lsharples.MBAuth"
     }
   }
 }
