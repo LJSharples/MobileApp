@@ -102,6 +102,9 @@ export const addService = /* GraphQL */ `
     $cost_month: String
     $cost_year: String
     $uploaded_documents: String
+    $permission: String
+    $affiliate_id: String
+    $email: String
   ) {
     addService(
       user_name: $user_name
@@ -114,6 +117,9 @@ export const addService = /* GraphQL */ `
       cost_month: $cost_month
       cost_year: $cost_year
       uploaded_documents: $uploaded_documents
+      permission: $permission
+      affiliate_id: $affiliate_id
+      email: $email
     ) {
       user_name
       status
@@ -195,10 +201,12 @@ export const removeService = /* GraphQL */ `
   mutation removeService(
     $user_name: String
     $id: String
+    $status: String
   ){
     deleteService(
       id: $id
       user_name: $user_name
+      status: $status
   ){
     user_name
     id

@@ -31,6 +31,7 @@ export default class ServicesScreen extends React.Component {
     userProfile: {},
     userCompany: {},
     services: [],
+    email: '',
     service_name: '',
     callback_time: '29/10/2020',
     contract_end: '',
@@ -40,11 +41,16 @@ export default class ServicesScreen extends React.Component {
     cost_month: '',
     uploaded_documents: [],
     modalVisible: false,
+    serviceModal: false,
     mode: 'datetime'
   };
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
+  }
+
+  showServiceMoal = (visible) => {
+    this.setState({ serviceModal: visible });
   }
 
   hideModal(){
@@ -68,20 +74,22 @@ export default class ServicesScreen extends React.Component {
 
   submitService = async () => {
     const data = {
-        user_name: this.state.userProfile.user_name,
-        status: "FROMMVP",
-        service_name: this.state.service_name,
-        callback_time: this.state.callback_time,
-        contract_end: this.state.contract_end,
-        contract_length: this.state.contract_length,
-        current_supplier: this.state.current_supplier,
-        cost_year: this.state.cost_year,
-        cost_month: this.state.cost_month,
-        uploaded_documents: this.state.uploaded_documents
+      user_name: this.state.userProfile.user_name,
+      status: "CURRENT",
+      email: this.state.email,
+      service_name: this.state.service_name,
+      callback_time: this.state.callback_time,
+      contract_end: this.state.contract_end,
+      contract_length: this.state.contract_length,
+      current_supplier: this.state.current_supplier,
+      cost_year: this.state.cost_year,
+      cost_month: this.state.cost_month,
+      uploaded_documents: this.state.uploaded_documents
     }
     console.log(data)
     try {
         const re = await API.graphql(graphqlOperation(addService, data));
+        this.getServices();
         console.log("Success");
     } catch (err) {
         console.log("Error:")
@@ -93,11 +101,29 @@ export default class ServicesScreen extends React.Component {
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+    this.setState({ email: user.email});
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
+    this.getServices();
+  }
 
+  getServices = async () => {
+    let user = await Auth.currentAuthenticatedUser();
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    this.setState({ services: userServices.data["getServices"].items});
+    const services = []
+    userServices.data["getServices"].items.map(lead => {
+      if(lead.status === "CUSTOMER DELETED"){
+      } else {
+        var dateCurrent = new Date();
+        var contractEndDate = new Date(lead.contract_end);
+        if(contractEndDate.toISOString() < dateCurrent.toISOString()){
+        } else {
+          console.log(lead)
+          services.push(lead);
+        }
+        this.setState({ services: services});
+      }
+    });
   }
 
   _onRefresh = () => {
@@ -302,8 +328,57 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.services.map((s, i) => 
                     <>
+                      <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.serviceModal}
+                        onRequestClose={() => {
+                          Alert.alert("Modal has been closed.");
+                        }}
+                      >
+                        <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+                          <View style={styles.modalView}>
+                            <Text style={styles.modalText}>{s.service_name}</Text>
+
+                            <ScrollView style={[t.hFull]}>
+                              <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
+                                <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
+                                  <View rounded>
+                                    <>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>End of Contract</Text>
+                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.contract_end}</Text>
+                                        </Item>
+                                      </View>
+                                    </>
+                                    <>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Provider</Text>
+                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.current_supplier}</Text>
+                                        </Item>
+                                      </View>
+                                    </>
+                                    <>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Cost Per Year</Text>
+                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.cost_year}</Text>
+                                        </Item>
+                                      </View>
+                                    </>
+                                  </View>
+                                </View>
+                              </Item>
+                            </ScrollView>
+                          </View>
+                        </View>
+                      </Modal>
                       <View key={s.PK} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                        <Item onPress={() => {
+                            this.showServiceMoal(true);
+                          }} style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                           <FontAwesome5 name={serviceIcons[s.service_name]} size={24} color="black" style={[t.pE8]}/>
                           <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
                         </Item>
