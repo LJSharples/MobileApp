@@ -16,7 +16,8 @@ import {
 import { t } from 'react-native-tailwindcss';
 
 // Load the app logo
-const logo = require('../images/office.png')
+const logo = require('../images/splash-welcome.png');
+const mblogo = require('../images/managedbill-corporate-logo.png');
 
 export default class WelcomeScreen extends React.Component {
   handleRoute = async (destination) => {
@@ -25,33 +26,17 @@ export default class WelcomeScreen extends React.Component {
   render() {
     return (
       <View style={[ t.bgBlue900, t.hFull]}>
-        <Item style={[t.pX4, t.pT4, t.alignCenter]}>
+        <Item style={[t.pX, t.pT, t.alignCenter]}>
           <Image 
             source={logo}
           />
         </Item>
         <View style={[t.bgWhite, t.hFull, t.roundedLg ]}>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                <Text style={[t.textBlue500, t.textXl]}>
-                  Welcome to
-                </Text>
-                <Text style={[t.textBlue500, t.textXl, t.fontBold]}>
-                  MANAGED BILLS
-                </Text>
-              </View>
-            </Item>
-          </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                <Text style={[t.textBlue500, t.textXl, t.textCenter]}>
-                The simple way to manage all of your business services in one place!
-                </Text>
-              </View>
-            </Item>
-          </Item>
+        <Item style={[t.pX, t.pT, t.alignCenter]}>
+          <Image 
+            source={mblogo}
+          />
+        </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.itemsCenter]}>
