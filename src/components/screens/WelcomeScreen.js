@@ -27,7 +27,7 @@ export default class WelcomeScreen extends React.Component {
     return (
       <View style={[ t.bgBlue900, t.hFull]}>
         <View style={[t.bgWhite, t.hFull ]}>
-          <Item style={[t.itemsCenter, t.mT48, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.itemsCenter, t.mT40, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[ t.roundedLg, t.itemsCenter]}>
                 <Image 
