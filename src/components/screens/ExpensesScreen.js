@@ -1,178 +1,206 @@
-import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-  Image,
-  FlatList,
-  TouchableWithoutFeedback,
-  Modal
-} from 'react-native'
-import {
-  Container,
-  Item,
-  Icon,
-  Input,
-  DatePicker
-} from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
-import { API, graphqlOperation } from 'aws-amplify';
+import React, { Component } from 'react';
+import {View} from 'react-native';
+import { Text } from 'react-native-svg'
 import { t } from 'react-native-tailwindcss';
-
-// Load the app logo
-const graph = require('../images/Graph.png');
-
-// AWS Amplify modular import
-import Auth from '@aws-amplify/auth'
-
-//modal components
-import ExpenseDetails from '../forms/ExpenseDetails';
-
-//custom queries
-const ListServicesComp = `query listServices($company: String!){
-  listServices(filter:{
-    business:{
-      contains:$company
-    }
-  }){
-    items{
-      id name, provider contracts {
-        items{
-          id eac length contractStart contractEnd expenses{
-            items{
-              id value paidDate
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
+import { PieChart } from 'react-native-svg-charts';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { getServices } from '../../graphql/queries'
 
 export default class ExpensesScreen extends React.Component {
-  state = {
-      username: '',
-      company_name: '',
-      year: '2020',
-      modalVisible: false,
-      monthCost: '750.23',
-      services: [],
-      monthNames: [
-        "January",
-        "February", 
-        "March", 
-        "April", 
-        "May", 
-        "June", 
-        "July", 
-        "August", 
-        "September",
-        "October",
-        "November", 
-        "December"
-      ],
-      selectedMonth: '',
-      selectedExpenses: []
-  };
-
-  showModal(){
-    this.setState({ modalVisible: true})
+  state ={
+    services: []
   }
-
-  hideModal(){
-    this.setState({ modalVisible: false});
-  }
-
   async componentDidMount(){
-    let user = await Auth.currentAuthenticatedUser(); 
-    const username = user.username;
-    this.setState({ username: username});       
-    this.setState({ callBack: new Date()}) 
-
-    const currentUserInfo = await Auth.currentUserInfo();
-    this.setState({ company_name: currentUserInfo.attributes['custom:company_name'] });
-
-    const compDetails = {
-      company: this.state.company_name
-    };
-    const serviceData = await API.graphql(graphqlOperation(ListServicesComp, compDetails))
-    this.setState({ services: serviceData.data.listServices.items })
-    console.log(this.state.services);
-
-    //set months
-  }
-
-  _onRefresh = () => {
-    this.setState({refreshing: true});
-    this.componentDidMount().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  handleRoute = async (destination) => {
-    await this.props.navigation.navigate(destination)
+    let user = await Auth.currentAuthenticatedUser();
+    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+    this.setState({ services: userServices.data["getServices"].items});
   }
   render() {
-    return (
-      <View style={[t.flex1]}>
-        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyStart, t.bgWhite, t.wFull, t.mT5,]}>
-          <TouchableOpacity onPress={() => this.handleRoute('My_Account')}>
-            <Text>Back</Text>
-          </TouchableOpacity>
-        </Item>
-        <ScrollView
-        style={[t.hFull]}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
+    //costs per month
+    const water = [];
+    const gas = [];
+    const elec = [];
+    const oil = [];
+    const energyReduction = [];
+    const wasteManagement = [];
+    const businessRatesReview = [];
+    const fuelCards = [];
+    const telecommsBroadband = [];
+    const cyberSecurity = [];
+    const printers = [];
+    const merchantServices = [];
+    const insolvency = [];
+    //cost per year
+    const waterYear = [];
+    const gasYear = [];
+    const elecYear = [];
+    const oilYear = [];
+    const energyReductionYear = [];
+    const wasteManagementYear = [];
+    const businessRatesReviewYear = [];
+    const fuelCardsYear = [];
+    const telecommsBroadbandYear = [];
+    const cyberSecurityYear = [];
+    const printersYear = [];
+    const merchantServicesYear = [];
+    const insolvencyYear = [];
+    this.state.services.map(lead => {
+        if(lead.status === "CUSTOMER DELETED"){
+        } else {
+            if (lead.service_name === "Gas" && lead.cost_month) {
+                gas.push(parseFloat(lead.cost_month));
+                gasYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Electric" && lead.cost_month) {
+                elec.push(parseFloat(lead.cost_month));
+                elecYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Water" && lead.cost_month) {
+                water.push(parseFloat(lead.cost_month));
+                waterYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Oil" && lead.cost_month) {
+                oil.push(parseFloat(lead.cost_month));
+                oilYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Energy Reduction" && lead.cost_month) {
+                energyReduction.push(parseFloat(lead.cost_month));
+                energyReductionYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Waste Management" && lead.cost_month) {
+                wasteManagement.push(parseFloat(lead.cost_month));
+                wasteManagementYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Business Rates Review" && lead.cost_month) {
+                businessRatesReview.push(parseFloat(lead.cost_month));
+                businessRatesReviewYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Fuel Cards" && lead.cost_month) {
+                fuelCards.push(parseFloat(lead.cost_month));
+                fuelCardsYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Telecomms & Broadband" && lead.cost_month) {
+                telecommsBroadband.push(parseFloat(lead.cost_month));
+                telecommsBroadbandYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Cyber Security" && lead.cost_month) {
+                cyberSecurity.push(parseFloat(lead.cost_month));
+                cyberSecurityYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Printers" && lead.cost_month) {
+                printers.push(parseFloat(lead.cost_month));
+                printersYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Merchant Services" && lead.cost_month) {
+                merchantServices.push(parseFloat(lead.cost_month));
+                merchantServicesYear.push(parseFloat(lead.cost_year));
+            } else if(lead.service_name === "Insolvency" && lead.cost_month) {
+                insolvency.push(parseFloat(lead.cost_month));
+                insolvencyYear.push(parseFloat(lead.cost_year));
             }
-          >
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.mT5,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Text style={[ t.textXl]}> Annual Expenses</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Image 
-                  source={graph}
-                  style={[t.alignCenter, t.justifyCenter]}
-                />
-              </Item>
-            </View>
-          </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart]}>
-                <Text style={[ t.textXl]}> Monthly Breakdown for: {this.state.year}</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text>Your annual expenses are broken down to each month:</Text>
-              </Item>
-              <View rounded>
-                {
-                  this.state.monthNames.map((s, i) => 
-                    <>
-                      <View style={[t.roundedLg, t.pX2, t.pY2, t.pt4, t.wAuto, t.mT2, t.flexRow, t.itemsCenter, t.justifyCenter]}>
-                        <Item style={[t.borderTransparent, t.itemsStart, t.justifyStart]}>
-                          <Text key={i} onPress={() => this.showModal()}>{s} - </Text>
-                        </Item>
-                        <Item style={[t.borderTransparent, t.itemsEnd, t.justifyEnd]}>
-                          <Text key={i} onPress={() => this.showModal()} style={[t.textRight]}>£{this.state.monthCost}</Text>
-                        </Item>
-                      </View>
-                    </>
-                  )
-                }
-              </View>
-            </View>
-          </Item>
-        </ScrollView>
-      </View>
+        }
+    });
+    //do summary 
+    const gasTotal = gas.reduce((result, number) => result+number, 0);        
+    const elecTotal = elec.reduce((result, number) => result+number, 0);
+    const waterTotal = water.reduce((result, number) => result+number, 0);
+    const oilTotal = oil.reduce((result, number) => result+number, 0);
+    const energyReductionTotal = energyReduction.reduce((result, number) => result+number, 0);
+    const wasteManagementTotal = wasteManagement.reduce((result, number) => result+number, 0);
+    const businessRatesTotal = businessRatesReview.reduce((result, number) => result+number, 0);
+    const fuelCardsTotal = fuelCards.reduce((result, number) => result+number, 0);
+    const telecommsTotal = telecommsBroadband.reduce((result, number) => result+number, 0);
+    const cyberSecurityTotal = cyberSecurity.reduce((result, number) => result+number, 0);
+    const printersTotal = printers.reduce((result, number) => result+number, 0);
+    const merchantServicesTotal = merchantServices.reduce((result, number) => result+number, 0);
+    const insolvencyTotal = insolvency.reduce((result, number) => result+number, 0);
+    const monthTotals = [
+        gasTotal, 
+        elecTotal, 
+        waterTotal,
+        oilTotal, 
+        energyReductionTotal,
+        wasteManagementTotal,
+        businessRatesTotal,
+        fuelCardsTotal,
+        telecommsTotal,
+        cyberSecurityTotal,
+        printersTotal,
+        merchantServicesTotal,
+        insolvencyTotal
+    ];
+
+    const labelsData = [
+        'Gas',
+        'Electricity',
+        'Water',
+        'Oil',
+        'Energy reduction',
+        'Waste Management',
+        'Business Rates',
+        'Fuel Cards',
+        'Telecoms & Broadband',
+        'Cyber Security',
+        'Printers',
+        'Merchant Services',
+        'Insolvency'
+    ]
+    const newLabels = []
+    const data = [];
+    const colors = [
+        '#fc8181',
+        '#fcc981',
+        '#90cdf4',
+        '#d490f4',
+        '#fbd38d',
+        '#dafb8d',
+        '#9ffb8d',
+        '#fb8dea',
+        '#8dcffb',
+        '#8dfbac',
+        '#fb8dd1',
+        '#ffb8e8',
+        '#97e8bb'
+    ]
+
+    const NewMonthTotal = monthTotals.filter(function(e, index){
+        if(e > 0){
+            //get index and value from existing labels and add to new 
+            let newLabel = labelsData[index];
+            newLabels.push(newLabel);
+            data.push({
+                key: data.length + 1,
+                value: e,
+                label: newLabel,
+                svg: { fill: colors[index] }
+            })
+            return e
+        }
+    });  
+
+    const LabelsDisplay = ({ slices, height, width }) => {
+        return slices.map((slice, index) => {
+            const { labelCentroid, pieCentroid, data } = slice;
+            return (
+                <Text
+                    key={index}
+                    x={pieCentroid[ 0 ]}
+                    y={pieCentroid[ 1 ]}
+                    fill={'black'}
+                    textAnchor={'middle'}
+                    alignmentBaseline={'middle'}
+                    fontSize={20}
+                    stroke={'black'}
+                    strokeWidth={0.2}
+                >
+                    {data.label}
+                </Text>
+            )
+        })
+    }
+
+    return (
+        
+        <View style={[ t.pX6,  t.p5, t.wAuto, t.borderTransparent ]}>
+            <PieChart
+                style={{ height: 200 }}
+                valueAccessor={({ item }) => item.value}
+                data={data}
+                spacing={0}
+                outerRadius={'95%'}
+            >
+                <LabelsDisplay/>
+            </PieChart>
+        </View>
     )
   }
 }

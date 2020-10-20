@@ -45,45 +45,48 @@ export default class ExpenseChart extends Component{
         const merchantServicesYear = [];
         const insolvencyYear = [];
         this.state.services.map(lead => {
-            if (lead.service_name === "Gas" && lead.cost_month) {
-                gas.push(parseFloat(lead.cost_month));
-                gasYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Electric" && lead.cost_month) {
-                elec.push(parseFloat(lead.cost_month));
-                elecYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Water" && lead.cost_month) {
-                water.push(parseFloat(lead.cost_month));
-                waterYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Oil" && lead.cost_month) {
-                oil.push(parseFloat(lead.cost_month));
-                oilYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Energy Reduction" && lead.cost_month) {
-                energyReduction.push(parseFloat(lead.cost_month));
-                energyReductionYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Waste Management" && lead.cost_month) {
-                wasteManagement.push(parseFloat(lead.cost_month));
-                wasteManagementYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Business Rates Review" && lead.cost_month) {
-                businessRatesReview.push(parseFloat(lead.cost_month));
-                businessRatesReviewYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Fuel Cards" && lead.cost_month) {
-                fuelCards.push(parseFloat(lead.cost_month));
-                fuelCardsYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Telecomms & Broadband" && lead.cost_month) {
-                telecommsBroadband.push(parseFloat(lead.cost_month));
-                telecommsBroadbandYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Cyber Security" && lead.cost_month) {
-                cyberSecurity.push(parseFloat(lead.cost_month));
-                cyberSecurityYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Printers" && lead.cost_month) {
-                printers.push(parseFloat(lead.cost_month));
-                printersYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Merchant Services" && lead.cost_month) {
-                merchantServices.push(parseFloat(lead.cost_month));
-                merchantServicesYear.push(parseFloat(lead.cost_year));
-            } else if(lead.service_name === "Insolvency" && lead.cost_month) {
-                insolvency.push(parseFloat(lead.cost_month));
-                insolvencyYear.push(parseFloat(lead.cost_year));
+            if(lead.status === "CUSTOMER DELETED"){
+            } else {
+                if (lead.service_name === "Gas" && lead.cost_month) {
+                    gas.push(parseFloat(lead.cost_month));
+                    gasYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Electric" && lead.cost_month) {
+                    elec.push(parseFloat(lead.cost_month));
+                    elecYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Water" && lead.cost_month) {
+                    water.push(parseFloat(lead.cost_month));
+                    waterYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Oil" && lead.cost_month) {
+                    oil.push(parseFloat(lead.cost_month));
+                    oilYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Energy Reduction" && lead.cost_month) {
+                    energyReduction.push(parseFloat(lead.cost_month));
+                    energyReductionYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Waste Management" && lead.cost_month) {
+                    wasteManagement.push(parseFloat(lead.cost_month));
+                    wasteManagementYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Business Rates Review" && lead.cost_month) {
+                    businessRatesReview.push(parseFloat(lead.cost_month));
+                    businessRatesReviewYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Fuel Cards" && lead.cost_month) {
+                    fuelCards.push(parseFloat(lead.cost_month));
+                    fuelCardsYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Telecomms & Broadband" && lead.cost_month) {
+                    telecommsBroadband.push(parseFloat(lead.cost_month));
+                    telecommsBroadbandYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Cyber Security" && lead.cost_month) {
+                    cyberSecurity.push(parseFloat(lead.cost_month));
+                    cyberSecurityYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Printers" && lead.cost_month) {
+                    printers.push(parseFloat(lead.cost_month));
+                    printersYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Merchant Services" && lead.cost_month) {
+                    merchantServices.push(parseFloat(lead.cost_month));
+                    merchantServicesYear.push(parseFloat(lead.cost_year));
+                } else if(lead.service_name === "Insolvency" && lead.cost_month) {
+                    insolvency.push(parseFloat(lead.cost_month));
+                    insolvencyYear.push(parseFloat(lead.cost_year));
+                }
             }
         });
         //do summary 

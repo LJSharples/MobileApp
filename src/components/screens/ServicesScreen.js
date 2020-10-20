@@ -13,7 +13,7 @@ import {
   Item
 } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
@@ -118,13 +118,36 @@ export default class ServicesScreen extends React.Component {
         var contractEndDate = new Date(lead.contract_end);
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
         } else {
-          console.log(lead)
-          services.push(lead);
+          console.log(serviceColors[lead.service_name])
+          let month = contractEndDate.getMonth() + 1;
+          let date = contractEndDate.getUTCDate() + "/" + month + "/" + contractEndDate.getFullYear();
+          services.push({
+            "callback_time": lead.callback_time,
+            "contract_end": date,
+            "contract_length": lead.contract_length,
+            "cost_month": lead.cost_month,
+            "cost_year": lead.cost_year,
+            "current_supplier": lead.current_supplier,
+            "id": lead.id,
+            "service_name": lead.service_name,
+            "status": lead.status,
+            "uploaded_documents": lead.uploaded_documents,
+            "user_name": lead.user_name,
+          });
         }
         this.setState({ services: services});
       }
     });
   }
+
+  downloadFile = async (key) => {
+    await Storage.get(key, { level: 'private'})
+    .then(result => {
+        window.open(result, "_blank")
+    })
+    .catch(err => console.log(err));
+  }
+
 
   _onRefresh = () => {
     this.setState({refreshing: true});
@@ -327,7 +350,7 @@ export default class ServicesScreen extends React.Component {
               <View rounded>
                 {
                   this.state.services.map((s, i) => 
-                    <>
+                    <View key={i}>
                       <Modal
                         animationType="slide"
                         transparent={true}
@@ -338,12 +361,20 @@ export default class ServicesScreen extends React.Component {
                       >
                         <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
                           <View style={styles.modalView}>
-                            <Text style={styles.modalText}>{s.service_name}</Text>
+                            <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
 
                             <ScrollView style={[t.hFull]}>
                               <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
                                 <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
                                   <View rounded>
+                                    <>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Provider</Text>
+                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.current_supplier}</Text>
+                                        </Item>
+                                      </View>
+                                    </>
                                     <>
                                       <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>End of Contract</Text>
                                       <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
@@ -353,10 +384,10 @@ export default class ServicesScreen extends React.Component {
                                       </View>
                                     </>
                                     <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Provider</Text>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Status</Text>
                                       <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
                                         <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.current_supplier}</Text>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.status}</Text>
                                         </Item>
                                       </View>
                                     </>
@@ -368,14 +399,35 @@ export default class ServicesScreen extends React.Component {
                                         </Item>
                                       </View>
                                     </>
+                                    <>
+                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Bills</Text>
+                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.uploaded_documents}</Text>
+                                        </Item>
+                                      </View>
+                                    </>
                                   </View>
+                                  <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                                      <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.itemsCenter]}>
+                                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                          <TouchableHighlight
+                                            onPress={() => {
+                                              this.showServiceMoal(!this.state.serviceModal);
+                                            }}
+                                          >
+                                            <Text style={styles.textStyle}>Close</Text>
+                                          </TouchableHighlight>
+                                        </Item>
+                                      </View>
+                                    </Item>
                                 </View>
                               </Item>
                             </ScrollView>
                           </View>
                         </View>
                       </Modal>
-                      <View key={s.PK} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
+                      <View key={i} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
                         <Item onPress={() => {
                             this.showServiceMoal(true);
                           }} style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
@@ -383,7 +435,7 @@ export default class ServicesScreen extends React.Component {
                           <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
                         </Item>
                       </View>
-                    </>
+                    </View>
                   )
                 }
               </View>

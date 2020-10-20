@@ -27,7 +27,7 @@ import {
 import Auth from '@aws-amplify/auth'
 
 // Load the app logo
-const logo = require('../images/mb.png')
+const mblogo = require('../images/managedbill-corporate-logo.png');
 
 export default class SignInScreen extends React.Component {
   state = {
@@ -70,14 +70,21 @@ export default class SignInScreen extends React.Component {
   }
   render() {
     return (
-      <View style={[ t.bgWhite, t.hFull]}>
-        <Item style={[t.pX8, t.pY8, t.pT16, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-          <Image 
-            source={logo}
-            style={[t.alignCenter, t.justifyCenter]}
-          />
-        </Item>
-        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+      <View style={[ t.bgBlue900, t.hFull]}>
+        <View style={[t.bgWhite, t.hFull ]}>
+          <Item style={[t.pX, t.mT40, t.alignCenter, t.borderTransparent]}>
+            <Image 
+              source={mblogo}
+            />
+          </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
+                <Text style={[t.textLg, t.textGray600, t.textCenter]}>Please enter your username and password to get started.</Text>
+              </View>
+            </Item>
+          </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <Input
                 style={[t.alignCenter, t.bgGray100]}
@@ -107,26 +114,26 @@ export default class SignInScreen extends React.Component {
             </Item>
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-              <Text style={[t.textBlue500, t.textBase]}>
-                If you are having trouble logging in
-              </Text>
-              <TouchableOpacity 
-                onPress={() => this.handleRoute('ForgetPassword')}>
-                <Text style={[t.textBlue500, t.textBase, t.fontBold]} onPress={() => this.handleRoute('ForgetPassword')}>Click Here</Text>
-              </TouchableOpacity>
-            </View>
-          </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.p20, t.borderTransparent]}>
-            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.wFull, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.signIn()}>
-                  <Text style={[t.textWhite, t.textXl]}>Log in</Text>
+                  <Text style={[t.textWhite, t.textSm]}>Login</Text>
                 </TouchableOpacity>
               </View>
             </Item>
           </Item>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.wFull, t.itemsCenter]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('SignUp')}>
+                  <Text style={[t.textWhite, t.textSm]}>Register</Text>
+                </TouchableOpacity>
+              </View>
+            </Item>
+          </Item>
+        </View>
       </View>
     )
   }

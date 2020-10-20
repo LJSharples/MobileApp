@@ -17,6 +17,8 @@ import awsConfig from './src/aws-exports';
 Amplify.configure(awsConfig);
 
 import HomeScreen from './src/components/screens/HomeScreen'
+import ServicesScreen from './src/components/screens/ServicesScreen';
+import ExpensesScreen from './src/components/screens/ExpensesScreen';
 import SettingsScreen from './src/components/screens/SettingsScreen'
 import ProfileScreen from './src/components/screens/ProfileScreen'
 import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen';
@@ -26,17 +28,18 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen'
 import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
-import ServicesScreen from './src/components/screens/ServicesScreen';
-import ExpensesScreen from './src/components/screens/ExpensesScreen';
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
 
 const configurations = {
-  Dashboard: {
+  Home: {
     screen: HomeScreen,
     navigationOptions: {
-      tabBarLabel: 'Dashboard',
+      tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
-        <Ionicons style={{ fontSize: 26, color: tintColor }} name="ios-home" />
+        <Ionicons 
+          style={{ fontSize: 20, color: tintColor }} 
+          name="ios-home" 
+        />
       ),
     },
   },
@@ -46,20 +49,32 @@ const configurations = {
       tabBarLabel: 'Services',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
-          style={{ fontSize: 26, color: tintColor }}
+          style={{ fontSize: 20, color: tintColor }}
           name="ios-power"
         />
       ),
     },
   },
-  My_Account: {
+  Account: {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'My Account',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
-          style={{ fontSize: 26, color: tintColor }}
+          style={{ fontSize: 20, color: tintColor }}
           name="ios-person"
+        />
+      ),
+    },
+  },
+  Expenses: {
+    screen: ExpensesScreen,
+    tabBarLabel: 'Money',
+    navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 20, color: tintColor }}
+          name="ios-card"
         />
       ),
     },
@@ -67,10 +82,10 @@ const configurations = {
   Notifications: {
     screen: NotificationsScreen,
     navigationOptions: {
-      tabBarLabel: 'Notifications',
+      tabBarLabel: 'Notices',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
-          style={{ fontSize: 26, color: tintColor }}
+          style={{ fontSize: 20, color: tintColor }}
           name="ios-mail"
         />
       ),
@@ -87,20 +102,19 @@ const options = {
   },
   tabBarOptions: {
     showLabel: true,
-    activeTintColor: '#87CEFA',
-    inactiveTintColor: '#87CEFA',
+    upperCaseLabel: false,
+    activeTintColor: '#367bb0',
+    inactiveTintColor: '#c2daed',
     style: {
-      backgroundColor: '#FFFAFA'
+      backgroundColor: '#d3e6f6'
     },
     labelStyle: {
       fontSize: 12,
-      fontWeight: 'bold',
-      marginBottom: 11,
-      marginTop: 11,
-      color: '#87CEFA'
-    },
-    indicatorStyle: {
-      height: 0,
+      fontFamily: 'Trebuchet MS',
+      fontWeight: '500',
+      margin: 0,
+      padding: 0,
+      color: '#367bb0',
     },
     showIcon: true,
   },
@@ -123,7 +137,7 @@ const AppStackNavigator = createStackNavigator({
     screen: AppTabNavigator,
     // Set the header icon
     navigationOptions: ({ navigation }) => ({
-      headerLeft: (
+      headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
           <View style={{ paddingHorizontal: 10 }}>
             <Ionicons size={24} name="md-menu" />
@@ -136,11 +150,37 @@ const AppStackNavigator = createStackNavigator({
 
 // App stack for the drawer
 const AppDrawerNavigator = createDrawerNavigator({
-  Pages: AppStackNavigator, // defined above
-  Dashboard: HomeScreen,
-  Services: ServicesScreen,
-  My_Account: ProfileScreen,
-  Notifications: NotificationsScreen,
+    Pages: AppStackNavigator, // defined above
+    Home: HomeScreen,
+    Services: ServicesScreen,
+    Account: {
+      screen: ProfileScreen,
+      navigationOptions: () => ({
+        title: 'My Account',
+      }),
+    },
+    Expenses: {
+      screen: ExpensesScreen,
+      navigationOptions: () => ({
+        title: 'My Money',
+      }),
+    },
+    Notifications: {
+      screen: NotificationsScreen,
+      navigationOptions: () => ({
+        title: 'Notices',
+      }),
+    },
+  },{
+    drawerBackgroundColor: "#d3e6f6",
+    drawerType:'slide',
+    contentOptions: {
+      activeTintColor: '#367bb0',
+      itemsContainerStyle: {
+        marginVertical: 0,
+      },
+      activeBackgroundColor:"#d3e6f6",
+    },
 });
 
 // Auth stack
@@ -148,7 +188,6 @@ const AuthStackNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
     navigationOptions: () => ({
-      title: `Welcome to Managed Bills`, // for the header screen
       headerBackTitle: 'Back',
     }),
   },
@@ -161,7 +200,7 @@ const AuthStackNavigator = createStackNavigator({
   SignIn: {
     screen: SignInScreen,
     navigationOptions: () => ({
-      title: `Log In`,
+      title: `Login`,
     }),
   },
   ForgetPassword: {
