@@ -45,7 +45,7 @@ export default class WelcomeScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.hAuto, t.w5_6, t.itemsCenter]}>
+              <View style={[t.p4, t.roundedLg, t.bgBlue600, t.w11_12, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignIn')}>
                   <Text style={[t.textWhite, t.textLg]}>Login</Text>
@@ -55,7 +55,7 @@ export default class WelcomeScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.w5_6, t.itemsCenter]}>
+              <View style={[t.p4, t.roundedLg, t.bgBlue600, t.w11_12, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignUp')}>
                   <Text style={[t.textWhite, t.textLg]}>Register</Text>

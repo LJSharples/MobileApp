@@ -116,7 +116,7 @@ export default class SignInScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.w5_6, t.itemsCenter]}>
+              <View style={[t.p4, t.roundedLg, t.bgBlue600, t.w11_12, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.signIn()}>
                   <Text style={[t.textWhite, t.textLg]}>Login</Text>
@@ -126,7 +126,7 @@ export default class SignInScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.w5_6, t.itemsCenter]}>
+              <View style={[t.p4, t.roundedLg, t.bgBlue600, t.w11_12, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignUp')}>
                   <Text style={[t.textWhite, t.textLg]}>Register</Text>
@@ -134,7 +134,7 @@ export default class SignInScreen extends React.Component {
               </View>
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.mT10, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.wFull, t.itemsCenter]}>
                 <Text style={[t.textXs, t.textGray600, t.textCenter]}>By continuing you agree to the managedbills T&C's.</Text>
