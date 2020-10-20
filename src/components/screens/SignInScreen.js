@@ -31,21 +31,25 @@ export default class SignInScreen extends React.Component {
   }
   // Sign in users with Auth
   async signIn() {
-    const { username, password } = this.state
-    await Auth.signIn(username, password)
-    .then(user => {
-      this.setState({ user })
-      this.props.navigation.navigate('Authloading')
-    })
-    .catch(err => {
-      if (! err.message) {
-        console.log('Error when signing in: ', err)
-        Alert.alert('Error when signing in: ', err)
-      } else {
-        console.log('Error when signing in: ', err.message)
-        Alert.alert('Error when signing in: ', err.message)
-      }
-    })
+    if(this.state.username === '' || this.state.password === ''){
+      Alert.alert('Login error:', 'You must enter a username or a password to login.')
+    } else {
+      const { username, password } = this.state
+      await Auth.signIn(username, password)
+      .then(user => {
+        this.setState({ user })
+        this.props.navigation.navigate('Authloading')
+      })
+      .catch(err => {
+        if (! err.message) {
+          console.log('Error when signing in: ', err)
+          Alert.alert('Error when signing in: ', err)
+        } else {
+          console.log('Error when signing in: ', err.message)
+          Alert.alert('Error when signing in: ', err.message)
+        }
+      })
+    }
   }
 
   handleRoute = async (destination) => {
