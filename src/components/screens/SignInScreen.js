@@ -133,6 +133,13 @@ export default class SignInScreen extends React.Component {
               </View>
             </Item>
           </Item>
+          <Item style={[t.itemsCenter, t.mT10, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.wFull, t.itemsCenter]}>
+                <Text style={[t.textXs, t.textGray600, t.textCenter]}>By continuing you agree to the managedbills T&C's.</Text>
+              </View>
+            </Item>
+          </Item>
         </View>
       </View>
     )
