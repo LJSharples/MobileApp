@@ -123,14 +123,6 @@ const options = {
 // Bottom App tabs
 const AppTabNavigator = createMaterialTopTabNavigator(configurations, options);
 
-// Making the common header title dynamic in AppTabNavigator
-AppTabNavigator.navigationOptions = ({ navigation }) => {
-  let { routeName } = navigation.state.routes[navigation.state.index];
-  let headerTitle = routeName;
-  return {
-    headerTitle,
-  };
-};
 
 const AppStackNavigator = createStackNavigator({
   Header: {
@@ -189,6 +181,7 @@ const AuthStackNavigator = createStackNavigator({
     screen: WelcomeScreen,
     navigationOptions: () => ({
       headerBackTitle: 'Back',
+      headerShown: false
     }),
   },
   SignUp: {
@@ -201,6 +194,7 @@ const AuthStackNavigator = createStackNavigator({
     screen: SignInScreen,
     navigationOptions: () => ({
       title: `Login`,
+      headerShown: false
     }),
   },
   ForgetPassword: {

@@ -27,10 +27,14 @@ export default class WelcomeScreen extends React.Component {
     return (
       <View style={[ t.bgBlue900, t.hFull]}>
         <View style={[t.bgWhite, t.hFull ]}>
-          <Item style={[t.pX, t.mT40, t.alignCenter, t.borderTransparent]}>
-            <Image 
-              source={mblogo}
-            />
+          <Item style={[t.itemsCenter, t.mT48, t.justifyCenter, t.borderTransparent]}>
+            <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <View style={[ t.roundedLg, t.itemsCenter]}>
+                <Image 
+                  source={mblogo}
+                />
+              </View>
+            </Item>
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
@@ -41,20 +45,20 @@ export default class WelcomeScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.wFull, t.itemsCenter]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.hAuto, t.w5_6, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignIn')}>
-                  <Text style={[t.textWhite, t.textSm]}>Login</Text>
+                  <Text style={[t.textWhite, t.textLg]}>Login</Text>
                 </TouchableOpacity>
               </View>
             </Item>
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue500, t.wFull, t.itemsCenter]}>
+              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgBlue600, t.w5_6, t.itemsCenter]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('SignUp')}>
-                  <Text style={[t.textWhite, t.textSm]}>Register</Text>
+                  <Text style={[t.textWhite, t.textLg]}>Register</Text>
                 </TouchableOpacity>
               </View>
             </Item>
