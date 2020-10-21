@@ -1,22 +1,16 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
   TouchableOpacity,
   Image
 } from 'react-native'
 import {
-  Container,
   Item,
-  Icon,
-  Input,
-  DatePicker
 } from 'native-base'
 import { t } from 'react-native-tailwindcss';
 
 // Load the app logo
-const logo = require('../images/splash-welcome.png');
 const mblogo = require('../images/managedbill-corporate-logo.png');
 
 export default class WelcomeScreen extends React.Component {
@@ -39,20 +33,20 @@ export default class WelcomeScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                <Text style={[t.textLg, t.textGray500, t.textCenter]}>Procure and manage your essential business services in a hassle free way.</Text>
+                <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Procure and manage your essential business services in a hassle free way.</Text>
               </View>
             </Item>
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT3]}>
             <TouchableOpacity 
-              style={[t.p4, t.roundedLg, t.bgBlue600, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
               onPress={() => this.handleRoute('SignIn')}>
               <Text style={[t.textWhite, t.textLg]}>Login</Text>
             </TouchableOpacity>
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
-              style={[t.p4, t.roundedLg, t.bgBlue600, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
               onPress={() => this.handleRoute('SignUp')}>
               <Text style={[t.textWhite, t.textLg]}>Register</Text>
             </TouchableOpacity>

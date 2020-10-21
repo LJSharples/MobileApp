@@ -69,7 +69,7 @@ export default class SignInScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
-                <Text style={[t.textLg, t.textGray500, t.textCenter]}>Please enter your username and password to get started.</Text>
+                <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Please enter your username and password to get started.</Text>
               </View>
             </Item>
           </Item>
@@ -106,7 +106,7 @@ export default class SignInScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
               onPress={() => this.signIn()}
-              style={[t.p4, t.roundedLg, t.bgBlue600, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
               >
                 <Text style={[t.textWhite, t.textLg]}>Login</Text>
             </TouchableOpacity>
@@ -114,7 +114,7 @@ export default class SignInScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
               onPress={() => this.handleRoute('SignUp')}
-              style={[t.p4, t.roundedLg, t.bgBlue600, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
               >
                 <Text style={[t.textWhite, t.textLg]}>Register</Text>
             </TouchableOpacity>
