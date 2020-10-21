@@ -1,31 +1,17 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  Alert,
-  Modal,
-  FlatList,
-  Switch
 } from 'react-native'
 import {
-  Container,
   Item,
-  Icon,
   Input,
-  DatePicker
 } from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
 import { t } from 'react-native-tailwindcss';
 
 // Load the app logo
-const logo = require('../images/UserIcon.png')
+const logo = require('../images/managedbill-corporate-logo.png')
 
 export default class RegisterUserPhone extends React.Component {
 
@@ -39,25 +25,45 @@ export default class RegisterUserPhone extends React.Component {
         }
 
         return (
-            <View>
-                <Item style={[t.pX4, t.pT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                    <Image 
+            <View style={[ t.bgBlue900]}>
+                <View style={[t.bgWhite, t.hFull ]}>
+                    <Item style={[ t.mT16, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Image 
                         source={logo}
-                    />
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY4, t.wFull]}>
-                        <Item style={[ t.borderTransparent, t. justifyCenter]}>
-                            <Text style={[ t.text2xl, t.textBlue600]}> Add a phone number</Text>
+                        style={[ t.objectContain]}
+                        />
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
+                            <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Signup and managed your business services in a hassle free way.</Text>
+                        </View>
                         </Item>
-                        <Item style={[ t.mT5, t.borderTransparent, t.justifyCenter, t.itemsCenter]}>
-                            <Text style={[t.textBlue600]}>Add a mobile phone number to recieve text notifications to never miss a contract renewal date afain!</Text>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
+                            <Input
+                                style={[t.alignCenter, t.bgGray100]}
+                                id="firstName"
+                                name="firstName"
+                                placeholder="First Name"
+                                value={this.props.firstName}
+                                onChange={(value) => this.update('firstName', value)}/>
                         </Item>
-                    </View>
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY4, t.wFull]}>
-                        <Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
+                            <Input
+                                style={[t.alignCenter, t.bgGray100]}
+                                id="lastName"
+                                name="lastName"
+                                placeholder="Last Name"
+                                value={this.props.lastName}
+                                onChange={(value) => this.update('lastName', value)}/>
+                        </Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
                             <Input
                                 style={[t.alignCenter, t.bgGray100]}
                                 id="phoneNumber"
@@ -66,8 +72,8 @@ export default class RegisterUserPhone extends React.Component {
                                 value={this.props.phoneNumber}
                                 onChange={(value) => this.update('phoneNumber', value)}/>
                         </Item>
-                    </View>
-                </Item>
+                    </Item>
+                </View>
             </View>
         )
     }

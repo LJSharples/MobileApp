@@ -1,31 +1,17 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  Alert,
-  Modal,
-  FlatList,
-  Switch
 } from 'react-native'
-import {
-  Container,
-  Item,
-  Icon,
-  Input,
-  DatePicker
-} from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
 import { t } from 'react-native-tailwindcss';
+import {
+  Item,
+  Input
+} from 'native-base'
 
 // Load the app logo
-const logo = require('../images/UserIcon.png')
+const logo = require('../images/managedbill-corporate-logo.png')
 
 export default class RegisterUserDetails extends React.Component {
 
@@ -38,67 +24,48 @@ export default class RegisterUserDetails extends React.Component {
         }
 
         return (
-            <View>
-                <Item style={[t.pX4, t.pT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                    <Image 
+            <View style={[ t.bgBlue900, t.hFull]}>
+                <View style={[t.bgWhite, t.hFull ]}>
+                    <Item style={[ t.mT16, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Image 
                         source={logo}
-                    />
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY4, t.wFull]}>
-                        <Item style={[ t.borderTransparent, t. justifyCenter]}>
-                            <Text style={[ t.text2xl, t.textBlue600]}> About you</Text>
+                        style={[ t.objectContain]}
+                        />
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
+                            <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Signup and managed your business services in a hassle free way.</Text>
+                        </View>
                         </Item>
-                        <Item style={[ t.mT5, t.borderTransparent, t.justifyCenter]}>
-                            <Text style={[t.textBlue600]}>First let's get to know a bit about you!</Text>
-                        </Item>
-                    </View>
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY2, t.wFull]}>
-                        <Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
                             <Input
                                 style={[t.alignCenter, t.bgGray100]}
-                                id="firstName"
-                                name="firstName"
-                                placeholder="First Name"
-                                value={this.props.firstName}
+                                id="username"
+                                name="username"
+                                placeholder="Username"
+                                value={this.props.username}
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 secureTextEntry={false}
-                                onChange={(value) => this.update('firstName', value)}/>
+                                onChange={(value) => this.update('username', value)}/>
                         </Item>
-                    </View>
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY2, t.wFull]}>
-                        <Item>
-                            <Input
-                                style={[t.alignCenter, t.bgGray100]}
-                                id="lastName"
-                                name="lastName"
-                                placeholder="Last Name"
-                                value={this.props.lastName}
-                                onChange={(value) => this.update('lastName', value)}/>
-                        </Item>
-                    </View>
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY2, t.wFull]}>
-                        <Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
                             <Input
                                 style={[t.alignCenter, t.bgGray100]}
                                 id="email"
                                 name="email"
-                                placeholder="Email Address"
+                                placeholder="Email"
                                 value={this.props.email}
                                 onChange={(value) => this.update('email', value)}/>
                         </Item>
-                    </View>
-                </Item>
-                <Item style={[t.bgWhite, t.borderTransparent]}>
-                    <View style={[ t.pX4, t.pY2, t.wFull]}>
-                        <Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
                             <Input
                                 style={[t.alignCenter, t.bgGray100]}
                                 id="password"
@@ -108,10 +75,11 @@ export default class RegisterUserDetails extends React.Component {
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 secureTextEntry={true}
+                                type="password"
                                 onChange={(value) => this.update('password', value)}/>
                         </Item>
-                    </View>
-                </Item>
+                    </Item>
+                </View>
             </View>
         )
     }

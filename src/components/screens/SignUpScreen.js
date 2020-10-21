@@ -68,9 +68,6 @@ export default class SignUpScreen extends React.Component {
       [key]: value
     })
   };
-  // Methods for logo animation
-  componentDidMount() {
-  }
 
   // Test current step with ternary
   // _next and _previous functions will be called on button click
@@ -87,32 +84,25 @@ export default class SignUpScreen extends React.Component {
   get nextButton(){
     if(this.state.currentStep < 6){
       return (
-        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
-            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-            <TouchableOpacity
-                onPress={() => this._next()} 
-                >
-                  <Text style={[t.textWhite, t.textXl]}>Continue</Text>
-              </TouchableOpacity>
-            </Item>
-          </View>
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t._mT4]}>
+          <TouchableOpacity 
+            onPress={() => this._next()}
+            style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+            >
+              <Text style={[t.textWhite, t.textLg]}>Continue</Text>
+          </TouchableOpacity>
         </Item>
       )
     } else{
       if(this.state.currentStep == 6){
         return (
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <TouchableOpacity
-                  onPress={() => this.signUp()} 
-                  >
-                    <Text style={[t.textWhite, t.textXl]}>Agree</Text>
-                </TouchableOpacity>
-                
-              </Item>
-            </View>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+            <TouchableOpacity 
+              onPress={() => this.signUp()}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+              >
+                <Text style={[t.textWhite, t.textLg]}>Agree</Text>
+            </TouchableOpacity>
           </Item>
         )
       }
@@ -135,29 +125,21 @@ export default class SignUpScreen extends React.Component {
                 </Item>
               </View>
           </Item>
-          <Item style={[t.bgWhite, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <TouchableOpacity
-                  onPress={() => this.confirmSignUp()}>
-                  <Text>
-                    Confirm Sign Up
-                  </Text>
-                </TouchableOpacity>
-              </Item>
-            </View>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+            <TouchableOpacity 
+              onPress={() => this.confirmSignUp()}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+              >
+                <Text style={[t.textWhite, t.textLg]}>Confirm Sign Up</Text>
+            </TouchableOpacity>
           </Item>
-          <Item style={[t.bgWhite, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.bgGray500, t.wFull, t.itemsCenter]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <TouchableOpacity
-                  onPress={() => this.resendSignUp()}>
-                  <Text>
-                    Resend code
-                  </Text>
-                </TouchableOpacity>
-              </Item>
-            </View>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+            <TouchableOpacity 
+              onPress={() => this.resendSignUp()}
+              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+              >
+                <Text style={[t.textWhite, t.textLg]}>Resend code</Text>
+            </TouchableOpacity>
           </Item>
         </View>
       )
@@ -176,16 +158,13 @@ export default class SignUpScreen extends React.Component {
   get backButton(){
     if(this.state.currentStep !== 1){
       return (
-        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.wFull, t.itemsCenter]}>
-            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-            <TouchableOpacity
-                onPress={() => this._prev()} 
-                >
-                  <Text style={[t.textBlue600, t.textXl]}>Back</Text>
-              </TouchableOpacity>
-            </Item>
-          </View>
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+          <TouchableOpacity 
+            onPress={() => this._prev()}
+            style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+            >
+              <Text style={[t.textWhite, t.textLg]}>Back</Text>
+          </TouchableOpacity>
         </Item>
       )
     } else {
@@ -272,61 +251,50 @@ export default class SignUpScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={[t.flex1]}>
-        <StatusBar/>
-        <KeyboardAvoidingView 
-          style={[t.flex1]} 
-          behavior='padding' 
-          enabled>
-          <TouchableWithoutFeedback style={[t.flex1]} onPress={Keyboard.dismiss}>
-            <ScrollView
-              style={[t.hFull, t.bgWhite]}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={this.state.refreshing}
-                      onRefresh={this._onRefresh}
-                    />
-                  }
-                >
-                <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                  <UserDetails
-                    currentStep={this.state.currentStep}
-                    onUpdate={this.onUpdate}
-                    firstName={this.state.firstName}
-                    lastName={this.state.lastName}
-                    email={this.state.email}/>
-                  <UserPhone
-                    currentStep={this.state.currentStep}
-                    phoneNumber={this.state.phoneNumber}
-                    onUpdate={this.onUpdate}/>
-                  <CompanyDetails
-                    currentStep={this.state.currentStep}
-                    companyName={this.state.companyName}
-                    companyNumber={this.state.companyNumber}
-                    industrySector={this.state.industrySector}
-                    onUpdate={this.onUpdate}/>
-                  <CompanyAddress
-                    currentStep={this.state.currentStep}
-                    buildingNumber={this.state.buildingNumber}
-                    postCode={this.state.postCode}
-                    onUpdate={this.onUpdate}/>
-                  <RefferalDetails
-                    currentStep={this.state.currentStep}
-                    refferalCode={this.state.refferalCode}
-                    onUpdate={this.onUpdate}/>
-                  <TermsConditions
-                    currentStep={this.state.currentStep}
-                    onUpdate={this.onUpdate}/>
-                  <ConfirmCode
-                    currentStep={this.state.currentStep}/>
-                </Item>
-                {this.nextButton}
-                {this.authCode}
-                {this.backButton}
-              </ScrollView>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+      <ScrollView
+        style={[t.hFull, t.bgWhite]}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
+        <UserDetails
+          currentStep={this.state.currentStep}
+          onUpdate={this.onUpdate}
+          username={this.state.username}
+          email={this.state.email}/>
+        <UserPhone
+          currentStep={this.state.currentStep}
+          phoneNumber={this.state.phoneNumber}
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          onUpdate={this.onUpdate}/>
+        <CompanyDetails
+          currentStep={this.state.currentStep}
+          companyName={this.state.companyName}
+          companyNumber={this.state.companyNumber}
+          industrySector={this.state.industrySector}
+          onUpdate={this.onUpdate}/>
+        <CompanyAddress
+          currentStep={this.state.currentStep}
+          buildingNumber={this.state.buildingNumber}
+          postCode={this.state.postCode}
+          onUpdate={this.onUpdate}/>
+        <RefferalDetails
+          currentStep={this.state.currentStep}
+          refferalCode={this.state.refferalCode}
+          onUpdate={this.onUpdate}/>
+        <TermsConditions
+          currentStep={this.state.currentStep}
+          onUpdate={this.onUpdate}/>
+        <ConfirmCode
+          currentStep={this.state.currentStep}/>
+        {this.nextButton}
+        {this.authCode}
+        {this.backButton}
+      </ScrollView>
     )
   }
 }
