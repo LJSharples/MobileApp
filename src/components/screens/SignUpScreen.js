@@ -1,30 +1,19 @@
 import React from 'react'
 import {
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
   Text,
-  SafeAreaView,
   ScrollView,
   RefreshControl,
-  StatusBar,
-  KeyboardAvoidingView,
-  Keyboard,
   View,
   Alert,
-  Modal,
-  FlatList,
-  Animated,
 } from 'react-native';
 import {
-  Container,
   Item,
-  Input,
-  Icon
+  Input
 } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
-import Auth from '@aws-amplify/auth';
+import { Auth, API, graphqlOperation } from 'aws-amplify'
 import { t } from 'react-native-tailwindcss';
+import { addProfile, addCompany} from '../../graphql/mutations';
 
 //Signup sections
 import UserDetails from '../forms/RegisterUserDetails';
@@ -173,45 +162,64 @@ export default class SignUpScreen extends React.Component {
   }
 
   async signUp() {
-    let currentStep = this.state.currentStep
-    const { firstName, lastName, password, email, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
-    // rename variable to conform with Amplify Auth field phone attribute
-    const username = email
-    const phone_number = `+44 ${phoneNumber}`
-    console.log(username);
-    this.onUpdate("username", username);
-    const company_name = companyName
-    await Auth.signUp({
-      username,
-      password,
-      attributes: { 
-        'email': email,
-        'custom:first_name': firstName,
-        'custom:last_name': lastName,
-        'custom:company_name': company_name,
-        'custom:company_number': companyNumber,
-        'custom:industry_sector': industrySector,
-        'custom:building_number': buildingNumber,
-        'custom:post_code': postCode
+    if(this.state.username === ''){
+      Alert.alert('Registration error:', 'You have not provide all required information.')
+    } else {
+      let currentStep = this.state.currentStep
+      const { username, firstName, lastName, password, email, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
+      // rename variable to conform with Amplify Auth field phone attribute
+      this.onUpdate("username", username);
+      await Auth.signUp({
+        username,
+        password,
+        attributes: { 
+          'email': email,
+        }
+      })
+      .then(() => {
+        console.log('sign up successful!')
+        Alert.alert('Please enter the confirmation code you received.')
+      })
+      .catch(err => {
+        if (! err.message) {
+          console.log('Error when signing up: ', err)
+          Alert.alert('Error when signing up: ', err)
+        } else {
+          console.log('Error when signing up: ', err.message)
+          Alert.alert('Error when signing up: ', err.message)
+        }
+      })
+      
+      try {
+        await API.graphql(graphqlOperation(addProfile, {
+          user_name: username,
+          full_name: firstName + " " + lastName,
+          first_name: firstName,
+          last_name: lastName,
+          phone: phoneNumber
+        }));
+      } catch (err) {
+          console.log("Error:")
+          console.log(err);
       }
-    })
-    .then(() => {
-      console.log('sign up successful!')
-      Alert.alert('Please enter the confirmation code you received.')
-    })
-    .catch(err => {
-      if (! err.message) {
-        console.log('Error when signing up: ', err)
-        Alert.alert('Error when signing up: ', err)
-      } else {
-        console.log('Error when signing up: ', err.message)
-        Alert.alert('Error when signing up: ', err.message)
+
+      try{
+        await API.graphql(graphqlOperation(addCompany, {
+          user_name: username,
+          company_name: companyName,
+          company_number: companyNumber,
+          address1: buildingNumber,
+          postcode: postCode,
+          industry: industrySector
+        }));
+      }catch(err){
       }
-    })
-    currentStep = currentStep >= 7? 8: currentStep + 1
-    this.setState({
-      currentStep: currentStep
-    })
+
+      currentStep = currentStep >= 7? 8: currentStep + 1
+      this.setState({
+        currentStep: currentStep
+      })
+    }
   }
   
   // Confirm users and redirect them to the SignIn page

@@ -188,6 +188,7 @@ const AuthStackNavigator = createStackNavigator({
     screen: SignUpScreen,
     navigationOptions: () => ({
       title: `Register an account`,
+      headerShown: false
     }),
   },
   SignIn: {
