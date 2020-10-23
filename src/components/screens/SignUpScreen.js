@@ -161,6 +161,28 @@ export default class SignUpScreen extends React.Component {
     }
   }
 
+
+  handleRoute = async (destination) => {
+    await this.props.navigation.navigate(destination)
+  }
+
+  get returnButton(){
+    if(this.state.currentStep === 1){
+      return (
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+          <TouchableOpacity 
+            onPress={() => this.handleRoute('SignIn')}
+            style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+            >
+              <Text style={[t.textWhite, t.textLg]}>Go to login</Text>
+          </TouchableOpacity>
+        </Item>
+      )
+    } else {
+      return null;
+    }
+  }
+
   async signUp() {
     if(this.state.username === ''){
       Alert.alert('Registration error:', 'You have not provide all required information.')
@@ -322,6 +344,7 @@ export default class SignUpScreen extends React.Component {
         {this.nextButton}
         {this.authCode}
         {this.backButton}
+        {this.returnButton}
       </ScrollView>
     )
   }
