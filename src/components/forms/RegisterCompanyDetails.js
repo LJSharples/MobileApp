@@ -20,6 +20,10 @@ export default class RegisterCompanyDetails extends React.Component {
         this.props.onUpdate(k, v.nativeEvent['text']);
     }
 
+    updateIndustry = (k) => {
+        this.props.onUpdate(Object.keys(k)[0], k.industrySector);
+    }
+
     render(){
         if(this.props.currentStep !== 3){
             return null;
@@ -103,7 +107,7 @@ export default class RegisterCompanyDetails extends React.Component {
                                 containerStyle={{height: 40, width: 285}}
                                 style={{ backgroundColor: '#fafafa' }}
                                 dropDownStyle={{ backgroundColor: '#fafafa' }}
-                                onChangeItem={item => this.update({
+                                onChangeItem={item => this.updateIndustry({
                                     industrySector: item.value
                                 })}
                             />

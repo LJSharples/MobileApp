@@ -190,31 +190,6 @@ export default class SignUpScreen extends React.Component {
         }
       })
       
-      try {
-        await API.graphql(graphqlOperation(addProfile, {
-          user_name: username,
-          full_name: firstName + " " + lastName,
-          first_name: firstName,
-          last_name: lastName,
-          phone: phoneNumber
-        }));
-      } catch (err) {
-          console.log("Error:")
-          console.log(err);
-      }
-
-      try{
-        await API.graphql(graphqlOperation(addCompany, {
-          user_name: username,
-          company_name: companyName,
-          company_number: companyNumber,
-          address1: buildingNumber,
-          postcode: postCode,
-          industry: industrySector
-        }));
-      }catch(err){
-      }
-
       currentStep = currentStep >= 7? 8: currentStep + 1
       this.setState({
         currentStep: currentStep
@@ -224,7 +199,7 @@ export default class SignUpScreen extends React.Component {
   
   // Confirm users and redirect them to the SignIn page
   async confirmSignUp() {
-    const { username, authCode } = this.state
+    const { username, firstName, lastName, password, authCode, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
     await Auth.confirmSignUp(username, authCode)
     .then(() => {
       this.props.navigation.navigate('SignIn')
@@ -239,6 +214,51 @@ export default class SignUpScreen extends React.Component {
         Alert.alert('Error when entering confirmation code: ', err.message)
       }
     })
+    await Auth.signIn(username, password)
+    .then(user => {
+      this.setState({ user })
+      this.createDetails()
+      this.props.navigation.navigate('Authloading')
+    })
+    .catch(err => {
+      if (! err.message) {
+        console.log('Error when signing in: ', err)
+        Alert.alert('Error when signing in: ', err)
+      } else {
+        console.log('Error when signing in: ', err.message)
+        Alert.alert('Error when signing in: ', err.message)
+      }
+    })
+  }
+
+  createDetails = async () => {
+    const { username, firstName, lastName, password, authCode, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
+    try {
+      await API.graphql(graphqlOperation(addProfile, {
+        user_name: username,
+        full_name: firstName + " " + lastName,
+        first_name: firstName,
+        last_name: lastName,
+        phone: phoneNumber
+      }));
+    } catch (err) {
+        console.log("Error User:")
+        console.log(err);
+    }
+
+    try{
+      await API.graphql(graphqlOperation(addCompany, {
+        user_name: username,
+        company_name: companyName,
+        company_number: companyNumber,
+        address1: buildingNumber,
+        postcode: postCode,
+        industry: industrySector
+      }));
+    }catch(err){
+      console.log("Error Company:")
+      console.log(err);
+    }
   }
   
   // Resend code if not received already
