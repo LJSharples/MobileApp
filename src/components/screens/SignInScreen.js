@@ -114,7 +114,7 @@ export default class SignInScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
               onPress={() => this.handleRoute('SignUp')}
-              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgGray500, t.itemsCenter, t.w10_12]}
               >
                 <Text style={[t.textWhite, t.textLg]}>Register</Text>
             </TouchableOpacity>

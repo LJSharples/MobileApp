@@ -150,7 +150,7 @@ export default class SignUpScreen extends React.Component {
         <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
           <TouchableOpacity 
             onPress={() => this._prev()}
-            style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+            style={[t.p4, t.roundedLg, t.bgGray500, t.itemsCenter, t.w10_12]}
             >
               <Text style={[t.textWhite, t.textLg]}>Back</Text>
           </TouchableOpacity>
@@ -172,7 +172,7 @@ export default class SignUpScreen extends React.Component {
         <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
           <TouchableOpacity 
             onPress={() => this.handleRoute('SignIn')}
-            style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+            style={[t.p4, t.roundedLg, t.bgGray500, t.itemsCenter, t.w10_12]}
             >
               <Text style={[t.textWhite, t.textLg]}>Go to login</Text>
           </TouchableOpacity>

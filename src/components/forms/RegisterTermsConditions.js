@@ -23,6 +23,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { t } from 'react-native-tailwindcss';
 
+// Load the app logo
+const logo = require('../images/managedbill-corporate-logo.png')
+
 export default class RegisterTermsConditions extends React.Component {
     render(){
         if(this.props.currentStep !== 6){
@@ -32,6 +35,7 @@ export default class RegisterTermsConditions extends React.Component {
         return (
             <View>
                 <Item style={[t.bgWhite, t.borderTransparent]}>
+
                     <View style={[ t.pX4, t.pY4, t.wFull]}>
                         <Item style={[ t.borderTransparent, t. justifyCenter]}>
                             <Text style={[ t.text2xl, t.textBlue600]}> Terms & Conditions</Text>

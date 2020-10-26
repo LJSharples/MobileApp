@@ -46,7 +46,7 @@ export default class WelcomeScreen extends React.Component {
           </Item>
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
-              style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
+              style={[t.p4, t.roundedLg, t.bgGray500, t.itemsCenter, t.w10_12]}
               onPress={() => this.handleRoute('SignUp')}>
               <Text style={[t.textWhite, t.textLg]}>Register</Text>
             </TouchableOpacity>
