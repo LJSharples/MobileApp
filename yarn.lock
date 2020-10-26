@@ -6649,6 +6649,14 @@ react-native-elements@^0.19.1:
     opencollective "^1.0.3"
     prop-types "^15.5.8"
 
+react-native-fluidbottomnavigation@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-fluidbottomnavigation/-/react-native-fluidbottomnavigation-1.2.2.tgz#bff2ed89e059e81a48e799a5a38da7e5b63686f0"
+  integrity sha512-7bzWbWBf26Udu3MmdDPBoU5FoFElHQ3BNYzdV/+/rmUSHS7X+wcOUqjNit3QdTWyyV/iIrCpp3Jnghiy5qVDHQ==
+  dependencies:
+    react-native-vector-icons "^6.6.0"
+    react-native-view-overflow "^0.0.3"
+
 react-native-gesture-handler@~1.5.0:
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.6.tgz#5d90145f624e3707db2930f43ab41579683e2375"
@@ -6766,6 +6774,16 @@ react-native-vector-icons@^7.0.0:
     lodash.template "^4.5.0"
     prop-types "^15.7.2"
     yargs "^15.0.2"
+
+react-native-view-overflow@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-view-overflow/-/react-native-view-overflow-0.0.5.tgz#56c49f0f7cdb9fd145de241d6f6bf4cfe5660915"
+  integrity sha512-p/peyU3IC7M84bZEz2K7hpLrKBPUT3W7/+wnXjGw40hX/Iaj0OmOqJI6mJcBUlpcHJvGYbx2OOpPZa4+hwJC6w==
+
+react-native-view-overflow@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-view-overflow/-/react-native-view-overflow-0.0.3.tgz#d7b08e8c1e5047a2cf07f3ece82025899f930674"
+  integrity sha512-CcX61kqFyO41WAmqARr/1A7YgTkd1GoQGJl0LYrzl+4CL5uw2CAu68T+1DPapt7RdgvSMLZIPlNvj4TzdJY/hw==
 
 react-native-view-shot@3.0.2:
   version "3.0.2"

@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   View,
+  Image,
   TouchableOpacity
 } from 'react-native';
 import { 
@@ -29,6 +30,8 @@ import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
+
+import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 
 const configurations = {
   Home: {
@@ -129,6 +132,12 @@ const AppStackNavigator = createStackNavigator({
     screen: AppTabNavigator,
     // Set the header icon
     navigationOptions: ({ navigation }) => ({
+      headerTitle: (
+        <Image
+          resizeMode="contain"
+          source={require('./src/components/images/managedbill-corporate-logo.png')}
+        />
+      ),
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
           <View style={{ paddingHorizontal: 10 }}>
@@ -142,7 +151,6 @@ const AppStackNavigator = createStackNavigator({
 
 // App stack for the drawer
 const AppDrawerNavigator = createDrawerNavigator({
-    Pages: AppStackNavigator, // defined above
     Home: HomeScreen,
     Services: ServicesScreen,
     Account: {

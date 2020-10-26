@@ -118,7 +118,6 @@ export default class ServicesScreen extends React.Component {
         var contractEndDate = new Date(lead.contract_end);
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
         } else {
-          console.log(serviceColors[lead.service_name])
           let month = contractEndDate.getMonth() + 1;
           let date = contractEndDate.getUTCDate() + "/" + month + "/" + contractEndDate.getFullYear();
           services.push({
