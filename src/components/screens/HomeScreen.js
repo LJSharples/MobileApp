@@ -91,7 +91,7 @@ export default class HomeScreen extends React.Component {
   render() {
 
     return (
-      <View style={[t.wFull]}>
+      <View style= {[ t.flex1]}>
         <ScrollView
             refreshControl={
               <RefreshControl
@@ -151,30 +151,48 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-        </ScrollView>
-          <Item style={[t.alignCenter, t.bgGray100, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
-            <TabBar
-              activeTab={this.state.curTab}
-              iconStyle={{ width: 50, height: 50 }}
-              tintColor="blue"
-              onPress={(tabIndex) => {
-                  this.setState({ curTab: tabIndex})
-              }}
-              iconActiveTintColor="black"
-              iconInactiveTintColor="blue"
-              tintColor="#f5f5f7"
-              titleColor="red"
-              isRtl={ false }
-              iconSize={25}
-              values={[
-                  { title: "Dashboard", icon: "home", tintColor: this.state.curTab == 0 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
-                  { title: "Services", icon: "settings-power", tintColor: this.state.curTab == 1 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                  { title: "Expenses", icon: "attach-money", tintColor: this.state.curTab == 2 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                  { title: "Get Quote", icon: "format-quote", tintColor: this.state.curTab == 3 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                  { title: "Profile", icon: "verified-user", tintColor: this.state.curTab == 4 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-              ]}
-            />
+          <Item style={[t.alignCenter, t.bgPurple300, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
+              <Item style={[t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.text2xl, t.textPurple600]}> Expenses</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textLg, t.textPurple600]}>Monthly: £{this.state.monthlyCost}</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textLg, t.textPurple600]}>Yearly:{'     '}£{this.state.annualCost}</Text>
+              </Item>
+            </View>
+            <View style={[t.roundedLg, t.itemsCenter, t.w5_12]}>
+              <TouchableOpacity 
+                onPress={() => this.handleRoute('Services')}
+                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
+                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>View</Text>
+              </TouchableOpacity>
+            </View>
           </Item>
+        </ScrollView>
+          <TabBar
+            activeTab={this.state.curTab}
+            iconStyle={{ width: 50, height: 50 }}
+            tintColor="blue"
+            onPress={(tabIndex) => {
+                this.setState({ curTab: tabIndex})
+            }}
+            iconActiveTintColor="black"
+            iconInactiveTintColor="blue"
+            tintColor="#f5f5f7"
+            titleColor="red"
+            isRtl={ false }
+            iconSize={25}
+            values={[
+                { title: "Dashboard", icon: "home", tintColor: this.state.curTab == 0 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
+                { title: "Services", icon: "settings-power", tintColor: this.state.curTab == 1 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Expenses", icon: "attach-money", tintColor: this.state.curTab == 2 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: this.state.curTab == 3 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: this.state.curTab == 4 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+            ]}
+          />
       </View>
     )
   }
