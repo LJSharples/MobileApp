@@ -151,16 +151,13 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </Item>
-          <Item style={[t.alignCenter, t.bgPurple300, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
+          <Item style={[t.alignCenter, t.bgGray300, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
               <Item style={[t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textPurple600]}> Expenses</Text>
+                <Text style={[ t.text2xl, t.textGray900]}> News</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textLg, t.textPurple600]}>Monthly: £{this.state.monthlyCost}</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textLg, t.textPurple600]}>Yearly:{'     '}£{this.state.annualCost}</Text>
+                <Text style={[ t.textLg, t.textGray900]}>Monthly: £{this.state.monthlyCost}</Text>
               </Item>
             </View>
             <View style={[t.roundedLg, t.itemsCenter, t.w5_12]}>
