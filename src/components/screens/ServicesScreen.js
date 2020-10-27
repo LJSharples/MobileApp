@@ -45,7 +45,7 @@ export default class ServicesScreen extends React.Component {
       'Home',
       'Services',
       'Expenses',
-      'quote',
+      'Quote',
       'Account'
     ]
   };
@@ -164,7 +164,7 @@ export default class ServicesScreen extends React.Component {
               />
             }
           >
-          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+          <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textBlue600]}>Service</Text>

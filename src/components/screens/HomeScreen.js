@@ -30,8 +30,8 @@ export default class HomeScreen extends React.Component {
     routes: [
       'home',
       'Services',
-      'expenses',
-      'quote',
+      'Expenses',
+      'Quote',
       'Account'
     ]
   };

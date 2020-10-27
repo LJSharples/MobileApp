@@ -43,7 +43,7 @@ export default class ProfileScreen extends React.Component {
       'Home',
       'Services',
       'Expenses',
-      'quote',
+      'Quote',
       'Account'
     ]
   };

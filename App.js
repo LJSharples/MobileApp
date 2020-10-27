@@ -20,6 +20,7 @@ Amplify.configure(awsConfig);
 import HomeScreen from './src/components/screens/HomeScreen'
 import ServicesScreen from './src/components/screens/ServicesScreen';
 import ExpensesScreen from './src/components/screens/ExpensesScreen';
+import QuoteScreen from './src/components/screens/QuoteScreen';
 import SettingsScreen from './src/components/screens/SettingsScreen'
 import ProfileScreen from './src/components/screens/ProfileScreen'
 import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen';
@@ -62,6 +63,18 @@ const configurations = {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'My Account',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 20, color: tintColor }}
+          name="ios-person"
+        />
+      ),
+    },
+  },
+  Quote: {
+    screen: QuoteScreen,
+    navigationOptions: {
+      tabBarLabel: 'Get Quote',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
           style={{ fontSize: 20, color: tintColor }}
@@ -163,6 +176,12 @@ const AppDrawerNavigator = createDrawerNavigator({
       screen: ExpensesScreen,
       navigationOptions: () => ({
         title: 'My Money',
+      }),
+    },
+    Quote: {
+      screen: QuoteScreen,
+      navigationOptions: () => ({
+        title: 'Get Quote',
       }),
     },
     Notifications: {
