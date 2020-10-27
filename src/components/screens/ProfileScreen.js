@@ -325,15 +325,15 @@ export default class ProfileScreen extends React.Component {
             iconActiveTintColor="black"
             iconInactiveTintColor="blue"
             tintColor="#f5f5f7"
-            titleColor="red"
+            titleColor="#999999"
             isRtl={ false }
             iconSize={25}
             values={[
-                { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
-                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Get Quote", icon: "format-quote", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+              { title: "Dashboard", icon: "home", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons },
+              { title: "Services", icon: "settings-power", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Profile", icon: "verified-user", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
             ]}
           />
       </View>

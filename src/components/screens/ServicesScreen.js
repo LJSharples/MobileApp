@@ -21,14 +21,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 
-
-// Service colors, icons and components
-import serviceIcons from '../ServiceIcons';
-import serviceColors from '../ServiceColours';
-import DateTimePickerForm from '../forms/DateTimePickerForm';
-import DateTimePickerContract from '../forms/DateTimePickerContract';
-import FileUpload from "../forms/FileUpload";
-
 export default class ServicesScreen extends React.Component {
   state = {
     curTab: 1,
@@ -87,24 +79,9 @@ export default class ServicesScreen extends React.Component {
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
   
-    const currentArray = [{
-      "contract_end": "Contract End Date",
-      "provider": "Provider",
-      "service_name": "Service",
-      "view": "Actions"
-    }];
-    const activeArray = [{
-      "contract_end": "Contract End Date",
-      "provider": "Provider",
-      "service_name": "Service",
-      "view": "Actions"
-    }];
-    const endedArray = [{
-      "contract_end": "Contract End Date",
-      "provider": "Provider",
-      "service_name": "Service",
-      "view": "Actions"
-    }];
+    const currentArray = [];
+    const activeArray = [];
+    const endedArray = [];
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
@@ -116,7 +93,8 @@ export default class ServicesScreen extends React.Component {
               provider: lead.current_supplier,
               contract_end: contractEndDate.toLocaleDateString(),
               cost_year: lead.cost_year,
-              status: lead.status
+              status: lead.status,
+              bills: lead.uploaded_documents
           }
           endedArray.push(newValue)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
@@ -125,7 +103,8 @@ export default class ServicesScreen extends React.Component {
                 provider: lead.current_supplier,
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
-                status: lead.status
+                status: lead.status,
+                bills: lead.uploaded_documents
             }
             activeArray.push(newValue2)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
@@ -134,7 +113,8 @@ export default class ServicesScreen extends React.Component {
                 provider: lead.current_supplier,
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
-                status: lead.status
+                status: lead.status,
+                bills: lead.uploaded_documents
             }
             currentArray.push(newValue)
         }
@@ -193,6 +173,19 @@ export default class ServicesScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Service</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Provider</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                  </View>
+                </View>
                 {
                   this.state.rowsActive.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
@@ -207,7 +200,9 @@ export default class ServicesScreen extends React.Component {
                           <Text>{anObjectMapped.contract_end}</Text>
                         </View>
                         <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     )
@@ -228,6 +223,19 @@ export default class ServicesScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Service</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Provider</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                  </View>
+                </View>
                 {
                   this.state.rowsCurrent.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
@@ -242,7 +250,9 @@ export default class ServicesScreen extends React.Component {
                           <Text>{anObjectMapped.contract_end}</Text>
                         </View>
                         <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     )
@@ -263,6 +273,19 @@ export default class ServicesScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Service</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Provider</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                  </View>
+                </View>
                 {
                   this.state.rowsEnded.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
@@ -277,7 +300,9 @@ export default class ServicesScreen extends React.Component {
                           <Text>{anObjectMapped.contract_end}</Text>
                         </View>
                         <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     )
@@ -364,6 +389,18 @@ export default class ServicesScreen extends React.Component {
                         <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                           <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
                             <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Bills</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.uploaded_documents}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                               <TouchableOpacity 
                                 onPress={() => this.hideModal()}
                                 style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
@@ -400,15 +437,15 @@ export default class ServicesScreen extends React.Component {
             iconActiveTintColor="black"
             iconInactiveTintColor="blue"
             tintColor="#f5f5f7"
-            titleColor="red"
+            titleColor="#999999"
             isRtl={ false }
             iconSize={25}
             values={[
-                { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
-                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
-                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Get Quote", icon: "format-quote", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Dashboard", icon: "home", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons },
+                { title: "Services", icon: "settings-power", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+                { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
       </View>
