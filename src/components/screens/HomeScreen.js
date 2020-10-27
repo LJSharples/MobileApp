@@ -25,7 +25,15 @@ export default class HomeScreen extends React.Component {
     userProfile: {},
     userCompany: {},
     curTab: 0,
+    activeTab: 0,
     refreshing: false,
+    routes: [
+      'home',
+      'Services',
+      'expenses',
+      'quote',
+      'Account'
+    ]
   };
 
   _onRefresh = () => {
@@ -35,6 +43,13 @@ export default class HomeScreen extends React.Component {
     });
   }
 
+  _handlePress = (index) => {
+    this.setState({ 
+      curTab: index
+    })
+    this.handleRoute(this.state.routes[index]);
+  }
+
   handleRoute = async (destination) => {
     await this.props.navigation.navigate(destination)
   }
@@ -42,7 +57,9 @@ export default class HomeScreen extends React.Component {
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
-    this.setState({ username: user.username});
+    this.setState({ 
+      username: user.username
+    });
 
     this.setState({ firstName: userProfile.data["user"].first_name});
     this.setState({ userProfile: userProfile.data["user"]});
@@ -170,11 +187,11 @@ export default class HomeScreen extends React.Component {
           </Item>
         </ScrollView>
           <TabBar
-            activeTab={this.state.curTab}
+            activeTab={this.state.activeTab}
             iconStyle={{ width: 50, height: 50 }}
             tintColor="blue"
             onPress={(tabIndex) => {
-                this.setState({ curTab: tabIndex})
+                this._handlePress(tabIndex);
             }}
             iconActiveTintColor="black"
             iconInactiveTintColor="blue"
@@ -183,11 +200,11 @@ export default class HomeScreen extends React.Component {
             isRtl={ false }
             iconSize={25}
             values={[
-                { title: "Dashboard", icon: "home", tintColor: this.state.curTab == 0 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
-                { title: "Services", icon: "settings-power", tintColor: this.state.curTab == 1 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Expenses", icon: "attach-money", tintColor: this.state.curTab == 2 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Get Quote", icon: "format-quote", tintColor: this.state.curTab == 3 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Profile", icon: "verified-user", tintColor: this.state.curTab == 4 ? "red" : "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab: this.state.activeTab ? 0 : 1},
+                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
       </View>

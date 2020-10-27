@@ -1,41 +1,26 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
-  Animated,
-  Modal,
   ScrollView,
-  TouchableOpacity,
-  TouchableHighlight,
   RefreshControl,
-  Alert
+  TouchableOpacity,
+  TextInput,
 } from 'react-native'
 import {
-  Container,
-  Item,
-  Icon,
-  Input
+  Item
 } from 'native-base'
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { getUserDetails, } from "../../graphql/queries";
-import { Auth, API, graphqlOperation } from "aws-amplify";
-import { updateUser, updateCompany, addProfile, addCompany } from '../../graphql/mutations';
+import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
+import { getServices, getUserDetails } from '../../graphql/queries'
+import { updateCompany, updateUser} from '../../graphql/mutations'
 import { t } from 'react-native-tailwindcss';
+import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
-
-// Service colors and icons
-import serviceIcons from '../ServiceIcons';
-import serviceColors from '../ServiceColours';
-
-//additonal screens
-import ExpensesDetails from '../forms/ExpenseDetails'
-
-// Load the app logo
-const logo = require('../images/Building.png')
 
 export default class ProfileScreen extends React.Component {
   state = {
+    activeTab: 4,
+    curTab: 4,
     userProfile: {},
     userCompany: {},
     full_name: "",
@@ -54,89 +39,28 @@ export default class ProfileScreen extends React.Component {
     yearly_turnover: "",
     industry: "",
     user_name: "",
-    services: [],
-    modalVisible: false,
-    refreshing: false,
-    collapse: false,
-    password1: '',
-    password2: '',
+    routes: [
+      'Home',
+      'Services',
+      'Expenses',
+      'quote',
+      'Account'
+    ]
   };
 
-  showModal(){
-    this.setState({
-      modalVisible: true
-    });
+  _handlePress = (index) => {
+    this.setState({ curTab: index})
+    this.handleRoute(this.state.routes[index]);
   }
 
-  closeModal(){
-    this.setState({
-      modalVisible: false
-    });
+  handleRoute = async (destination) => {
+    await this.props.navigation.navigate(destination)
   }
 
-  _onRefresh = () => {
-    this.setState({refreshing: true});
-    this.componentDidMount().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  // for password reset
-  onChangeText(key, value) {
-    this.setState({
-      [key]: value
-    })
-  }
-
-  //Setting section
-  // Sign out from the app
-  signOutAlert = async () => {
-    await Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out from the app?',
-      [
-        {text: 'Cancel', onPress: () => console.log('Canceled'), style: 'cancel'},
-        // Calling signOut
-        {text: 'OK', onPress: () => this.signOut()}, 
-      ],
-      { cancelable: false }
-    )
-  }
-  // Confirm sign out
-  signOut = async () => {
-    await Auth.signOut()
-    .then(() => {
-      console.log('Sign out complete')
-      this.props.navigation.navigate('Authloading')
-    })
-    .catch(err => console.log('Error while signing out!', err))
-  }
-
-  // Change user password for the app
-  changePassword = async () => {
-    const { password1, password2 } = this.state
-    await Auth.currentAuthenticatedUser()
-    .then(user => {
-      return Auth.changePassword(user, password1, password2)
-    })
-    .then(data => console.log('Password changed successfully', data))
-    .catch(err => {
-      if (! err.message) {
-        console.log('Error changing password: ', err)
-        Alert.alert('Error changing password: ', err)
-      } else {
-        console.log('Error changing password: ', err.message)
-        Alert.alert('Error changing password: ', err.message)
-      }
-    })
-  }
-
-  //load default values from server
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-
-    //get userprofile and services
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+    this.setState({ email: user.email});
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({
       user_name: user.username,
@@ -161,16 +85,10 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  //update profile details
-  async updateData(attribute, key){
-    const user = await Auth.currentAuthenticatedUser();
-    const result = await Auth.updateUserAttributes(user,{
-      [attribute]:  this.state[key]
+  onChangeText(key, value) {
+    this.setState({
+      [key]: value
     })
-  }
-
-  handleRoute = async (destination) => {
-    await this.props.navigation.navigate(destination)
   }
 
   updateUserProfile = async () => {
@@ -188,7 +106,6 @@ export default class ProfileScreen extends React.Component {
         console.log(err);
     }
   }
-
 
   updateCompany = async () => {
     const data = {
@@ -213,359 +130,214 @@ export default class ProfileScreen extends React.Component {
     }
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   render() {
     return (
-      <View style={[t.flex1]}>
+      <View style= {[ t.flex1, t.bgBlue200]}>
         <ScrollView
-          style={[t.hFull]}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wAuto, t.itemsCenter]}>
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+          >
+          <Item style={[ t.mT5,t.alignCenter, t.wFull, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Animated.Image 
-                  source={logo} 
-                  />
-              </Item>
-            </View>
-            <View style={[t.w5]}/>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl]}> {this.state.company_name}</Text>
+                <Text style={[ t.text2xl, t.textBlue600]}>My Details</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text> {this.state.post_code}</Text>
+                <Text style={[ t.textXl, t.textBlue600]}>Manage your account details</Text>
               </Item>
             </View>
           </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
-              <CollapsibleList
-                numberOfVisibleItems={1}
-                buttonContent={
-                  <View>
-                    <Text>Show</Text>
-                  </View>
-                }
-              >
-                <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>My Details</Text>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>My Details</Text>
                 </View>
-                <View style={styles.collapsibleItem}>
-                  <Item>
-                    <Ionicons name="ios-mail"/>
-                    <Input
-                      placeholder={this.state.first_name}
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      value={this.state.first_name}
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref='SecondInput'
-                      onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('first_name', value)}
-                    />
-                  </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.last_name}
-                        value={this.state.last_name}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='ThirdInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('last_name', value)}
-                      />
-                    </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.phone}
-                        value={this.state.phone}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='FourthInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('phone', value)}
-                      />
-                    </Item>
-                  <View style={styles.collapsibleItem}>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>First Name</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('first_name', value)} value={this.state.first_name}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Last Name</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('last_name', value)} value={this.state.last_name}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Mobile number</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('phone', value)} value={this.state.phone}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
                     <TouchableOpacity
-                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
                       onPress={this.updateUserProfile}>
-                      <Text style={[t.textXl, t.textBlue600, t.textCenter]}>
-                        Update User Details
+                      <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
+                        Save
                       </Text>
                     </TouchableOpacity>
                   </View>
-                </View>
-              </CollapsibleList>
-            </View>
-          </Item> 
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
-              <CollapsibleList
-                numberOfVisibleItems={1}
-                buttonContent={
-                  <View>
-                    <Text>Show</Text>
-                  </View>
-                }
-              >
-                <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>About your Company</Text>
-                </View>
-                <View style={styles.collapsibleItem}>
-                  <Item>
-                    <Ionicons name="ios-mail"/>
-                    <Input
-                      placeholder={this.state.company_name}
-                      placeholderTextColor='#adb4bc'
-                      keyboardType={'email-address'}
-                      returnKeyType='next'
-                      value={this.state.company_name}
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={false}
-                      ref='SecondInput'
-                      onSubmitEditing={(event) => {this.refs.ThirdInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('company_name', value)}                    />
-                  </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.address1}
-                        value={this.state.address1}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='ThirdInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('address1', value)}    
-                      />
-                    </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.address2}
-                        value={this.state.address2}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='FourthInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('address2', value)}
-                      />
-                    </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.city}
-                        value={this.state.city}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='FourthInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('city', value)}
-                      />
-                    </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.region}
-                        value={this.state.region}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='FourthInput'
-                        onSubmitEditing={(event) => {this.refs.FourthInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('region', value)}
-                      />
-                    </Item>
-                  <Item>
-                      <Ionicons name="ios-mail"/>
-                      <Input
-                        placeholder={this.state.postcode}
-                        value={this.state.postcode}
-                        placeholderTextColor='#adb4bc'
-                        keyboardType={'email-address'}
-                        returnKeyType='next'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        secureTextEntry={false}
-                        ref='FithInput'
-                        name="postcode"
-                        onSubmitEditing={(event) => {this.refs.FithInput._root.focus()}}
-                        onChangeText={value => this.onChangeText('postcode', value)}
-                      />
-                    </Item>
-                  <View style={styles.collapsibleItem}>
-                    <TouchableOpacity
-                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
-                      onPress={this.updateCompany}>
-                      <Text style={[t.textXl, t.textBlue600, t.textCenter]}>
-                        Update Company Details
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </CollapsibleList>
-            </View>
-          </Item> 
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
-              <CollapsibleList
-                numberOfVisibleItems={1}
-                buttonContent={
-                  <View>
-                    <Text>Show</Text>
-                  </View>
-                }
-              >
-                <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>Settings</Text>
-                </View>
-                <View style={[t.pX2, t.pY2, t.pt4, t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-                  <Text style={[ t.textXl]}>Change password</Text>              
-                </View>
-                <View style={styles.collapsibleItem}>
-                  {/* Old password */}
-                  <Item rounded style={[t.mT5]}>
-                    <Icon
-                      active
-                      name='lock'
-                    />
-                    <Input
-                      placeholder='Old password'
-                      placeholderTextColor='#adb4bc'
-                      returnKeyType='next'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      onSubmitEditing={(event) => { this.refs.SecondInput._root.focus()}}
-                      onChangeText={value => this.onChangeText('password1', value)}
-                    />
-                  </Item>    
-                  {/* New password */}              
-                  <Item rounded>
-                    <Icon
-                      active
-                      name='lock'
-                    />
-                    <Input
-                      placeholder='New password'
-                      placeholderTextColor='#adb4bc'
-                      returnKeyType='go'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                      ref='SecondInput'
-                      onChangeText={value => this.onChangeText('password2', value)}
-                    />
-                  </Item>
-                  <TouchableOpacity
-                    onPress={this.changePassword}
-                    style={[t.mT5, t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
-                    <Text style={[t.textXl]}>
-                      Submit
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.collapsibleItem}>
-                  <TouchableOpacity
-                    style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
-                    onPress={this.signOutAlert}>
-                    <Icon name='md-power'/>
-                    <Text>
-                      Sign out
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </CollapsibleList>
-            </View>
+              </View>
+            </CollapsibleList>
           </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull]}>
-                <View style={styles.collapsibleItem}>
-                  <Text style={[t.textXl, t.textBlue600]}>Expenses</Text>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>About Your Company</Text>
                 </View>
-                <View style={styles.collapsibleItem}>
-                  <TouchableOpacity
-                    style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}
-                    onPress={() => this.showModal()}>
-                    <Text>
-                      View Expenses
-                    </Text>
-                  </TouchableOpacity>
-                  <Modal
-                    animationType="slide" // fade
-                    transparent={false}
-                    visible={this.state.modalVisible}>
-                    <View style={[ t.flex1 ]}>
-                      <ScrollView>
-                        <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w3_4, t.wAuto, t.itemsCenter]}>
-                            <Item style={[t.pX2, t.pY8, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}> Annual Expenses</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.w5]}/>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_4, t.itemsEnd]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsEnd, t.justifyEnd, t.borderTransparent]}>
-                              <TouchableOpacity
-                                onPress={() => this.closeModal()} 
-                                >
-                                <Ionicons name="ios-close"/>
-                              </TouchableOpacity>
-                            </Item>
-                          </View>
-                        </Item>
-                        <ExpensesDetails/>
-                      </ScrollView>
-                    </View>
-                  </Modal>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Company Name</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('company_name', value)} value={this.state.company_name}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Company Number</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('company_number', value)} value={this.state.company_number}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Address 1</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('address1', value)} value={this.state.address1}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Address 2</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('address2', value)} value={this.state.address2}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>City</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('city', value)} value={this.state.city}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Region</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('region', value)} value={this.state.region}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Post Code</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('postcode', value)} value={this.state.postcode}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+                    <TouchableOpacity
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                      onPress={this.updateCompany}>
+                      <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
+                        Save
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+              </View>
+            </CollapsibleList>
+          </Item>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Additional Information</Text>
                 </View>
-            </View>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>How many years have you been trading?</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.years_trading}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>What is your estimated yearly turn-over?</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.yearly_turnover}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>How many employees do you have?</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.num_employees}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                    <Text>Which industry does your business form part of?</Text>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch]}>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.industry}/>
+                  </View>
+                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+                    <TouchableOpacity
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                      onPress={this.updateCompany}>
+                      <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
+                        Save
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+              </View>
+            </CollapsibleList>
           </Item>
         </ScrollView>
+        <TabBar
+            activeTab={this.state.activeTab}
+            iconStyle={{ width: 50, height: 50 }}
+            tintColor="blue"
+            onPress={(tabIndex) => {
+                this._handlePress(tabIndex);
+            }}
+            iconActiveTintColor="black"
+            iconInactiveTintColor="blue"
+            tintColor="#f5f5f7"
+            titleColor="red"
+            isRtl={ false }
+            iconSize={25}
+            values={[
+                { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
+                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+            ]}
+          />
       </View>
     )
   }
+  
 }
-
-const styles = StyleSheet.create({
-  collapsibleItem: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#CCC",
-    padding: 10
-  }
-})

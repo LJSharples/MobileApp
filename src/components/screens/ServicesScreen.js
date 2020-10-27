@@ -6,7 +6,7 @@ import {
   RefreshControl,
   Modal,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
   TextInput,
 } from 'react-native'
 import {
@@ -18,6 +18,9 @@ import { addService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import DropDownPicker from 'react-native-dropdown-picker';
+import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
+import CollapsibleList from "react-native-collapsible-list";
+
 
 // Service colors, icons and components
 import serviceIcons from '../ServiceIcons';
@@ -28,123 +31,118 @@ import FileUpload from "../forms/FileUpload";
 
 export default class ServicesScreen extends React.Component {
   state = {
+    curTab: 1,
+    activeTab: 1,
     userProfile: {},
     userCompany: {},
-    services: [],
+    rowsCurrent: [],
+    rowsActive: [],
+    rowsEnded: [],
     email: '',
-    service_name: '',
-    callback_time: '29/10/2020',
-    contract_end: '',
-    contract_length: '',
-    current_supplier: '',
-    cost_year: '',
-    cost_month: '',
-    uploaded_documents: [],
+    selectedRecord: [],
     modalVisible: false,
-    serviceModal: false,
-    mode: 'datetime'
+    routes: [
+      'Home',
+      'Services',
+      'Expenses',
+      'quote',
+      'Account'
+    ]
   };
 
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
+  _handlePress = (index) => {
+    this.setState({ curTab: index})
+    this.handleRoute(this.state.routes[index]);
   }
 
-  showServiceMoal = (visible) => {
-    this.setState({ serviceModal: visible });
+  handleRoute = async (destination) => {
+    await this.props.navigation.navigate(destination)
+  }
+
+  setModalVisible = (visible, record) => {
+    var records = []
+    records.push(record)
+    console.log(records)
+    this.setState({ 
+      modalVisible: visible,
+      selectedRecord: records
+    });
   }
 
   hideModal(){
     this.setState({ modalVisible: false});
   }
 
-  onChangeText(key, value) {
-    console.log(value);
-    this.setState({
-      [key]: value.nativeEvent.text
-    })
-  }
-
   onChange = (key, value) => {
     this.setState({
       [key]: value
     })
-    console.log(key);
-    console.log(value);
   };
-
-  submitService = async () => {
-    const data = {
-      user_name: this.state.userProfile.user_name,
-      status: "CURRENT",
-      email: this.state.email,
-      service_name: this.state.service_name,
-      callback_time: this.state.callback_time,
-      contract_end: this.state.contract_end,
-      contract_length: this.state.contract_length,
-      current_supplier: this.state.current_supplier,
-      cost_year: this.state.cost_year,
-      cost_month: this.state.cost_month,
-      uploaded_documents: this.state.uploaded_documents
-    }
-    console.log(data)
-    try {
-        const re = await API.graphql(graphqlOperation(addService, data));
-        this.getServices();
-        console.log("Success");
-    } catch (err) {
-        console.log("Error:")
-        console.log(err);
-    } 
-    this.hideModal();
-  }
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     this.setState({ email: user.email});
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
-    this.getServices();
-  }
-
-  getServices = async () => {
-    let user = await Auth.currentAuthenticatedUser();
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    const services = []
+  
+    const currentArray = [{
+      "contract_end": "Contract End Date",
+      "provider": "Provider",
+      "service_name": "Service",
+      "view": "Actions"
+    }];
+    const activeArray = [{
+      "contract_end": "Contract End Date",
+      "provider": "Provider",
+      "service_name": "Service",
+      "view": "Actions"
+    }];
+    const endedArray = [{
+      "contract_end": "Contract End Date",
+      "provider": "Provider",
+      "service_name": "Service",
+      "view": "Actions"
+    }];
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
-        } else {
-          let month = contractEndDate.getMonth() + 1;
-          let date = contractEndDate.getUTCDate() + "/" + month + "/" + contractEndDate.getFullYear();
-          services.push({
-            "callback_time": lead.callback_time,
-            "contract_end": date,
-            "contract_length": lead.contract_length,
-            "cost_month": lead.cost_month,
-            "cost_year": lead.cost_year,
-            "current_supplier": lead.current_supplier,
-            "id": lead.id,
-            "service_name": lead.service_name,
-            "status": lead.status,
-            "uploaded_documents": lead.uploaded_documents,
-            "user_name": lead.user_name,
-          });
+          const newValue = {
+              service_name: lead.service_name,
+              provider: lead.current_supplier,
+              contract_end: contractEndDate.toLocaleDateString(),
+              cost_year: lead.cost_year,
+              status: lead.status
+          }
+          endedArray.push(newValue)
+        } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
+            const newValue2 = {
+                service_name: lead.service_name,
+                provider: lead.current_supplier,
+                contract_end: contractEndDate.toLocaleDateString(),
+                cost_year: lead.cost_year,
+                status: lead.status
+            }
+            activeArray.push(newValue2)
+        }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
+            const newValue = {
+                service_name: lead.service_name,
+                provider: lead.current_supplier,
+                contract_end: contractEndDate.toLocaleDateString(),
+                cost_year: lead.cost_year,
+                status: lead.status
+            }
+            currentArray.push(newValue)
         }
-        this.setState({ services: services});
       }
     });
-  }
-
-  downloadFile = async (key) => {
-    await Storage.get(key, { level: 'private'})
-    .then(result => {
-        window.open(result, "_blank")
-    })
-    .catch(err => console.log(err));
+    this.onChange('rowsCurrent', currentArray);
+    this.onChange('rowsActive', activeArray);
+    this.onChange('rowsEnded', endedArray);
   }
 
 
@@ -157,9 +155,8 @@ export default class ServicesScreen extends React.Component {
 
   render() {
     return (
-      <View style={[t.flex1]}>
+      <View style= {[ t.flex1, t.bgBlue200]}>
         <ScrollView
-        style={[t.hFull]}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -167,280 +164,253 @@ export default class ServicesScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[t.pX6, t.pY4, t.pt8, t.roundedLg, t.w1_2, t.bgBlue400, t.itemsCenter]}>
+          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={this.state.modalVisible}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                  }}
-                >
-                  <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Add Service</Text>
-
-                      <ScrollView style={[t.hFull]}>
-                        <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
-                          <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
-                            <View rounded>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>SERVICE NAME</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DropDownPicker
-                                      items={[
-                                        { label: 'Electricity', value: 'Electric' },
-                                        { label: 'Gas', value: 'Gas' },
-                                        { label: 'Oil', value: 'Oil' },
-                                        { label: 'Water', value: 'Water' },
-                                        { label: 'Energy Reduction', value: 'Energy Reduction' },
-                                        { label: 'Waste Management', value: 'Waste Management' },
-                                        { label: 'Business Rates Review', value: 'Business Rates Review' },
-                                        { label: 'Fuel Cards', value: 'Fuel Cards' },
-                                        { label: 'Telecomms & Broadband', value: 'Telecomms & Broadband' },
-                                        { label: 'Cyber Security', value: 'Cyber Security' },
-                                        { label: 'Printers', value: 'Printers' },
-                                        { label: 'Merchant Services', value: 'Merchant Services' },
-                                        { label: 'Insolvency', value: 'Insolvency' },
-                                      ]}
-                                      placeholder="Please Select a Service"
-                                      containerStyle={{height: 40, width: 250}}
-                                      style={{ backgroundColor: '#fafafa' }}
-                                      dropDownStyle={{ backgroundColor: '#fafafa' }}
-                                      onChangeItem={item => this.setState({
-                                          service_name: item.value
-                                      })}
-                                    />
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>PROVIDER</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <TextInput style={[ t.textXl]} placeholder="Your current Supplier"
-                                    onChange={event => this.onChangeText('current_supplier', event)}
-                                    value={this.state.current_supplier}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerContract onChange={this.onChange}/>
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <DropDownPicker
-                                      items={[
-                                        { label: '12 Months', value: '12 Months' },
-                                        { label: '18 Months', value: '18 Months' },
-                                        { label: '24 Months', value: '24 Months' },
-                                        { label: '36 Months', value: '36 Months' },
-                                        { label: '48 Months', value: '48 Months' },
-                                        { label: '60 Months', value: '60 Months' },
-                                      ]}
-                                      placeholder="Enter Contract Length"
-                                      containerStyle={{height: 40, width: 250}}
-                                      style={{ backgroundColor: '#fafafa' }}
-                                      dropDownStyle={{ backgroundColor: '#fafafa'}}
-                                      onChangeItem={item => this.setState({
-                                          contract_length: item.value
-                                      })}
-                                    />
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                      <FileUpload/>
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerForm onChange={this.onChange}/>
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£)</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <TextInput style={[ t.textXl]} placeholder="£0.00"
-                                    onChange={event => this.onChangeText('cost_year', event)}
-                                    value={this.state.cost_year}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue400, t.textCenter, t.fontBold, t.mT2]}>COST PER MONTH(£)</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <TextInput style={[ t.textXl]} placeholder="£0.00"
-                                      onChange={event => this.onChangeText('cost_month', event)}
-                                      value={this.state.cost_month}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                                <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.itemsCenter]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <TouchableHighlight
-                                      onPress={() => {
-                                        this.setModalVisible(!this.state.modalVisible);
-                                      }}
-                                    >
-                                      <Text style={styles.textStyle}>Close</Text>
-                                    </TouchableHighlight>
-                                  </Item>
-                                </View>
-                                <View style={[t.w5]}/>
-                                <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgBlue400, t.itemsCenter]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <TouchableHighlight
-                                      onPress={() => {
-                                        this.submitService();
-                                      }}
-                                    >
-                                      <Text style={styles.textStyle}>Submit</Text>
-                                    </TouchableHighlight>
-                                  </Item>
-                                </View>
-                              </Item>
-                            </View>
-                          </View>
-                        </Item>
-                      </ScrollView>
-                    </View>
-                  </View>
-                </Modal>
-
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setModalVisible(true);
-                  }}
-                >
-                  <Text style={[ t.textXl]}>Add Service</Text>
-                </TouchableHighlight>
-
-
+                <Text style={[ t.text2xl, t.textBlue600]}>Service</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textBlue600]}>Manage all your services in one place</Text>
               </Item>
             </View>
+            <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
+              <TouchableOpacity 
+                onPress={() => this.handleRoute('Services')}
+                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
+                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Add Service</Text>
+              </TouchableOpacity>
+            </View>
           </Item>
-          <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT2,]}>
-            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.wFull, t.hFull, t.mT5]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl]}> All Services</Text>
-              </Item>
-              <View rounded>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Live Contracts</Text>
+                </View>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
                 {
-                  this.state.services.map((s, i) => 
-                    <View key={i}>
-                      <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={this.state.serviceModal}
-                        onRequestClose={() => {
-                          Alert.alert("Modal has been closed.");
-                        }}
-                      >
-                        <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
-                          <View style={styles.modalView}>
-                            <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
-
-                            <ScrollView style={[t.hFull]}>
-                              <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.bgWhite, t.wFull, t.hFull, t.mT5,]}>
-                                <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
-                                  <View rounded>
-                                    <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Provider</Text>
-                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.current_supplier}</Text>
-                                        </Item>
-                                      </View>
-                                    </>
-                                    <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>End of Contract</Text>
-                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.contract_end}</Text>
-                                        </Item>
-                                      </View>
-                                    </>
-                                    <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Service Status</Text>
-                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.status}</Text>
-                                        </Item>
-                                      </View>
-                                    </>
-                                    <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Cost Per Year</Text>
-                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.cost_year}</Text>
-                                        </Item>
-                                      </View>
-                                    </>
-                                    <>
-                                      <Text style={[t.textBlue400, t.textCenter, t.fontBold]}>Bills</Text>
-                                      <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                         <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.uploaded_documents}</Text>
-                                        </Item>
-                                      </View>
-                                    </>
-                                  </View>
-                                  <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                                      <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2, t.bgRed400, t.itemsCenter]}>
-                                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                          <TouchableHighlight
-                                            onPress={() => {
-                                              this.showServiceMoal(!this.state.serviceModal);
-                                            }}
-                                          >
-                                            <Text style={styles.textStyle}>Close</Text>
-                                          </TouchableHighlight>
-                                        </Item>
-                                      </View>
-                                    </Item>
-                                </View>
-                              </Item>
-                            </ScrollView>
-                          </View>
+                  this.state.rowsActive.map((anObjectMapped, index) => { // This will render a row for each data element.
+                    return (
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.service_name}</Text>
                         </View>
-                      </Modal>
-                      <View key={i} style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2]} backgroundColor={serviceColors[s.service_name]}>
-                        <Item onPress={() => {
-                            this.showServiceMoal(true);
-                          }} style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                          <FontAwesome5 name={serviceIcons[s.service_name]} size={24} color="black" style={[t.pE8]}/>
-                          <Text style={[t.textXl, t.itemsCenter, t.pE8]}>{s.service_name}</Text>
-                        </Item>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.provider}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.contract_end}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
-                  )
+                    )
+                  })
                 }
               </View>
-            </View>
+            </CollapsibleList>
           </Item>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>In Progress</Text>
+                </View>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                {
+                  this.state.rowsCurrent.map((anObjectMapped, index) => { // This will render a row for each data element.
+                    return (
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.service_name}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.provider}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.contract_end}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                        </View>
+                      </View>
+                    )
+                  })
+                }
+              </View>
+            </CollapsibleList>
+          </Item>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <CollapsibleList
+              numberOfVisibleItems={0}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              buttonPosition="top"
+              buttonContent={
+                <View style={[ t.p3, t.flex1]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Expired Contracts</Text>
+                </View>
+              }
+            >
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+                {
+                  this.state.rowsEnded.map((anObjectMapped, index) => { // This will render a row for each data element.
+                    return (
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.service_name}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.provider}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <Text>{anObjectMapped.contract_end}</Text>
+                        </View>
+                        <View style={[ t.flex1, t.selfStretch]}>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]} onPress={() => this.setModalVisible(true, anObjectMapped)}><Text>View</Text></TouchableOpacity>
+                        </View>
+                      </View>
+                    )
+                  })
+                }
+              </View>
+            </CollapsibleList>
+          </Item>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+              <View style={styles.modalView}>
+                <ScrollView>
+                {
+                  this.state.selectedRecord.map((anObjectMapped, index) => { // This will render a row for each data element.
+                    return (
+                      <View key={index}>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Service</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.service_name}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Provider</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.provider}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Contract End Date</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.contract_end}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Costs Per Year (£)</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.cost_year}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.text2xl,]}>Status</Text>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <Text style={[ t.textXl]}>{anObjectMapped.status}</Text>
+                            </Item>
+                          </View>
+                        </Item>
+                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <TouchableOpacity 
+                                onPress={() => this.hideModal()}
+                                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
+                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.hideModal()}>Close</Text>
+                              </TouchableOpacity>
+                            </Item>
+                          </View>
+                          <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                              <TouchableOpacity 
+                                onPress={() => this.handleRoute('Services')}
+                                style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
+                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Delete</Text>
+                              </TouchableOpacity>
+                            </Item>
+                          </View>
+                        </Item>
+                      </View>
+                    )
+                  })
+                }
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
         </ScrollView>
+        <TabBar
+            activeTab={this.state.activeTab}
+            iconStyle={{ width: 50, height: 50 }}
+            tintColor="blue"
+            onPress={(tabIndex) => {
+                this._handlePress(tabIndex);
+            }}
+            iconActiveTintColor="black"
+            iconInactiveTintColor="blue"
+            tintColor="#f5f5f7"
+            titleColor="red"
+            isRtl={ false }
+            iconSize={25}
+            values={[
+                { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons },
+                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons},
+            ]}
+          />
       </View>
     )
   }
@@ -448,10 +418,10 @@ export default class ServicesScreen extends React.Component {
 }
 const styles = StyleSheet.create({
   modalView: {
-    margin: 20,
+    margin: 5,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 10,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -462,19 +432,4 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
 });
