@@ -608,9 +608,9 @@ export default class ServicesScreen extends React.Component {
                     <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
                       <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                         <TouchableOpacity 
-                          onPress={() => this.showDeleteModal()}
+                          onPress={() => this.deleteService()}
                           style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
-                          <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.showDeleteModal()}>Delete</Text>
+                          <Text style={[ t.textWhite, t.textXl, t.p2]}>Delete</Text>
                         </TouchableOpacity>
                       </Item>
                     </View>
