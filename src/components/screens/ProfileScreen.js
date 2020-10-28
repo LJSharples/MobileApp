@@ -393,22 +393,22 @@ export default class ProfileScreen extends React.Component {
         <TabBar
             activeTab={this.state.activeTab}
             iconStyle={{ width: 50, height: 50 }}
-            tintColor="blue"
+            tintColor="#2F82EC"
             onPress={(tabIndex) => {
                 this._handlePress(tabIndex);
             }}
             iconActiveTintColor="black"
-            iconInactiveTintColor="blue"
+            iconInactiveTintColor="#2F82EC"
             tintColor="#f5f5f7"
             titleColor="#999999"
             isRtl={ false }
             iconSize={25}
             values={[
-              { title: "Dashboard", icon: "home", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons },
-              { title: "Services", icon: "settings-power", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+              { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
+              { title: "Services", icon: "settings-power", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Expenses", icon: "attach-money", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Get Quote", icon: "format-quote", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Profile", icon: "verified-user", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
             ]}
           />
       </View>

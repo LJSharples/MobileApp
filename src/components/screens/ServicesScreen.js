@@ -17,7 +17,6 @@ import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
 import { addService, removeService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 
@@ -624,22 +623,22 @@ export default class ServicesScreen extends React.Component {
         <TabBar
             activeTab={this.state.activeTab}
             iconStyle={{ width: 50, height: 50 }}
-            tintColor="blue"
+            tintColor="#2F82EC"
             onPress={(tabIndex) => {
                 this._handlePress(tabIndex);
             }}
             iconActiveTintColor="black"
-            iconInactiveTintColor="blue"
+            iconInactiveTintColor="#2F82EC"
             tintColor="#f5f5f7"
             titleColor="#999999"
             isRtl={ false }
             iconSize={25}
             values={[
-                { title: "Dashboard", icon: "home", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons },
-                { title: "Services", icon: "settings-power", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
-                { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Profile", icon: "verified-user", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
+                { title: "Services", icon: "settings-power", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+                { title: "Expenses", icon: "attach-money", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Get Quote", icon: "format-quote", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+                { title: "Profile", icon: "verified-user", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
       </View>
