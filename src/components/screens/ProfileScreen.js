@@ -333,7 +333,7 @@ export default class ProfileScreen extends React.Component {
               { title: "Services", icon: "settings-power", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
               { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
               { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Profile", icon: "verified-user", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+              { title: "Profile", icon: "verified-user", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
             ]}
           />
       </View>

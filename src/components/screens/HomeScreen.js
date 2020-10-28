@@ -200,7 +200,7 @@ export default class HomeScreen extends React.Component {
             isRtl={ false }
             iconSize={25}
             values={[
-              { title: "Dashboard", icon: "home", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab },
+              { title: "Dashboard", icon: "home", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab },
               { title: "Services", icon: "settings-power", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
               { title: "Expenses", icon: "attach-money", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
               { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},

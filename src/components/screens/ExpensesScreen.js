@@ -288,7 +288,7 @@ export default class ExpensesScreen extends React.Component {
                 values={[
                     { title: "Dashboard", icon: "home", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons },
                 { title: "Services", icon: "settings-power", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
-                { title: "Expenses", icon: "attach-money", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+                { title: "Expenses", icon: "attach-money", tintColor: "blue", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
                 { title: "Get Quote", icon: "format-quote", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
                 { title: "Profile", icon: "verified-user", tintColor: "#4299e1", isIcon: true, iconType: iconTypes.MaterialIcons},
                 ]}
