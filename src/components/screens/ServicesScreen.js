@@ -25,6 +25,9 @@ export default class ServicesScreen extends React.Component {
   state = {
     curTab: 1,
     activeTab: 1,
+    chevron1: false,
+    chevron2: false,
+    chevron3: false,
     userProfile: {},
     userCompany: {},
     rowsCurrent: [],
@@ -54,7 +57,6 @@ export default class ServicesScreen extends React.Component {
   setModalVisible = (visible, record) => {
     var records = []
     records.push(record)
-    console.log(records)
     this.setState({ 
       modalVisible: visible,
       selectedRecord: records
@@ -85,6 +87,11 @@ export default class ServicesScreen extends React.Component {
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
+        let bills = []
+        if(lead.uploaded_documents && lead.uploaded_documents.length > 0){
+            let str = lead.uploaded_documents.slice(1,-1);
+            bills = str.split(', ')
+        }
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
@@ -94,7 +101,7 @@ export default class ServicesScreen extends React.Component {
               contract_end: contractEndDate.toLocaleDateString(),
               cost_year: lead.cost_year,
               status: lead.status,
-              bills: lead.uploaded_documents
+              bills: bills
           }
           endedArray.push(newValue)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
@@ -104,7 +111,7 @@ export default class ServicesScreen extends React.Component {
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
                 status: lead.status,
-                bills: lead.uploaded_documents
+                bills: bills
             }
             activeArray.push(newValue2)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
@@ -114,7 +121,7 @@ export default class ServicesScreen extends React.Component {
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
                 status: lead.status,
-                bills: lead.uploaded_documents
+                bills: bills
             }
             currentArray.push(newValue)
         }
@@ -125,12 +132,37 @@ export default class ServicesScreen extends React.Component {
     this.onChange('rowsEnded', endedArray);
   }
 
+  downloadFile = async (key) => {
+    await Storage.get(key, { level: 'private'})
+    .then(result => {
+      console.log(result)
+    })
+    .catch(err => console.log(err));
+  }
 
   _onRefresh = () => {
     this.setState({refreshing: true});
     this.componentDidMount().then(() => {
       this.setState({refreshing: false});
     });
+  }
+
+  swapChevron1 = () => {
+    this.setState(prevState => ({
+      chevron1: !prevState.chevron1
+    }));    
+  }
+
+  swapChevron2 = () => {
+    this.setState(prevState => ({
+      chevron2: !prevState.chevron2
+    }));    
+  }
+
+  swapChevron3 = () => {
+    this.setState(prevState => ({
+      chevron3: !prevState.chevron3
+    }));    
   }
 
   render() {
@@ -164,11 +196,17 @@ export default class ServicesScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
               buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron1();
+              }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Live Contracts</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Live Contracts 
+                  {'                                     '} 
+                  { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
@@ -214,15 +252,23 @@ export default class ServicesScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600, t.justifyCenter]}
+              buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron2();
+              }}
               buttonPosition="top"
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>In Progress</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>In Progress 
+                    {'                                           '} 
+                    { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+              
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
                 <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                   <View style={[ t.flex1, t.selfStretch]}>
                     <Text style={[ t.fontBold]}>Service</Text>
@@ -249,9 +295,9 @@ export default class ServicesScreen extends React.Component {
                         <View style={[ t.flex1, t.selfStretch]}>
                           <Text>{anObjectMapped.contract_end}</Text>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
+                        <View style={[ t.flex1, t.selfStretch, t.justifyCenter, t.alignCenter]}>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <FontAwesome5 name="plus" size={24} color="black" />
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -264,11 +310,17 @@ export default class ServicesScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
               buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron3();
+              }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Expired Contracts</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Expired Contracts 
+                    {'                               '} 
+                    { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
@@ -299,9 +351,9 @@ export default class ServicesScreen extends React.Component {
                         <View style={[ t.flex1, t.selfStretch]}>
                           <Text>{anObjectMapped.contract_end}</Text>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
+                        <View style={[ t.flex1, t.selfStretch, t.justifyCenter, t.alignCenter]}>
+                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <FontAwesome5 name="plus" size={24} color="black" />
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -394,7 +446,17 @@ export default class ServicesScreen extends React.Component {
                           </View>
                           <View style={[t.roundedLg, t.w1_2]}>
                             <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.uploaded_documents}</Text>
+                            {
+                              anObjectMapped.bills.map((bill, billIndex) => { // This will render a row for each data element.
+                                return (
+                                  <TouchableOpacity
+                                    onPress={() => this.downloadFile(bill)}
+                                    style={[ t.pX2, t.pY2, t.justifyStart]}>
+                                    <Text key={billIndex} style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
+                                  </TouchableOpacity>
+                                )
+                              })
+                            }
                             </Item>
                           </View>
                         </Item>
