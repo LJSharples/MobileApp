@@ -210,37 +210,53 @@ export default class ServicesScreen extends React.Component {
                 </View>
               }
             >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
                 <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Service</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Service</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Provider</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Provider</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Contract End Date</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                    </Item>
                   </View>
                 </View>
                 {
                   this.state.rowsActive.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.provider}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.contract_end}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>View</Text>
-                          </TouchableOpacity>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                              <FontAwesome5 name="plus" size={24} color="black" />
+                            </TouchableOpacity>
+                          </Item>
                         </View>
                       </View>
                     )
@@ -270,35 +286,51 @@ export default class ServicesScreen extends React.Component {
               
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
                 <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Service</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Service</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Provider</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Provider</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Contract End Date</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                    </Item>
                   </View>
                 </View>
                 {
                   this.state.rowsCurrent.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.provider}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.contract_end}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch, t.justifyCenter, t.alignCenter]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
-                            <FontAwesome5 name="plus" size={24} color="black" />
-                          </TouchableOpacity>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                              <FontAwesome5 name="plus" size={24} color="black" />
+                            </TouchableOpacity>
+                          </Item>
                         </View>
                       </View>
                     )
@@ -324,37 +356,53 @@ export default class ServicesScreen extends React.Component {
                 </View>
               }
             >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
+              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
                 <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Service</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Service</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Provider</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Provider</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                      <Text style={[ t.fontBold]}>Contract End Date</Text>
+                    </Item>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
+                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                    </Item>
                   </View>
                 </View>
                 {
                   this.state.rowsEnded.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.provider}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch]}>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.contract_end}</Text>
+                          </Item>
                         </View>
-                        <View style={[ t.flex1, t.selfStretch, t.justifyCenter, t.alignCenter]}>
-                          <TouchableOpacity style={[ t.pX2, t.pY2,t.roundedLg]}  onPress={() => this.setModalVisible(true, anObjectMapped)}>
-                            <FontAwesome5 name="plus" size={24} color="black" />
-                          </TouchableOpacity>
+                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                              <FontAwesome5 name="plus" size={24} color="black" />
+                            </TouchableOpacity>
+                          </Item>
                         </View>
                       </View>
                     )
