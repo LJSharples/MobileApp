@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ScrollView,
+  Alert,
   RefreshControl,
   TouchableOpacity,
   TextInput,
@@ -12,6 +13,7 @@ import {
 } from 'native-base'
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
 import { getServices, getUserDetails } from '../../graphql/queries'
+import { FontAwesome5 } from '@expo/vector-icons';
 import { updateCompany, updateUser} from '../../graphql/mutations'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
@@ -39,6 +41,9 @@ export default class ProfileScreen extends React.Component {
     yearly_turnover: "",
     industry: "",
     user_name: "",
+    chevron1: false,
+    chevron2: false,
+    chevron3: false,
     routes: [
       'Home',
       'Services',
@@ -137,6 +142,47 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
+  // Sign out from the app
+  signOutAlert = async () => {
+    await Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out from the app?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Canceled'), style: 'cancel'},
+        // Calling signOut
+        {text: 'OK', onPress: () => this.signOut()}, 
+      ],
+      { cancelable: false }
+    )
+  }
+  // Confirm sign out
+  signOut = async () => {
+    await Auth.signOut()
+    .then(() => {
+      console.log('Sign out complete')
+      this.props.navigation.navigate('Authloading')
+    })
+    .catch(err => console.log('Error while signing out!', err))
+  }
+
+  swapChevron1 = () => {
+    this.setState(prevState => ({
+      chevron1: !prevState.chevron1
+    }));    
+  }
+
+  swapChevron2 = () => {
+    this.setState(prevState => ({
+      chevron2: !prevState.chevron2
+    }));    
+  }
+
+  swapChevron3 = () => {
+    this.setState(prevState => ({
+      chevron3: !prevState.chevron3
+    }));    
+  }
+
   render() {
     return (
       <View style= {[ t.flex1, t.bgBlue200]}>
@@ -161,11 +207,17 @@ export default class ProfileScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
               buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron1();
+              }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>My Details</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>My Details
+                  {'                                             '} 
+                  { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
@@ -203,11 +255,17 @@ export default class ProfileScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
               buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron2();
+              }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>About Your Company</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>About Your Company
+                  {'                         '} 
+                  { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
@@ -269,11 +327,17 @@ export default class ProfileScreen extends React.Component {
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
             <CollapsibleList
               numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgBlue100]}
+              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
               buttonPosition="top"
+              onToggle={() => {
+                this.swapChevron3();
+              }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Additional Information</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Additional Information
+                  {'                        '} 
+                  { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                  </Text>
                 </View>
               }
             >
@@ -313,6 +377,17 @@ export default class ProfileScreen extends React.Component {
                   </View>
               </View>
             </CollapsibleList>
+          </Item>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+            <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+              <TouchableOpacity
+                style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                onPress={this.signOutAlert}>
+                <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
+                  Logout
+                </Text>
+              </TouchableOpacity>
+            </View>
           </Item>
         </ScrollView>
         <TabBar
