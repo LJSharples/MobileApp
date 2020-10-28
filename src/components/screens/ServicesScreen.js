@@ -14,7 +14,7 @@ import {
 } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
-import { addService } from '../../graphql/mutations';
+import { addService, removeService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -36,6 +36,7 @@ export default class ServicesScreen extends React.Component {
     email: '',
     selectedRecord: [],
     modalVisible: false,
+    deleteModalVisible: false,
     routes: [
       'Home',
       'Services',
@@ -54,17 +55,33 @@ export default class ServicesScreen extends React.Component {
     await this.props.navigation.navigate(destination)
   }
 
-  setModalVisible = (visible, record) => {
+  setModalVisible = (visible, record, key) => {
     var records = []
     records.push(record)
     this.setState({ 
       modalVisible: visible,
-      selectedRecord: records
+      selectedRecord: records,
+      selectedKey: key 
     });
   }
 
   hideModal(){
     this.setState({ modalVisible: false});
+  }
+
+  showDeleteModal = () => {
+    this.setState(prevState => ({
+      modalVisible: !prevState.modalVisible
+    }));  
+    this.setState(prevState => ({
+      deleteModalVisible: !prevState.deleteModalVisible
+    }));  
+  }
+
+  hideDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModalVisible: !prevState.deleteModalVisible
+    }));  
   }
 
   onChange = (key, value) => {
@@ -101,7 +118,8 @@ export default class ServicesScreen extends React.Component {
               contract_end: contractEndDate.toLocaleDateString(),
               cost_year: lead.cost_year,
               status: lead.status,
-              bills: bills
+              bills: bills,
+              id: lead.pk
           }
           endedArray.push(newValue)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
@@ -111,7 +129,8 @@ export default class ServicesScreen extends React.Component {
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
                 status: lead.status,
-                bills: bills
+                bills: bills,
+                id: lead.pk
             }
             activeArray.push(newValue2)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
@@ -121,7 +140,8 @@ export default class ServicesScreen extends React.Component {
                 contract_end: contractEndDate.toLocaleDateString(),
                 cost_year: lead.cost_year,
                 status: lead.status,
-                bills: bills
+                bills: bills,
+                id: lead.pk
             }
             currentArray.push(newValue)
         }
@@ -138,6 +158,28 @@ export default class ServicesScreen extends React.Component {
       console.log(result)
     })
     .catch(err => console.log(err));
+  }
+
+  deleteService = async () => {
+    const id = this.state.selectedKey
+    const data = {
+        user_name: this.state.userProfile.user_name,
+        id: id.substr(8),
+        status: 'CUSTOMER DELETED'
+    }
+    try {
+        await API.graphql(graphqlOperation(removeService, data));
+        this.setState({ isOpen3: !this.state.isOpen3 })
+        TagManager.dataLayer({
+            dataLayer: {
+                event: 'serviceDeleted',
+                user_name: this.state.userProfile.user_name
+            }
+        })
+    } catch (err) {
+        console.log("Error:")
+        console.log(err);
+    }
   }
 
   _onRefresh = () => {
@@ -253,7 +295,7 @@ export default class ServicesScreen extends React.Component {
                         </View>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
                               <FontAwesome5 name="plus" size={24} color="black" />
                             </TouchableOpacity>
                           </Item>
@@ -327,7 +369,7 @@ export default class ServicesScreen extends React.Component {
                         </View>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
                               <FontAwesome5 name="plus" size={24} color="black" />
                             </TouchableOpacity>
                           </Item>
@@ -399,7 +441,7 @@ export default class ServicesScreen extends React.Component {
                         </View>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped)}>
+                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
                               <FontAwesome5 name="plus" size={24} color="black" />
                             </TouchableOpacity>
                           </Item>
@@ -521,9 +563,9 @@ export default class ServicesScreen extends React.Component {
                           <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
                             <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                               <TouchableOpacity 
-                                onPress={() => this.handleRoute('Services')}
+                                onPress={() => this.showDeleteModal()}
                                 style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
-                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Delete</Text>
+                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.showDeleteModal()}>Delete</Text>
                               </TouchableOpacity>
                             </Item>
                           </View>
@@ -532,6 +574,48 @@ export default class ServicesScreen extends React.Component {
                     )
                   })
                 }
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.deleteModalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+              <View style={styles.modalView}>
+                <ScrollView>
+                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg]}>
+                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.textXl, t.p2]}>Please Confirm you wish to delete this service.</Text>
+                      </Item>
+                    </View>
+                  </Item>
+                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <TouchableOpacity 
+                          onPress={() => this.hideDeleteModal()}
+                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
+                          <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.hideDeleteModal()}>Cancel</Text>
+                        </TouchableOpacity>
+                      </Item>
+                    </View>
+                    <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
+                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <TouchableOpacity 
+                          onPress={() => this.showDeleteModal()}
+                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
+                          <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.showDeleteModal()}>Delete</Text>
+                        </TouchableOpacity>
+                      </Item>
+                    </View>
+                  </Item>
                 </ScrollView>
               </View>
             </View>
