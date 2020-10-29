@@ -41,7 +41,8 @@ export default class ServicesScreen extends React.Component {
       'Services',
       'Expenses',
       'Quote',
-      'Account'
+      'Account',
+      'AddServices'
     ]
   };
 
@@ -179,6 +180,58 @@ export default class ServicesScreen extends React.Component {
         console.log("Error:")
         console.log(err);
     }
+    const currentArray = [];
+    const activeArray = [];
+    const endedArray = [];
+    userServices.data["getServices"].items.map(lead => {
+      if(lead.status === "CUSTOMER DELETED"){
+      } else {
+        let bills = []
+        if(lead.uploaded_documents && lead.uploaded_documents.length > 0){
+            let str = lead.uploaded_documents.slice(1,-1);
+            bills = str.split(', ')
+        }
+        var dateCurrent = new Date();
+        var contractEndDate = new Date(lead.contract_end);
+        if(contractEndDate.toISOString() < dateCurrent.toISOString()){
+          const newValue = {
+              service_name: lead.service_name,
+              provider: lead.current_supplier,
+              contract_end: contractEndDate.toLocaleDateString(),
+              cost_year: lead.cost_year,
+              status: lead.status,
+              bills: bills,
+              id: lead.pk
+          }
+          endedArray.push(newValue)
+        } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
+            const newValue2 = {
+                service_name: lead.service_name,
+                provider: lead.current_supplier,
+                contract_end: contractEndDate.toLocaleDateString(),
+                cost_year: lead.cost_year,
+                status: lead.status,
+                bills: bills,
+                id: lead.pk
+            }
+            activeArray.push(newValue2)
+        }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
+            const newValue = {
+                service_name: lead.service_name,
+                provider: lead.current_supplier,
+                contract_end: contractEndDate.toLocaleDateString(),
+                cost_year: lead.cost_year,
+                status: lead.status,
+                bills: bills,
+                id: lead.pk
+            }
+            currentArray.push(newValue)
+        }
+      }
+    });
+    this.onChange('rowsCurrent', currentArray);
+    this.onChange('rowsActive', activeArray);
+    this.onChange('rowsEnded', endedArray);
   }
 
   _onRefresh = () => {
@@ -228,9 +281,9 @@ export default class ServicesScreen extends React.Component {
             </View>
             <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
               <TouchableOpacity 
-                onPress={() => this.handleRoute('Services')}
+                onPress={() => this.handleRoute('AddServices')}
                 style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Add Service</Text>
+                <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
               </TouchableOpacity>
             </View>
           </Item>
@@ -276,7 +329,7 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.rowsActive.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>
@@ -350,7 +403,7 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.rowsCurrent.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>
@@ -422,7 +475,7 @@ export default class ServicesScreen extends React.Component {
                 {
                   this.state.rowsEnded.map((anObjectMapped, index) => { // This will render a row for each data element.
                     return (
-                      <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
                         <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                           <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text>{anObjectMapped.service_name}</Text>

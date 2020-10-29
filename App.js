@@ -31,6 +31,7 @@ import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
+import AddServiceScreen from './src/components/screens/AddServiceScreen'
 
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 
@@ -58,6 +59,18 @@ const configurations = {
         />
       ),
     },
+  },
+  AddServices: {
+    screen: AddServiceScreen,
+    navigationOptions: {
+      tabBarLabel: 'Add Service',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons 
+          style={{ fontSize: 20, color: tintColor }} 
+          name="ios-home" 
+        />
+      ),
+    }
   },
   Account: {
     screen: ProfileScreen,
@@ -166,6 +179,12 @@ const AppStackNavigator = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
     Home: HomeScreen,
     Services: ServicesScreen,
+    AddServices: {
+      screen: AddServiceScreen,
+      navigationOptions: () => ({
+        title: 'Add Service',
+      }),
+    },
     Account: {
       screen: ProfileScreen,
       navigationOptions: () => ({
