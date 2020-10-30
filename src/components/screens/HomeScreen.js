@@ -32,7 +32,8 @@ export default class HomeScreen extends React.Component {
       'Services',
       'Expenses',
       'Quote',
-      'Account'
+      'Account',
+      'AddQuote'
     ]
   };
 
@@ -99,7 +100,6 @@ export default class HomeScreen extends React.Component {
     this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
     this.setState({annualSave: parseFloat(sum3).toFixed(2)})
     if(isNaN(sum3)){
-        console.log("HERE")
         this.setState({annualSave: '0.00'})
     }
 
@@ -125,9 +125,9 @@ export default class HomeScreen extends React.Component {
             </View>
             <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
               <TouchableOpacity 
-                onPress={() => this.handleRoute('Services')}
+                onPress={() => this.handleRoute('AddQuote')}
                 style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
-                <Text style={[ t.textBlue100, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Get Quotes</Text>
+                <Text style={[ t.textBlue100, t.textXl, t.p2]}>Get Quotes</Text>
               </TouchableOpacity>
             </View>
           </Item>

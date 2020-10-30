@@ -34,6 +34,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-collapsible-list": "^2.2.2",
     "react-native-dropdown-picker": "^3.7.0",
+    "react-native-elements": "^3.0.0-alpha.1",
     "react-native-fluidbottomnavigation": "^1.2.2",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-modal-datetime-picker": "^9.0.0",

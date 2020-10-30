@@ -35,7 +35,8 @@ export default class QuoteScreen extends React.Component {
       'Services',
       'Expenses',
       'Quote',
-      'Account'
+      'Account',
+      'AddQuote'
     ]
   };
 
@@ -51,7 +52,6 @@ export default class QuoteScreen extends React.Component {
   setModalVisible = (visible, record) => {
     var records = []
     records.push(record)
-    console.log(records)
     this.setState({ 
       modalVisible: visible,
       selectedRecord: records
@@ -169,7 +169,7 @@ export default class QuoteScreen extends React.Component {
               <TouchableOpacity 
                 onPress={() => this.handleRoute('Services')}
                 style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('Services')}>Get Quote</Text>
+                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
               </TouchableOpacity>
             </View>
           </Item>

@@ -92,6 +92,7 @@ export const getServices = /* GraphQL */ `
         uploaded_documents
         id
         PK
+        savings
       }
       nextToken
     }

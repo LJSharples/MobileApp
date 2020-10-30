@@ -9,6 +9,7 @@ import {
   Item
 } from 'native-base'
 import { t } from 'react-native-tailwindcss';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getServices } from '../../graphql/queries'
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
@@ -24,6 +25,8 @@ export default class ExpensesScreen extends React.Component {
     chevron3: false,
     refreshing: false,
     services: [],
+    activeServices: [],
+    savings: [],
     routes: [
       'Home',
       'Services',
@@ -45,7 +48,31 @@ export default class ExpensesScreen extends React.Component {
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    this.setState({ services: userServices.data["getServices"].items});
+    const savings = [];
+    const activeServices = [];
+    userServices.data["getServices"].items.map(lead => {
+        if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
+            var date = new Date(lead.contract_end);
+            var dateString = date.toLocaleString();
+            const newValue = {
+                service_name: lead.service_name,
+                contract_length: lead.contract_length,
+                contract_end: dateString.substring(0, 10),
+                cost_year: lead.cost_year,
+                cost_month: lead.cost_month,
+                savings: lead.savings
+            }
+            activeServices.push(newValue);
+            if(lead.savings){
+                savings.push(newValue);
+            }
+        }
+    })
+    this.setState({
+        activeServices: activeServices,
+        savings: savings,
+        services: userServices.data["getServices"].items
+    })
   }
 
   _onRefresh = () => {
@@ -103,7 +130,7 @@ export default class ExpensesScreen extends React.Component {
     const merchantServicesYear = [];
     const insolvencyYear = [];
     this.state.services.map(lead => {
-        if(lead.status === "CURRENT" || lead.status === "Live" || lead.status === "LIVE"){
+        if(lead.status === "CURRENT" || lead.status === "Live" || lead.status === "LIVE" || lead.status === "Live Contract"){
             if (lead.service_name === "Gas" && lead.cost_month) {
                 gas.push(parseFloat(lead.cost_month));
                 gasYear.push(parseFloat(lead.cost_year));
@@ -221,6 +248,7 @@ export default class ExpensesScreen extends React.Component {
     const newLabels = []
     const data = [];
     const data2 = [];
+    const data3 = [];
     const colors = [
         '#fc8181',
         '#fcc981',
@@ -291,9 +319,15 @@ export default class ExpensesScreen extends React.Component {
                         numberOfVisibleItems={0}
                         wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
                         buttonPosition="top"
+                        onToggle={() => {
+                          this.swapChevron1();
+                        }}
                         buttonContent={
                             <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Monthly Expenses</Text>
+                                <Text style={[ t.textWhite, t.textXl, t.p2]}>Monthly Expenses
+                                    {'                               '} 
+                                    { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                </Text>
                             </View>
                         }
                     >
@@ -321,7 +355,7 @@ export default class ExpensesScreen extends React.Component {
                                 </View>
                             </View>
                             {
-                            this.state.services.map((anObjectMapped, index) => { // This will render a row for each data element.
+                            this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
                                 return (
                                 <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
@@ -359,9 +393,15 @@ export default class ExpensesScreen extends React.Component {
                     numberOfVisibleItems={0}
                     wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
                     buttonPosition="top"
+                    onToggle={() => {
+                      this.swapChevron2();
+                    }}
                     buttonContent={
                         <View style={[ t.p3, t.flex1]}>
-                        <Text style={[ t.textWhite, t.textXl, t.p2]}>Annual Expenses</Text>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Annual Expenses
+                                {'                                 '} 
+                                { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                            </Text>
                         </View>
                     }
                     >
@@ -389,9 +429,9 @@ export default class ExpensesScreen extends React.Component {
                                 </View>
                             </View>
                             {
-                            this.state.services.map((anObjectMapped, index) => { // This will render a row for each data element.
+                            this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
                                 return (
-                                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                         <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                                             <Text>{anObjectMapped.service_name}</Text>
@@ -427,14 +467,72 @@ export default class ExpensesScreen extends React.Component {
                     numberOfVisibleItems={0}
                     wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
                     buttonPosition="top"
+                    onToggle={() => {
+                      this.swapChevron3();
+                    }}
                     buttonContent={
                         <View style={[ t.p3, t.flex1]}>
-                        <Text style={[ t.textWhite, t.textXl, t.p2]}>Savings To Date</Text>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Savings To Date
+                                {'                                   '} 
+                                { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                            </Text>
                         </View>
                     }
                     >
-                    <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
-                        <Text>Test</Text>
+                    <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                        <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.fontBold]}>Service</Text>
+                                </Item>
+                            </View>
+                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.fontBold]}>Contract End Date</Text>
+                                </Item>
+                            </View>
+                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.fontBold]}>Savings</Text>
+                                </Item>
+                            </View>
+                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.fontBold]}>Contract Length</Text>
+                                </Item>
+                            </View>
+                        </View>
+                        {
+                        this.state.savings.map((anObjectMapped, index) => { // This will render a row for each data element.
+                            return (
+                            <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text>{anObjectMapped.service_name}</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text>{anObjectMapped.contract_end}</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text>£{anObjectMapped.savings}</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text>{anObjectMapped.contract_length}</Text>
+                                    </Item>
+                                </View>
+                            </View>
+                            )
+                        })
+                        }
+                        <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                            <PieChart data={data}/>
+                        </View>
                     </View>
                     </CollapsibleList>
                 </Item>

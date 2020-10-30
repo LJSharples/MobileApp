@@ -12,7 +12,7 @@ export const DateTimePickerContract = (props) => {
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
     console.log(currentDate)
-    props.onChange('contract_end', currentDate)
+    props.onChange('contractDate', currentDate)
   };
 
   const showMode = (currentMode) => {

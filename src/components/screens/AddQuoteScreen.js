@@ -4,8 +4,6 @@ import {
   Text,
   ScrollView,
   RefreshControl,
-  TouchableHighlight,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
 } from 'react-native'
@@ -24,7 +22,7 @@ import DateTimePickerContract from '../forms/DateTimePickerContract';
 import FileUpload from "../forms/FileUpload";
 
 
-export default class addServiceScreen extends React.Component {
+export default class addQuoteScreen extends React.Component {
     state = {
         routes: [
             'Home',
@@ -42,7 +40,7 @@ export default class addServiceScreen extends React.Component {
         cost_year: '',
         cost_month: '',
         uploaded_documents: [],
-        permission: false,
+        permission: true,
         user_name: '',
     };
 
@@ -60,8 +58,7 @@ export default class addServiceScreen extends React.Component {
         await this.props.navigation.navigate(destination)
     }
 
-    onChangeText = (key, event) => {
-      const value = event.nativeEvent.text
+    onChangeText = (key, value) => {
       if(key === "contractDate"){
           this.setState({ s_contractDate: value})
           let month = value.getMonth() + 1
@@ -84,7 +81,6 @@ export default class addServiceScreen extends React.Component {
     };  
 
     submitService = async () => {
-      console.log("HERE")
       var time = this.state.callback_time;
       var date = this.state.callback_date;
       var status = "CURRENT";
@@ -109,12 +105,13 @@ export default class addServiceScreen extends React.Component {
       console.log(data)
       try {
           const re = await API.graphql(graphqlOperation(addService, data));
+          this.getServices();
           console.log("Success");
       } catch (err) {
           console.log("Error:")
-          console.log(err);
       }
     }
+
 
     render() {
         return (
@@ -130,7 +127,7 @@ export default class addServiceScreen extends React.Component {
                     <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                         <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
                             <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.text2xl, t.textBlue600]}>Add A Service</Text>
+                                <Text style={[ t.text2xl, t.textBlue600]}>Get A Quote</Text>
                             </Item>
                         </View>
                     </Item>
@@ -276,7 +273,7 @@ export default class addServiceScreen extends React.Component {
                                 <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w1_2]}>
                                   <TouchableOpacity 
                                     onPress={() => {
-                                      this.handleRoute('Services');
+                                      this.handleRoute('Quote');
                                     }}
                                     style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
                                     <Text style={[ t.textWhite, t.textXl, t.p2]}>{'      '}Cancel</Text>
@@ -284,11 +281,9 @@ export default class addServiceScreen extends React.Component {
                                 </View>
                                 <View style={[t.roundedLg, t.itemsCenter, t.textCenter, t.w1_2]}>
                                   <TouchableOpacity 
-                                    onPress={() => {
-                                      this.submitService();
-                                    }}
+                                    onPress={() => this.submitService}
                                     style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                                    <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
+                                    <Text style={[ t.textWhite, t.textXl, t.p2]}>Get Quote</Text>
                                   </TouchableOpacity>
                                 </View>
                               </Item>

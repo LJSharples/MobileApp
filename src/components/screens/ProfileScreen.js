@@ -18,6 +18,7 @@ import { updateCompany, updateUser} from '../../graphql/mutations'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default class ProfileScreen extends React.Component {
   state = {
@@ -342,29 +343,136 @@ export default class ProfileScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
-                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
+                  <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
                     <Text>How many years have you been trading?</Text>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.years_trading}/>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
-                    <Text>What is your estimated yearly turn-over?</Text>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.yearly_turnover}/>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
-                    <Text>How many employees do you have?</Text>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.num_employees}/>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mB1]}>
-                    <Text>Which industry does your business form part of?</Text>
-                  </View>
-                  <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} value={this.state.industry}/>
+                      <DropDownPicker
+                        items={[
+                          { label: '0 - 1 Years', value: '0 - 1 Years' },
+                          { label: '2 - 5 Years', value: '2 - 5 Years' },
+                          { label: '5 - 10 Years', value: '5 - 10 Years' },
+                          { label: '10 Years +', value: '10 Years +' },
+                        ]}
+                        defaultValue={this.state.years_trading}
+                        placeholder="How many employees do you have?"
+                        placeholderStyle={{
+                          fontSize: 16,
+                          textAlign: 'center'
+                        }}
+                        containerStyle={{height: 50, width: 350}}
+                        style={{ backgroundColor: '#fafafa' }}
+                        dropDownStyle={{ 
+                          backgroundColor: '#e2e8f0',
+                          marginTop: 2
+                        }}
+                        zIndex={5000}
+                        onChangeItem={item => 
+                          this.onChangeText('years_trading', item.value)
+                        }
+                      />
+                    <Text style={[t.p3]}>What is your estimated yearly turn-over?</Text>
+                    <DropDownPicker
+                      items={[
+                        { label: '£0 - £50,000', value: '£0 - £50,000' },
+                        { label: '£50,000 - £100,000', value: '£50,000 - £100,000' },
+                        { label: '£100,000 - £500,000', value: '£100,000 - £500,000' },
+                        { label: '£500,000 - £2M', value: '£500,000 - £2M' },
+                        { label: '£2M +', value: '£2M +' },
+                      ]}
+                      defaultValue={this.state.yearly_turnover}
+                      placeholder="What is your estimated yearly turn-over?"
+                      placeholderStyle={{
+                        fontSize: 16,
+                        textAlign: 'center'
+                      }}
+                      containerStyle={{height: 50, width: 350}}
+                      style={{ backgroundColor: '#fafafa' }}
+                      dropDownStyle={{ 
+                        backgroundColor: '#e2e8f0',
+                        marginTop: 2
+                      }}
+                      zIndex={4000}
+                      onChangeItem={item => 
+                        this.onChangeText('yearly_turnover', item.value)
+                      }
+                    />
+                    <Text style={[t.p3]}>How many employees do you have?</Text>
+                    <DropDownPicker
+                        items={[
+                          { label: '1 - 10', value: '1 - 10' },
+                          { label: '10 - 50', value: '10 - 50' },
+                          { label: '50 - 200', value: '50 - 200' },
+                          { label: '200 - 500', value: '200 - 500' },
+                          { label: '500 +', value: '500 +' },
+                        ]}
+                        defaultValue={this.state.num_employees}
+                        placeholder="How many employees do you have?"
+                        placeholderStyle={{
+                          fontSize: 16,
+                          textAlign: 'center'
+                        }}
+                        containerStyle={{height: 50, width: 350}}
+                        style={{ backgroundColor: '#fafafa' }}
+                        dropDownStyle={{ 
+                          backgroundColor: '#e2e8f0',
+                          marginTop: 2
+                        }}
+                        zIndex={3000}
+                        onChangeItem={item => 
+                          this.onChangeText('num_employees', item.value)
+                        }
+                      />
+                    <Text style={[t.p3]}>Which industry does your business form part of?</Text>
+                    <DropDownPicker
+                      items={[
+                        { label: 'Aerospace and Defence', value: 'Aerospace and Defence' },
+                        { label: 'Alternative Investment Funds', value: 'Alternative Investment Funds' },
+                        { label: 'Asset and Wealth Management', value: 'Asset and Wealth Management' },
+                        { label: 'Automotive', value: 'Automotive' },
+                        { label: 'Banking and Capital Markets', value: 'Banking and Capital Markets' },
+                        { label: 'Business Services', value: 'Business Services' },
+                        { label: 'Capital Projects and Infrastructure', value: 'Capital Projects and Infrastructure' },
+                        { label: 'Charities', value: 'Charities' },
+                        { label: 'Chemicals', value: 'Chemicals' },
+                        { label: 'Education', value: 'Education' },
+                        { label: 'Engineering and Construction', value: 'Engineering and Construction' },
+                        { label: 'Financial Services', value: 'Financial Services' },
+                        { label: 'Forest, Paper and Packaging', value: 'Forest, Paper and Packaging' },
+                        { label: 'Government and Public Services', value: 'Government and Public Services' },
+                        { label: 'Healthcare', value: 'Healthcare' },
+                        { label: 'Hospitality and Leisure', value: 'Hospitality and Leisure' },
+                        { label: 'Insurance', value: 'Insurance' },
+                        { label: 'Manufacturing', value: 'Manufacturing' },
+                        { label: 'Media and Entertainment', value: 'Media and Entertainment' },
+                        { label: 'Mining and Metals', value: 'Mining and Metals' },
+                        { label: 'Oil and Gas', value: 'Oil and Gas' },
+                        { label: 'Pharmaceutical and Life Sciences', value: 'Pharmaceutical and Life Sciences' },
+                        { label: 'Power and Utilities', value: 'Power and Utilities' },
+                        { label: 'Private Equity', value: 'Private Equity' },
+                        { label: 'Real Estate', value: 'Real Estate' },
+                        { label: 'Retail and Consumer', value: 'Retail and Consumer' },
+                        { label: 'Sovereign Investment Funds', value: 'Sovereign Investment Funds' },
+                        { label: 'Technology', value: 'Technology' },
+                        { label: 'Telecommunications', value: 'Telecommunications' },
+                        { label: 'Transport and Logistics', value: 'Transport and Logistics' },
+                        { label: 'Other / Not listed', value: 'Other / Not listed' },
+                      ]}
+                      defaultValue={this.state.industry}
+                      placeholder="Which industry does your business form part of?"
+                      placeholderStyle={{
+                        fontSize: 16,
+                        textAlign: 'center'
+                      }}
+                      containerStyle={{height: 50, width: 350}}
+                      style={{ backgroundColor: '#fafafa' }}
+                      dropDownStyle={{ 
+                        backgroundColor: '#e2e8f0',
+                        marginTop: 2
+                      }}
+                      zIndex={2000}
+                      onChangeItem={item => 
+                        this.onChangeText('industry', item.value)
+                      }
+                    />
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mT2]}>
                     <TouchableOpacity

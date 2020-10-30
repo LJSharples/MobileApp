@@ -31,9 +31,11 @@ import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
-import AddServiceScreen from './src/components/screens/AddServiceScreen'
+import AddServiceScreen from './src/components/screens/AddServiceScreen';
+import AddQuoteScreen from './src/components/screens/AddQuoteScreen';
 
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
+import addQuoteScreen from './src/components/screens/AddQuoteScreen';
 
 const configurations = {
   Home: {
@@ -64,6 +66,18 @@ const configurations = {
     screen: AddServiceScreen,
     navigationOptions: {
       tabBarLabel: 'Add Service',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons 
+          style={{ fontSize: 20, color: tintColor }} 
+          name="ios-home" 
+        />
+      ),
+    }
+  },
+  AddQuote: {
+    screen: AddQuoteScreen,
+    navigationOptions: {
+      tabBarLabel: 'Add Quote',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons 
           style={{ fontSize: 20, color: tintColor }} 
@@ -183,6 +197,12 @@ const AppDrawerNavigator = createDrawerNavigator({
       screen: AddServiceScreen,
       navigationOptions: () => ({
         title: 'Add Service',
+      }),
+    },
+    AddQuote: {
+      screen: addQuoteScreen,
+      navigationOptions: () => ({
+        title: 'Add Quote',
       }),
     },
     Account: {

@@ -592,9 +592,10 @@ export default class ServicesScreen extends React.Component {
                               anObjectMapped.bills.map((bill, billIndex) => { // This will render a row for each data element.
                                 return (
                                   <TouchableOpacity
+                                  key={billIndex}
                                     onPress={() => this.downloadFile(bill)}
                                     style={[ t.pX2, t.pY2, t.justifyStart]}>
-                                    <Text key={billIndex} style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
+                                    <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
                                   </TouchableOpacity>
                                 )
                               })
