@@ -344,7 +344,7 @@ export default class ProfileScreen extends React.Component {
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite]}>
                   <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
-                    <Text>How many years have you been trading?</Text>
+                    <Text style={[t.p3]}>How many years have you been trading?</Text>
                       <DropDownPicker
                         items={[
                           { label: '0 - 1 Years', value: '0 - 1 Years' },
@@ -353,7 +353,7 @@ export default class ProfileScreen extends React.Component {
                           { label: '10 Years +', value: '10 Years +' },
                         ]}
                         defaultValue={this.state.years_trading}
-                        placeholder="How many employees do you have?"
+                        placeholder="How many years have you been trading?"
                         placeholderStyle={{
                           fontSize: 16,
                           textAlign: 'center'
