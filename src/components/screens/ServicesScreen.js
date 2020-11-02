@@ -8,13 +8,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Linking
 } from 'react-native'
 import {
   Item
 } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
-import { addService, removeService } from '../../graphql/mutations';
+import { removeService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
@@ -33,6 +34,7 @@ export default class ServicesScreen extends React.Component {
     rowsActive: [],
     rowsEnded: [],
     email: '',
+    billLink: {},
     selectedRecord: [],
     modalVisible: false,
     deleteModalVisible: false,
@@ -156,6 +158,7 @@ export default class ServicesScreen extends React.Component {
     await Storage.get(key, { level: 'private'})
     .then(result => {
       console.log(result)
+      Linking.openURL(result);
     })
     .catch(err => console.log(err));
   }
