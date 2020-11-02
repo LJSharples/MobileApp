@@ -20,6 +20,9 @@ export default class ExpensesScreen extends React.Component {
   state ={
     curTab: 2,
     activeTab: 2,
+    annualCost: 0,
+    monthlyCost: 0,
+    moneySaved: 0,
     chevron1: false,
     chevron2: false,
     chevron3: false,
@@ -50,6 +53,33 @@ export default class ExpensesScreen extends React.Component {
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     const savings = [];
     const activeServices = [];
+    let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
+        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+           return prev + +parseFloat(current.cost_year) 
+        }
+        return prev
+    }, 0);
+
+    let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
+        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+           return prev + +parseFloat(current.cost_month) 
+        }
+        return prev
+    }, 0);
+
+    let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
+        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+            if(!isNaN(parseFloat(current.savings))){
+                console.log(parseFloat(current.savings));
+                return prev + +parseFloat(current.savings) 
+            }
+        }
+        return prev
+    }, 0);
+    this.setState({annualCost: sum.toFixed(2)})
+    this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
+    this.setState({moneySaved: parseFloat(sum3).toFixed(2)})
+
     userServices.data["getServices"].items.map(lead => {
         if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
             var date = new Date(lead.contract_end);
@@ -332,6 +362,11 @@ export default class ExpensesScreen extends React.Component {
                         }
                     >
                         <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.textXl]}>Monthly Expenses: £{this.state.monthlyCost}</Text>
+                                </Item>
+                            </View>
                             <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                 <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                     <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -406,6 +441,11 @@ export default class ExpensesScreen extends React.Component {
                     }
                     >
                         <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <Text style={[ t.textXl]}>Annual Expenses: £{this.state.annualCost}</Text>
+                                </Item>
+                            </View>
                             <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                 <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                     <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -480,6 +520,11 @@ export default class ExpensesScreen extends React.Component {
                     }
                     >
                     <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                        <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.textXl]}>Savings To Date: £{this.state.moneySaved}</Text>
+                            </Item>
+                        </View>
                         <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                             <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                 <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
