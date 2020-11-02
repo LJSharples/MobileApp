@@ -273,21 +273,21 @@ export default class ServicesScreen extends React.Component {
               />
             }
           >
-          <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
+          <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textBlue600]}>Service</Text>
+                <Text style={[ t.text2xl, t.textBlue600]}>Services</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.textXl, t.textBlue600]}>Manage all your services in one place</Text>
               </Item>
-            </View>
-            <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
-              <TouchableOpacity 
-                onPress={() => this.handleRoute('AddServices')}
-                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
-              </TouchableOpacity>
+              <Item style={[t.justifyEnd, t.borderTransparent]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('AddServices')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}>
+                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
+                </TouchableOpacity>
+              </Item>
             </View>
           </Item>
           <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>

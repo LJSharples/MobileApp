@@ -195,8 +195,8 @@ export default class ProfileScreen extends React.Component {
               />
             }
           >
-          <Item style={[ t.mT5,t.alignCenter, t.wFull, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
+          <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textBlue600]}>My Details</Text>
               </Item>
