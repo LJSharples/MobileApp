@@ -15,6 +15,7 @@ import { getServices } from '../../graphql/queries'
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
+import PieChartYear from '../forms/PieChartDisplayYear';
 
 export default class ExpensesScreen extends React.Component {
   state ={
@@ -316,7 +317,7 @@ export default class ExpensesScreen extends React.Component {
             let newLabel = labelsData[index];
             newLabels.push(newLabel);
             let entry = {
-                key: data.length + 1,
+                key: data2.length + 1,
                 value: e,
                 label: newLabel,
                 svg: { fill: colors[index] },
@@ -496,7 +497,7 @@ export default class ExpensesScreen extends React.Component {
                             })
                             }
                             <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                                <PieChart data={data2}/>
+                                <PieChartYear data={data2}/>
                             </View>
                         </View>
                     </CollapsibleList>
