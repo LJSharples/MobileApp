@@ -63,7 +63,7 @@ export default class ServicesScreen extends React.Component {
     this.setState({ 
       modalVisible: visible,
       selectedRecord: records,
-      selectedKey: key 
+      selectedKey: record.id 
     });
   }
 
@@ -121,7 +121,8 @@ export default class ServicesScreen extends React.Component {
               cost_year: lead.cost_year,
               status: lead.status,
               bills: bills,
-              id: lead.pk
+              id: lead.id,
+              pk: lead.PK
           }
           endedArray.push(newValue)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
@@ -132,7 +133,8 @@ export default class ServicesScreen extends React.Component {
                 cost_year: lead.cost_year,
                 status: lead.status,
                 bills: bills,
-                id: lead.pk
+                id: lead.id,
+                pk: lead.PK
             }
             activeArray.push(newValue2)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
@@ -143,7 +145,8 @@ export default class ServicesScreen extends React.Component {
                 cost_year: lead.cost_year,
                 status: lead.status,
                 bills: bills,
-                id: lead.pk
+                id: lead.id,
+                pk: lead.PK
             }
             currentArray.push(newValue)
         }
@@ -166,18 +169,12 @@ export default class ServicesScreen extends React.Component {
     const id = this.state.selectedKey
     const data = {
         user_name: this.state.userProfile.user_name,
-        id: id.substr(8),
+        id: id,
         status: 'CUSTOMER DELETED'
     }
     try {
         await API.graphql(graphqlOperation(removeService, data));
         this.setState({ isOpen3: !this.state.isOpen3 })
-        TagManager.dataLayer({
-            dataLayer: {
-                event: 'serviceDeleted',
-                user_name: this.state.userProfile.user_name
-            }
-        })
     } catch (err) {
         console.log("Error:")
         console.log(err);
@@ -185,6 +182,7 @@ export default class ServicesScreen extends React.Component {
     const currentArray = [];
     const activeArray = [];
     const endedArray = [];
+    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: this.state.userProfile.user_name}));
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
@@ -589,20 +587,19 @@ export default class ServicesScreen extends React.Component {
                             </Item>
                           </View>
                           <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                             {
                               anObjectMapped.bills.map((bill, billIndex) => { // This will render a row for each data element.
                                 return (
-                                  <TouchableOpacity
-                                  key={billIndex}
-                                    onPress={() => this.downloadFile(bill)}
-                                    style={[ t.pX2, t.pY2, t.justifyStart]}>
-                                    <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
-                                  </TouchableOpacity>
+                                  <Item key={billIndex} style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                    <TouchableOpacity
+                                      onPress={() => this.downloadFile(bill)}
+                                      style={[ t.pX2, t.pY2, t.justifyStart]}>
+                                      <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
+                                    </TouchableOpacity>
+                                  </Item>
                                 )
                               })
                             }
-                            </Item>
                           </View>
                         </Item>
                         <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
