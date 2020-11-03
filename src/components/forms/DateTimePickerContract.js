@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { t } from 'react-native-tailwindcss';
 
 export const DateTimePickerContract = (props) => {
   const [date, setDate] = useState(new Date(1598051730000));
@@ -29,7 +30,7 @@ export const DateTimePickerContract = (props) => {
   };
 
   return (
-    <View>
+    <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
       <View>
         <Button onPress={showDatepicker} title="Select Contract End Date" />
       </View>

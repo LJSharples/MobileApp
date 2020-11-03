@@ -185,11 +185,7 @@ export default class addServiceScreen extends React.Component {
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerContract onChange={this.onChange}/>
-                                  </Item>
-                                </View>
+                                <DateTimePickerContract onChange={this.onChange}/>
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH</Text>
@@ -229,11 +225,7 @@ export default class addServiceScreen extends React.Component {
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerForm onChange={this.onChange}/>
-                                  </Item>
-                                </View>
+                                <DateTimePickerForm onChange={this.onChange}/>
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£)</Text>

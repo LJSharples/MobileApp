@@ -157,7 +157,6 @@ export default class ServicesScreen extends React.Component {
   downloadFile = async (key) => {
     await Storage.get(key, { level: 'private'})
     .then(result => {
-      console.log(result)
       Linking.openURL(result);
     })
     .catch(err => console.log(err));

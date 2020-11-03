@@ -182,11 +182,7 @@ export default class addQuoteScreen extends React.Component {
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerContract onChange={this.onChange}/>
-                                  </Item>
-                                </View>
+                                <DateTimePickerContract onChange={this.onChange}/>
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH</Text>
@@ -226,11 +222,7 @@ export default class addQuoteScreen extends React.Component {
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DateTimePickerForm onChange={this.onChange}/>
-                                  </Item>
-                                </View>
+                                <DateTimePickerForm onChange={this.onChange}/>
                               </>
                               <>
                                 <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£)</Text>
@@ -249,23 +241,6 @@ export default class addQuoteScreen extends React.Component {
                                     <TextInput style={[ t.textXl]} placeholder="£0.00"
                                       onChange={event => this.onChangeText('cost_month', event)}
                                       value={this.state.cost_month}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>PERMISSION</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <CheckBox
-                                      center
-                                      title='Click Here'
-                                      checked={this.state.permission}
-                                      onPress={() => {
-                                        this.setState(prevState => ({
-                                          permission: !prevState.permission
-                                        }));    
-                                      }}
-                                    />
                                   </Item>
                                 </View>
                               </>

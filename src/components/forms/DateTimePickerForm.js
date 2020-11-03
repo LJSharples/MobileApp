@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { t } from 'react-native-tailwindcss';
 
 export const DateTimePickerForm = (props) => {
   const [date, setDate] = useState(new Date(1598051730000));
@@ -28,7 +29,7 @@ export const DateTimePickerForm = (props) => {
   };
 
   return (
-    <View>
+    <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
       <View>
         <Button onPress={showDatepicker} title="Select Callback Date" />
       </View>
@@ -43,6 +44,7 @@ export const DateTimePickerForm = (props) => {
           is24Hour={true}
           display="default"
           onChange={onChange}
+          style={[t.flex1]}
         />
       )}
     </View>

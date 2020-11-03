@@ -90,7 +90,6 @@ export default class HomeScreen extends React.Component {
     let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
             if(!isNaN(parseFloat(current.savings))){
-                console.log(parseFloat(current.savings));
                 return prev + +parseFloat(current.savings) 
             }
         }
@@ -118,17 +117,17 @@ export default class HomeScreen extends React.Component {
             }
           >
           <Item style={[t.mT5, t.alignCenter, t.bgBlue100, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
+            <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textWhite]}>Hello {this.state.firstName}</Text>
               </Item>
-            </View>
-            <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
-              <TouchableOpacity 
-                onPress={() => this.handleRoute('AddQuote')}
-                style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
-                <Text style={[ t.textBlue100, t.textXl, t.p2]}>Get Quotes</Text>
-              </TouchableOpacity>
+              <Item style={[t.justifyEnd, t.borderTransparent]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('AddQuote')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.p2]}>Add Quote</Text>
+                </TouchableOpacity>
+              </Item>
             </View>
           </Item>
           <Item style={[t.alignCenter, t.bgBlue200, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
