@@ -70,7 +70,6 @@ export default class ExpensesScreen extends React.Component {
     let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
             if(!isNaN(parseFloat(current.savings))){
-                console.log(parseFloat(current.savings));
                 return prev + +parseFloat(current.savings) 
             }
         }
@@ -497,7 +496,7 @@ export default class ExpensesScreen extends React.Component {
                             })
                             }
                             <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                                <PieChart data={data}/>
+                                <PieChart data={data2}/>
                             </View>
                         </View>
                     </CollapsibleList>
