@@ -18,7 +18,7 @@ export default class PieChartDisplayYear extends React.PureComponent {
                         fill={'black'}
                         textAnchor={'middle'}
                         alignmentBaseline={'middle'}
-                        fontSize={24}
+                        fontSize={16}
                         stroke={'black'}
                         strokeWidth={0.2}
                     >

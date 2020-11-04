@@ -122,7 +122,7 @@ export default class SignInScreen extends React.Component {
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT20]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.wFull, t.itemsCenter]}>
-                <Text style={[t.textXs, t.textGray500, t.textCenter]}>By continuing you agree to the managedbills T&C's.</Text>
+                <Text style={[t.textXs, t.textGray500, t.textCenter]} onPress={() => this.handleRoute('TermsConditions')}>By continuing you agree to the managedbills T&C's.</Text>
               </View>
             </Item>
           </Item>

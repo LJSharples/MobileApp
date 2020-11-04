@@ -275,14 +275,14 @@ export default class ServicesScreen extends React.Component {
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textBlue600]}>Services</Text>
               </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+              <Item style={[t.pX2, t.pY4, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.textXl, t.textBlue600]}>Manage all your services in one place</Text>
               </Item>
               <Item style={[t.justifyEnd, t.borderTransparent]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('AddServices')}
                   style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
+                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
                 </TouchableOpacity>
               </Item>
             </View>
@@ -297,7 +297,7 @@ export default class ServicesScreen extends React.Component {
               }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Live Contracts 
+                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Live Contracts 
                   {'                                     '} 
                   { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
                   </Text>
@@ -370,7 +370,7 @@ export default class ServicesScreen extends React.Component {
               buttonPosition="top"
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>In Progress 
+                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>In Progress 
                     {'                                           '} 
                     { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
                   </Text>
@@ -443,7 +443,7 @@ export default class ServicesScreen extends React.Component {
               }}
               buttonContent={
                 <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.p2]}>Expired Contracts 
+                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Expired Contracts 
                     {'                               '} 
                     { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
                   </Text>

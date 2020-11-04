@@ -33,6 +33,7 @@ import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
 import AddServiceScreen from './src/components/screens/AddServiceScreen';
 import AddQuoteScreen from './src/components/screens/AddQuoteScreen';
+import TermsConditionsScreen from './src/components/screens/TermsConditionsScreen'
 
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import addQuoteScreen from './src/components/screens/AddQuoteScreen';
@@ -270,6 +271,12 @@ const AuthStackNavigator = createStackNavigator({
       title: `Create a new password`,
     }),
   },
+  TermsConditions: {
+    screen: TermsConditionsScreen,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  }
 });
 
 // Application nav stack

@@ -118,15 +118,19 @@ export default class HomeScreen extends React.Component {
           >
           <Item style={[t.mT5, t.alignCenter, t.bgBlue100, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textWhite]}>Hello {this.state.firstName}</Text>
+              <Item style={[t.pX8, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hello</Text>
               </Item>
-              <Item style={[t.justifyEnd, t.borderTransparent]}>
+              <Item style={[t.pX10, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.text2xl, t.textWhite]}>{this.state.firstName}</Text>
+                <Item style={[t.pX12, t.borderTransparent]}/>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('AddQuote')}
                   style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                  <Text style={[ t.textBlue100, t.textXl, t.p2]}>Add Quote</Text>
+                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
                 </TouchableOpacity>
+              </Item>
+              <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
               </Item>
             </View>
           </Item>

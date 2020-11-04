@@ -16,6 +16,7 @@ import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';
+import PieChartSavings from '../forms/PieChartDisplaySavings';
 
 export default class ExpensesScreen extends React.Component {
   state ={
@@ -326,6 +327,20 @@ export default class ExpensesScreen extends React.Component {
             return e
         }
     });
+    const NewSavingsTotal = this.state.savings.map((anObjectMapped) => {
+        if(anObjectMapped.savings > 0){
+            //get index and value from existing labels and add to new 
+            var index = labelsData.findIndex(obj => obj === anObjectMapped.service_name)
+            let entry = {
+                key: data3.length + 1,
+                value: anObjectMapped.savings,
+                label: anObjectMapped.service_name,
+                svg: { fill: colors[index] },
+            }
+            data3.push(entry)
+            return anObjectMapped.savings
+        }
+    });
 
     return (
         <View style= {[ t.flex1, t.bgBlue200]}>
@@ -354,19 +369,14 @@ export default class ExpensesScreen extends React.Component {
                         }}
                         buttonContent={
                             <View style={[ t.p3, t.flex1]}>
-                                <Text style={[ t.textWhite, t.textXl, t.p2]}>Monthly Expenses
-                                    {'                               '} 
+                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Monthly Expenses £{this.state.monthlyCost}
+                                    {'           '} 
                                     { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
                                 </Text>
                             </View>
                         }
                     >
                         <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
-                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.textXl]}>Monthly Expenses: £{this.state.monthlyCost}</Text>
-                                </Item>
-                            </View>
                             <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                 <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                     <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -433,19 +443,14 @@ export default class ExpensesScreen extends React.Component {
                     }}
                     buttonContent={
                         <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Annual Expenses
-                                {'                                 '} 
+                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Annual Expenses £{this.state.annualCost}
+                                {'          '} 
                                 { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
                             </Text>
                         </View>
                     }
                     >
                         <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg]}>
-                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.textXl]}>Annual Expenses: £{this.state.annualCost}</Text>
-                                </Item>
-                            </View>
                             <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                 <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                     <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -512,19 +517,15 @@ export default class ExpensesScreen extends React.Component {
                     }}
                     buttonContent={
                         <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Savings To Date
+                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Savings To Date 
                                 {'                                   '} 
                                 { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                {'                     '} £{this.state.moneySaved}
                             </Text>
                         </View>
                     }
                     >
                     <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                        <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.textXl]}>Savings To Date: £{this.state.moneySaved}</Text>
-                            </Item>
-                        </View>
                         <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                             <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                 <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
@@ -576,7 +577,7 @@ export default class ExpensesScreen extends React.Component {
                         })
                         }
                         <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <PieChart data={data}/>
+                            <PieChartSavings data={data3}/>
                         </View>
                     </View>
                     </CollapsibleList>

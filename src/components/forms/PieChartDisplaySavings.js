@@ -2,7 +2,7 @@ import React from 'react'
 import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 
-export default class PieChartDisplay extends React.PureComponent {
+export default class PieChartDisplaySavings extends React.PureComponent {
     render(){
 
         const data = this.props.data
