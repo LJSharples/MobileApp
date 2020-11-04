@@ -20,7 +20,7 @@ export default class RegisterUserPhone extends React.Component {
     }
 
     render(){
-        if(this.props.currentStep !== 2){
+        if(this.props.currentStep !== 3){
             return null;
         }
 

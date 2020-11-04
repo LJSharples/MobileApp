@@ -25,7 +25,7 @@ export default class RegisterCompanyDetails extends React.Component {
     }
 
     render(){
-        if(this.props.currentStep !== 3){
+        if(this.props.currentStep !== 4){
             return null;
         }
 

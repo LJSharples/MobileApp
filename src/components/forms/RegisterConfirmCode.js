@@ -25,7 +25,7 @@ import { t } from 'react-native-tailwindcss';
 
 export default class RegisterConfirmCode extends React.Component {
     render(){
-        if(this.props.currentStep !== 7){
+        if(this.props.currentStep !== 2){
             return null;
         }
 

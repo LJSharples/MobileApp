@@ -28,7 +28,7 @@ const logo = require('../images/managedbill-corporate-logo.png')
 
 export default class RegisterTermsConditions extends React.Component {
     render(){
-        if(this.props.currentStep !== 6){
+        if(this.props.currentStep !== 7){
             return null;
         }
 

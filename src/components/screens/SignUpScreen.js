@@ -71,7 +71,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   get nextButton(){
-    if(this.state.currentStep < 6){
+    if(this.state.currentStep > 2 && this.state.currentStep < 7){
       return (
         <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t._mT4]}>
           <TouchableOpacity 
@@ -83,14 +83,14 @@ export default class SignUpScreen extends React.Component {
         </Item>
       )
     } else{
-      if(this.state.currentStep == 6){
+      if(this.state.currentStep == 1){
         return (
           <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
             <TouchableOpacity 
               onPress={() => this.signUp()}
               style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
               >
-                <Text style={[t.textWhite, t.textLg]}>Agree</Text>
+                <Text style={[t.textWhite, t.textLg]}>Sign Up</Text>
             </TouchableOpacity>
           </Item>
         )
@@ -99,7 +99,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   get authCode(){
-    if(this.state.currentStep == 7){
+    if(this.state.currentStep == 2){
       return (
         <View>
           <Item style={[t.bgWhite, t.borderTransparent]}>
@@ -132,6 +132,23 @@ export default class SignUpScreen extends React.Component {
           </Item>
         </View>
       )
+    }
+  }
+
+  get finish(){
+    if(this.state.currentStep === 7){
+      return (
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT2]}>
+          <TouchableOpacity 
+            onPress={() => this.redirectToHome()}
+            style={[t.p4, t.roundedLg, t.bgGray500, t.itemsCenter, t.w10_12]}
+            >
+              <Text style={[t.textWhite, t.textLg]}>Complete Sign Up</Text>
+          </TouchableOpacity>
+        </Item>
+      )
+    } else {
+      return null;
     }
   }
     
@@ -224,7 +241,8 @@ export default class SignUpScreen extends React.Component {
     const { username, firstName, lastName, password, authCode, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
     await Auth.confirmSignUp(username, authCode)
     .then(() => {
-      this.props.navigation.navigate('SignIn')
+      //this.props.navigation.navigate('SignIn')
+      this._next();
       console.log('Confirm sign up successful')
     })
     .catch(err => {
@@ -236,6 +254,9 @@ export default class SignUpScreen extends React.Component {
         Alert.alert('Error when entering confirmation code: ', err.message)
       }
     })
+  }
+
+  async redirectToHome() {
     await Auth.signIn(username, password)
     .then(user => {
       this.setState({ user })
@@ -315,6 +336,8 @@ export default class SignUpScreen extends React.Component {
           onUpdate={this.onUpdate}
           username={this.state.username}
           email={this.state.email}/>
+        <ConfirmCode
+          currentStep={this.state.currentStep}/>
         <UserPhone
           currentStep={this.state.currentStep}
           phoneNumber={this.state.phoneNumber}
@@ -339,10 +362,9 @@ export default class SignUpScreen extends React.Component {
         <TermsConditions
           currentStep={this.state.currentStep}
           onUpdate={this.onUpdate}/>
-        <ConfirmCode
-          currentStep={this.state.currentStep}/>
         {this.nextButton}
         {this.authCode}
+        {this.finish}
         {this.backButton}
         {this.returnButton}
       </ScrollView>

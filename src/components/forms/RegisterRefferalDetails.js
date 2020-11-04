@@ -20,7 +20,7 @@ export default class RegisterRefferalDetails extends React.Component {
     }
 
     render(){
-        if(this.props.currentStep !== 5){
+        if(this.props.currentStep !== 6){
             return null;
         }
 

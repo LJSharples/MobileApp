@@ -20,7 +20,7 @@ export default class RegisterCompanyAddress extends React.Component {
     }
 
     render(){
-        if(this.props.currentStep !== 4){
+        if(this.props.currentStep !== 5){
             return null;
         }
 

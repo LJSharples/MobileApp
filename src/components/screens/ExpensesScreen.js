@@ -333,7 +333,7 @@ export default class ExpensesScreen extends React.Component {
             var index = labelsData.findIndex(obj => obj === anObjectMapped.service_name)
             let entry = {
                 key: data3.length + 1,
-                value: anObjectMapped.savings,
+                value: Number(anObjectMapped.savings),
                 label: anObjectMapped.service_name,
                 svg: { fill: colors[index] },
             }
@@ -369,9 +369,10 @@ export default class ExpensesScreen extends React.Component {
                         }}
                         buttonContent={
                             <View style={[ t.p3, t.flex1]}>
-                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Monthly Expenses £{this.state.monthlyCost}
-                                    {'           '} 
+                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Monthly Expenses
+                                    {'                              '} 
                                     { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                <Text style={[ t.textLg]}>{'                     '} £{this.state.monthlyCost}</Text>
                                 </Text>
                             </View>
                         }
@@ -443,9 +444,10 @@ export default class ExpensesScreen extends React.Component {
                     }}
                     buttonContent={
                         <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Annual Expenses £{this.state.annualCost}
-                                {'          '} 
+                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Annual Expenses 
+                                {'                                 '} 
                                 { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                <Text style={[ t.textLg]}>{'                     '} £{this.state.annualCost}</Text>
                             </Text>
                         </View>
                     }
@@ -520,7 +522,7 @@ export default class ExpensesScreen extends React.Component {
                             <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Savings To Date 
                                 {'                                   '} 
                                 { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                                {'                     '} £{this.state.moneySaved}
+                                <Text style={[ t.textLg]}>{'                     '} £{this.state.moneySaved}</Text>
                             </Text>
                         </View>
                     }
