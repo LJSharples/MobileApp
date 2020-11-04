@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Image,
+  TextInput
 } from 'react-native'
 import {
   Item,
@@ -64,11 +65,12 @@ export default class RegisterUserPhone extends React.Component {
                     </Item>
                     <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
-                            <Input
+                            <TextInput
                                 style={[t.alignCenter, t.bgGray100]}
                                 id="phoneNumber"
                                 name="phoneNumber"
                                 placeholder="Mobile Phone Number"
+                                keyboardType = 'numeric'
                                 value={this.props.phoneNumber}
                                 onChange={(value) => this.update('phoneNumber', value)}/>
                         </Item>

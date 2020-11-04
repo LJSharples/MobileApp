@@ -230,6 +230,7 @@ export default class addQuoteScreen extends React.Component {
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                   <TextInput style={[ t.textXl]} placeholder="£0.00"
                                     onChange={event => this.onChangeText('cost_year', event)}
+                                    keyboardType = 'numeric'
                                     value={this.state.cost_year}/> 
                                   </Item>
                                 </View>
@@ -240,6 +241,7 @@ export default class addQuoteScreen extends React.Component {
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                     <TextInput style={[ t.textXl]} placeholder="£0.00"
                                       onChange={event => this.onChangeText('cost_month', event)}
+                                      keyboardType = 'numeric'
                                       value={this.state.cost_month}/> 
                                   </Item>
                                 </View>
