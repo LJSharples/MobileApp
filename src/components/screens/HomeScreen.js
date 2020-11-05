@@ -124,21 +124,20 @@ export default class HomeScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h48, t.borderTransparent]}>
+          <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
               </Item>
-              <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+              <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
-              </Item>
-              <View style={[ t.flex1, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsEnd]}>
+                <Item style={[t.pX16, t.borderTransparent]}/>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('AddQuote')}
                   style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
                   <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
                 </TouchableOpacity>
-              </View>
+              </Item>
             </View>
           </Item>
           <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
@@ -198,10 +197,10 @@ export default class HomeScreen extends React.Component {
             iconSize={25}
             values={[
               { title: "Dashboard", icon: "home", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab },
-              { title: "Services", icon: "settings-power", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Expenses", icon: "attach-money", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Get Quote", icon: "format-quote", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Profile", icon: "verified-user", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+              { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+              { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
+              { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
       </ImageBackground>

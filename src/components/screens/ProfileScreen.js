@@ -244,15 +244,17 @@ export default class ProfileScreen extends React.Component {
                   <View style={[ t.flex1, t.selfStretch]}>
                     <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('phone', value)} value={this.state.phone}/>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+                  <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
+                    <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
                     <TouchableOpacity
-                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
                       onPress={this.updateUserProfile}>
                       <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
                         Save
                       </Text>
                     </TouchableOpacity>
-                  </View>
+                    </View>
+                  </Item>
               </View>
             </CollapsibleList>
           </Item>
@@ -316,15 +318,17 @@ export default class ProfileScreen extends React.Component {
                   <View style={[ t.flex1, t.selfStretch]}>
                     <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('postcode', value)} value={this.state.postcode}/>
                   </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+                  <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
+                    <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
                     <TouchableOpacity
-                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
                       onPress={this.updateCompany}>
                       <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
                         Save
                       </Text>
                     </TouchableOpacity>
-                  </View>
+                    </View>
+                  </Item>
               </View>
             </CollapsibleList>
           </Item>
@@ -477,15 +481,17 @@ export default class ProfileScreen extends React.Component {
                       }
                     />
                   </View>
-                  <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+                <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
+                  <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
                     <TouchableOpacity
-                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                      style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
                       onPress={this.updateCompany}>
                       <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
                         Save
                       </Text>
                     </TouchableOpacity>
                   </View>
+                </Item>
               </View>
             </CollapsibleList>
           </Item>
@@ -515,11 +521,11 @@ export default class ProfileScreen extends React.Component {
             isRtl={ false }
             iconSize={25}
             values={[
-              { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
-              { title: "Services", icon: "settings-power", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Expenses", icon: "attach-money", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Get Quote", icon: "format-quote", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-              { title: "Profile", icon: "verified-user", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
+              { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
+              { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+              { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+              { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
+              { title: "Profile", icon: "person-outline", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
             ]}
           />
       </ImageBackground>
