@@ -7,6 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   TextInput,
+  ImageBackground
 } from 'react-native'
 import {
   Item
@@ -19,6 +20,8 @@ import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import DropDownPicker from 'react-native-dropdown-picker';
+
+const background = require('../images/background.png')
 
 export default class ProfileScreen extends React.Component {
   state = {
@@ -186,7 +189,7 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <View style= {[ t.flex1, t.bgBlue200]}>
+      <ImageBackground source={background} style= {[ t.flex1, t.bgBlue200]}>
         <ScrollView
             refreshControl={
               <RefreshControl
@@ -198,10 +201,10 @@ export default class ProfileScreen extends React.Component {
           <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textBlue600]}>My Details</Text>
+                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>My Details</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textBlue600]}>Manage your account details</Text>
+                <Text style={[ t.textXl, t.textWhite]}>Manage your account details</Text>
               </Item>
             </View>
           </Item>
@@ -486,12 +489,12 @@ export default class ProfileScreen extends React.Component {
               </View>
             </CollapsibleList>
           </Item>
-          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <View style={[ t.flex1, t.selfStretch, t.mT2]}>
+          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
+            <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
               <TouchableOpacity
-                style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}
+                style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
                 onPress={this.signOutAlert}>
-                <Text style={[ t.textWhite, t.textXl, t.p2, t.textCenter]}>
+                <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
                   Logout
                 </Text>
               </TouchableOpacity>
@@ -519,7 +522,7 @@ export default class ProfileScreen extends React.Component {
               { title: "Profile", icon: "verified-user", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
             ]}
           />
-      </View>
+      </ImageBackground>
     )
   }
   

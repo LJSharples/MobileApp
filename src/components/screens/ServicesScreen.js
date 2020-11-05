@@ -8,7 +8,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Linking
+  Linking,
+  ImageBackground
 } from 'react-native'
 import {
   Item
@@ -20,6 +21,8 @@ import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
+
+const background = require('../images/background.png')
 
 export default class ServicesScreen extends React.Component {
   state = {
@@ -261,7 +264,7 @@ export default class ServicesScreen extends React.Component {
 
   render() {
     return (
-      <View style= {[ t.flex1, t.bgBlue200]}>
+      <ImageBackground source={background} style= {[ t.flex1]}>
         <ScrollView
             refreshControl={
               <RefreshControl
@@ -273,16 +276,16 @@ export default class ServicesScreen extends React.Component {
           <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textBlue600]}>Services</Text>
+                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
               </Item>
-              <Item style={[t.pX2, t.pY4, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textBlue600]}>Manage all your services in one place</Text>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textWhite]}>Manage all your services in one place</Text>
               </Item>
               <Item style={[t.justifyEnd, t.borderTransparent]}>
                 <TouchableOpacity 
                   onPress={() => this.handleRoute('AddServices')}
-                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100]}>
-                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
                 </TouchableOpacity>
               </Item>
             </View>
@@ -694,7 +697,7 @@ export default class ServicesScreen extends React.Component {
                 { title: "Profile", icon: "verified-user", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
-      </View>
+      </ImageBackground>
     )
   }
   

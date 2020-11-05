@@ -65,7 +65,7 @@ export default class RegisterUserPhone extends React.Component {
                     </Item>
                     <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}>
-                            <TextInput
+                            <Input
                                 style={[t.alignCenter, t.bgGray100]}
                                 id="phoneNumber"
                                 name="phoneNumber"

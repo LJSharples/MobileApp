@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   RefreshControl,
+  ImageBackground
 } from 'react-native'
 import {
   Item
@@ -17,6 +18,8 @@ import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';
 import PieChartSavings from '../forms/PieChartDisplaySavings';
+
+const background = require('../images/background.png')
 
 export default class ExpensesScreen extends React.Component {
   state ={
@@ -343,7 +346,7 @@ export default class ExpensesScreen extends React.Component {
     });
 
     return (
-        <View style= {[ t.flex1, t.bgBlue200]}>
+        <ImageBackground source={background} style= {[ t.flex1]}>
             <ScrollView
                 refreshControl={
                 <RefreshControl
@@ -355,7 +358,10 @@ export default class ExpensesScreen extends React.Component {
                 <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
                     <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
                         <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <Text style={[ t.text2xl, t.textBlue600]}>Expenses</Text>
+                            <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Expenses</Text>
+                        </Item>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <Text style={[ t.textXl, t.textWhite]}>Manage your expenses</Text>
                         </Item>
                     </View>
                 </Item>
@@ -606,7 +612,7 @@ export default class ExpensesScreen extends React.Component {
                 { title: "Profile", icon: "verified-user", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
                 ]}
             />
-        </View>
+        </ImageBackground>
     )
   }
 }

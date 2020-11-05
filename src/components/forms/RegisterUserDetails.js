@@ -60,6 +60,7 @@ export default class RegisterUserDetails extends React.Component {
                                 id="email"
                                 name="email"
                                 placeholder="Email"
+                                keyboardType = 'email-address'
                                 value={this.props.email}
                                 onChange={(value) => this.update('email', value)}/>
                         </Item>

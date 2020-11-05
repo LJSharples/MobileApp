@@ -201,7 +201,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   async signUp() {
-    if(this.state.username === ''){
+    if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
       Alert.alert('Registration error:', 'You have not provide all required information.')
     } else {
       let currentStep = this.state.currentStep

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ImageBackground
 } from 'react-native'
 import {
   Item
@@ -17,6 +18,8 @@ import { addService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
+
+const background = require('../images/background.png')
 
 export default class QuoteScreen extends React.Component {
   state = {
@@ -144,7 +147,7 @@ export default class QuoteScreen extends React.Component {
 
   render() {
     return (
-      <View style= {[ t.flex1, t.bgBlue200]}>
+      <ImageBackground source={background}  style= {[ t.flex1]}>
         <ScrollView
             refreshControl={
               <RefreshControl
@@ -156,20 +159,20 @@ export default class QuoteScreen extends React.Component {
           <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textBlue600]}>Get Quote</Text>
+                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Get Quote</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textBlue600]}>Let our team of experts help you with your business services.</Text>
+                <Text style={[ t.textXl, t.textWhite]}>Let our team of experts help you with your business services.</Text>
               </Item>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textBlue600]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
+                <Text style={[ t.textXl, t.textWhite]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
               </Item>
             </View>
             <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
               <TouchableOpacity 
                 onPress={() => this.handleRoute('Services')}
-                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
+                style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
+                <Text style={[ t.textBlue100, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
               </TouchableOpacity>
             </View>
           </Item>
@@ -195,7 +198,7 @@ export default class QuoteScreen extends React.Component {
                 { title: "Profile", icon: "verified-user", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
             ]}
           />
-      </View>
+      </ImageBackground>
     )
   }
   

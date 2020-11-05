@@ -104,14 +104,20 @@ export default class RegisterCompanyDetails extends React.Component {
                                     { label: 'Other / Not listed', value: 'Other / Not listed' },
                                 ]}
                                 placeholder="Which industry are you part of?"
-                                containerStyle={{height: 40, width: 285}}
+                                containerStyle={{height: 50, width: 285}}
                                 style={{ backgroundColor: '#fafafa' }}
-                                dropDownStyle={{ backgroundColor: '#fafafa' }}
+                                dropDownStyle={{ 
+                                    backgroundColor: '#e2e8f0',
+                                    height: 180,
+                                    marginTop: 2
+                                }}
                                 onChangeItem={item => this.updateIndustry({
                                     industrySector: item.value
                                 })}
                             />
                         </Item>
+                    </Item>
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pY6]}>
                     </Item>
                 </View>
             </View>
