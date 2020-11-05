@@ -40,6 +40,7 @@ export default class addQuoteScreen extends React.Component {
         cost_year: '',
         cost_month: '',
         uploaded_documents: [],
+        submitted: [],
         permission: true,
         user_name: '',
     };
@@ -72,13 +73,22 @@ export default class addQuoteScreen extends React.Component {
       } else {
           this.setState({ [key]: value})
       }
+      this.verifyInput(key);
     };
 
     onChange = (key, value) => {
       this.setState({
         [key]: value
       })
-    };  
+      this.verifyInput(key);
+    }; 
+    
+    verifyInput = (key) => {
+      if(key !== ""){
+        var joined = this.state.submitted.concat(key);
+        this.setState({ submitted: joined })
+      }
+    } 
 
     submitService = async () => {
       var time = this.state.callback_time;
@@ -136,7 +146,7 @@ export default class addQuoteScreen extends React.Component {
                           <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
                             <View rounded>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>SERVICE NAME</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>SERVICE NAME {this.state.submitted.includes('service_name') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                     <DropDownPicker
@@ -171,7 +181,7 @@ export default class addQuoteScreen extends React.Component {
                                 </View>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>PROVIDER</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>PROVIDER {this.state.submitted.includes('current_supplier') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                   <TextInput style={[ t.textXl]} placeholder="Your current Supplier"
@@ -181,11 +191,11 @@ export default class addQuoteScreen extends React.Component {
                                 </View>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE {this.state.submitted.includes('contractDate') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <DateTimePickerContract onChange={this.onChange}/>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH {this.state.submitted.includes('contract_length') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                   <DropDownPicker
@@ -221,11 +231,11 @@ export default class addQuoteScreen extends React.Component {
                                 </View>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE {this.state.submitted.includes('callback_date') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <DateTimePickerForm onChange={this.onChange}/>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£)</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£) {this.state.submitted.includes('cost_year') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                   <TextInput style={[ t.textXl]} placeholder="£0.00"
@@ -236,7 +246,7 @@ export default class addQuoteScreen extends React.Component {
                                 </View>
                               </>
                               <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER MONTH(£)</Text>
+                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER MONTH(£) {this.state.submitted.includes('cost_month') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
                                 <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                   <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                     <TextInput style={[ t.textXl]} placeholder="£0.00"
