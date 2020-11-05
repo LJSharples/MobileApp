@@ -71,10 +71,15 @@ export default class HomeScreen extends React.Component {
 
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
+
+      var dateCurrent = new Date();
+      var contractEndDate = new Date(current.contract_end);
+      if(contractEndDate.toISOString() > dateCurrent.toISOString()){
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
             return prev + +1 
          }
-         return prev
+      }
+      return prev
     }, 0);
     this.setState({activeServices: serviceSum});
 
@@ -122,10 +127,10 @@ export default class HomeScreen extends React.Component {
           <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h48, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hello</Text>
+                <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
               </Item>
               <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text3xl, t.textWhite]}>{this.state.firstName}</Text>
+                <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
               </Item>
               <View style={[ t.flex1, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsEnd]}>
                 <TouchableOpacity 
@@ -171,27 +176,6 @@ export default class HomeScreen extends React.Component {
                   onPress={() => this.handleRoute('Expenses')}
                   style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
                   <Text style={[ t.textPurple600, t.textXl, t.fontMedium, t.p2]}>Expenses</Text>
-                </TouchableOpacity>
-              </Item>
-              <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
-              </Item>
-            </View>
-          </Item>
-          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-              <Item style={[t.pX8, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text2xl, t.textWhite, t.fontMedium]}>News</Text>
-              </Item>
-              <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textWhite]}>
-                Lorem ipsum dolor sit. 
-                </Text>
-                <Text style={[ t.textXl, t.textWhite]}></Text>
-                <Item style={[t.pX6, t.borderTransparent]}/>
-                <TouchableOpacity 
-                  onPress={() => this.handleRoute('Expenses')}
-                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                  <Text style={[ t.textGray900, t.textXl, t.fontMedium, t.p2]}>View</Text>
                 </TouchableOpacity>
               </Item>
               <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
