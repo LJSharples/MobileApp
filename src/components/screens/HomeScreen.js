@@ -119,22 +119,21 @@ export default class HomeScreen extends React.Component {
               />
             }
           >
-          <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
+          <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h48, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hello</Text>
               </Item>
               <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text3xl, t.textWhite]}>{this.state.firstName}{'   '}</Text>
-                <Item style={[t.pX16, t.borderTransparent]}/>
-                  <TouchableOpacity 
-                    onPress={() => this.handleRoute('AddQuote')}
-                    style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                    <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
-                  </TouchableOpacity>
-                </Item>
-              <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
+                <Text style={[ t.text3xl, t.textWhite]}>{this.state.firstName}</Text>
               </Item>
+              <View style={[ t.flex1, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsEnd]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('AddQuote')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Item>
           <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
