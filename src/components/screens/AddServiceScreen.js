@@ -104,7 +104,7 @@ export default class addServiceScreen extends React.Component {
 
       const data = {
         user_name: this.state.user_name,
-        status: "CURRENT",
+        status: status,
         email: this.state.email,
         service_name: this.state.service_name,
         callback_time: date + 'T' + time,
@@ -124,6 +124,18 @@ export default class addServiceScreen extends React.Component {
           console.log("Error:")
           console.log(err);
       }
+      this.setState({
+        service_name: '',
+        current_supplier: '',
+        contractDate: '',
+        contract_length: '',
+        callback_time: '',
+        callback_date: '',
+        cost_year: '',
+        cost_month: '',
+        uploaded_documents: [],
+        submitted: []
+      })
     }
 
     render() {

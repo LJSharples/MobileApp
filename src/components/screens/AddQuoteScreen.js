@@ -120,6 +120,18 @@ export default class addQuoteScreen extends React.Component {
       } catch (err) {
           console.log("Error:")
       }
+      this.setState({
+        service_name: '',
+        current_supplier: '',
+        contractDate: '',
+        contract_length: '',
+        callback_time: '',
+        callback_date: '',
+        cost_year: '',
+        cost_month: '',
+        uploaded_documents: [],
+        submitted: []
+      })
     }
 
 
