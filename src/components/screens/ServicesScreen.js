@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   View,
+  Alert,
   Text,
   ScrollView,
   RefreshControl,
@@ -21,6 +22,7 @@ import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
+import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 
 const background = require('../images/background.png')
 
@@ -36,6 +38,10 @@ export default class ServicesScreen extends React.Component {
     rowsCurrent: [],
     rowsActive: [],
     rowsEnded: [],
+    tableHead: ['Service', 'Supplier', 'Contract End Date', ''],
+    modalHead: ['Service', 'Supplier', 'Contract End Date', 'Record ID', 'Bills'],
+    rowsActiveArray: [
+    ],
     email: '',
     billLink: {},
     selectedRecord: [],
@@ -104,8 +110,8 @@ export default class ServicesScreen extends React.Component {
     this.setState({ userCompany: userProfile.data["getCompany"]});
   
     const currentArray = [];
-    const activeArray = [];
     const endedArray = [];
+    const activeRowArray = [];
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
@@ -117,46 +123,20 @@ export default class ServicesScreen extends React.Component {
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
-          const newValue = {
-              service_name: lead.service_name,
-              provider: lead.current_supplier,
-              contract_end: contractEndDate.toLocaleDateString(),
-              cost_year: lead.cost_year,
-              status: lead.status,
-              bills: bills,
-              id: lead.id,
-              pk: lead.PK
-          }
-          endedArray.push(newValue)
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
+          endedArray.push(arrayRow)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
-            const newValue2 = {
-                service_name: lead.service_name,
-                provider: lead.current_supplier,
-                contract_end: contractEndDate.toLocaleDateString(),
-                cost_year: lead.cost_year,
-                status: lead.status,
-                bills: bills,
-                id: lead.id,
-                pk: lead.PK
-            }
-            activeArray.push(newValue2)
+            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id, bills]
+            activeRowArray.push(arrayRow)
+            console.log(arrayRow)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
-            const newValue = {
-                service_name: lead.service_name,
-                provider: lead.current_supplier,
-                contract_end: contractEndDate.toLocaleDateString(),
-                cost_year: lead.cost_year,
-                status: lead.status,
-                bills: bills,
-                id: lead.id,
-                pk: lead.PK
-            }
-            currentArray.push(newValue)
+            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
+            currentArray.push(arrayRow)
         }
       }
     });
     this.onChange('rowsCurrent', currentArray);
-    this.onChange('rowsActive', activeArray);
+    this.onChange('rowsActiveArray', activeRowArray);
     this.onChange('rowsEnded', endedArray);
   }
 
@@ -261,8 +241,22 @@ export default class ServicesScreen extends React.Component {
       chevron3: !prevState.chevron3
     }));    
   }
+  _alertIndex(data, rowData) {
+    this.setState({ 
+      modalVisible: true,
+      selectedRecord: rowData,
+      selectedKey: data 
+    });
+  }
 
   render() {
+    const element = (data, rowData) => (
+      <TouchableOpacity style={[ t.pY1,t.roundedLg]} onPress={() => this._alertIndex(data, rowData)}>
+        <Text style={[ t.textWhite, t.textCenter]}>
+          <FontAwesome5 name="plus" size={24} color="black" />
+        </Text>
+      </TouchableOpacity>
+    );
     return (
       <ImageBackground source={background} style= {[ t.flex1]}>
         <ScrollView
@@ -273,7 +267,7 @@ export default class ServicesScreen extends React.Component {
               />
             }
           >
-          <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
+          <Item style={[ t.mT5, t.alignCenter, t.borderTransparent]}>
             <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
               <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                 <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
@@ -308,57 +302,20 @@ export default class ServicesScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Service</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Provider</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Contract End Date</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                    </Item>
-                  </View>
-                </View>
-                {
-                  this.state.rowsActive.map((anObjectMapped, index) => { // This will render a row for each data element.
-                    return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.service_name}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.provider}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.contract_end}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
-                              <FontAwesome5 name="plus" size={24} color="black" />
-                            </TouchableOpacity>
-                          </Item>
-                        </View>
-                      </View>
-                    )
-                  })
-                }
+                <Table borderStyle={[t.borderTransparent]}>
+                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                  {
+                    this.state.rowsActiveArray.map((rowData, index) => (
+                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                        {
+                          rowData.slice(0, 4).map((cellData, cellIndex) => (
+                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData } textStyle={[t.m2]}/>
+                          ))
+                        }
+                      </TableWrapper>
+                    ))
+                  }
+                </Table>
               </View>
             </CollapsibleList>
           </Item>
@@ -380,59 +337,21 @@ export default class ServicesScreen extends React.Component {
                 </View>
               }
             >
-              
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Service</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Provider</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Contract End Date</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                    </Item>
-                  </View>
-                </View>
-                {
-                  this.state.rowsCurrent.map((anObjectMapped, index) => { // This will render a row for each data element.
-                    return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.service_name}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.provider}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.contract_end}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
-                              <FontAwesome5 name="plus" size={24} color="black" />
-                            </TouchableOpacity>
-                          </Item>
-                        </View>
-                      </View>
-                    )
-                  })
-                }
+                <Table borderStyle={[t.borderTransparent]}>
+                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                  {
+                    this.state.rowsCurrent.map((rowData, index) => (
+                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                        {
+                          rowData.slice(0, 4).map((cellData, cellIndex) => (
+                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellIndex < 3 ? cellData : ''} textStyle={[t.m2]}/>
+                          ))
+                        }
+                      </TableWrapper>
+                    ))
+                  }
+                </Table>
               </View>
             </CollapsibleList>
           </Item>
@@ -454,57 +373,20 @@ export default class ServicesScreen extends React.Component {
               }
             >
               <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Service</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Provider</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                      <Text style={[ t.fontBold]}>Contract End Date</Text>
-                    </Item>
-                  </View>
-                  <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                    </Item>
-                  </View>
-                </View>
-                {
-                  this.state.rowsEnded.map((anObjectMapped, index) => { // This will render a row for each data element.
-                    return (
-                      <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.service_name}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.provider}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text>{anObjectMapped.contract_end}</Text>
-                          </Item>
-                        </View>
-                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                          <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <TouchableOpacity  onPress={() => this.setModalVisible(true, anObjectMapped, anObjectMapped.id)}>
-                              <FontAwesome5 name="plus" size={24} color="black" />
-                            </TouchableOpacity>
-                          </Item>
-                        </View>
-                      </View>
-                    )
-                  })
-                }
+                <Table borderStyle={[t.borderTransparent]}>
+                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                  {
+                    this.state.rowsEnded.map((rowData, index) => (
+                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                        {
+                          rowData.slice(0, 4).map((cellData, cellIndex) => (
+                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData} textStyle={[t.m2]}/>
+                          ))
+                        }
+                      </TableWrapper>
+                    ))
+                  }
+                </Table>
               </View>
             </CollapsibleList>
           </Item>
@@ -520,115 +402,69 @@ export default class ServicesScreen extends React.Component {
               <View style={styles.modalView}>
                 <ScrollView>
                 {
-                  this.state.selectedRecord.map((anObjectMapped, index) => { // This will render a row for each data element.
-                    return (
-                      <View key={index}>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Service</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.service_name}</Text>
-                            </Item>
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Provider</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.provider}</Text>
-                            </Item>
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Contract End Date</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.contract_end}</Text>
-                            </Item>
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Costs Per Year (£)</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.cost_year}</Text>
-                            </Item>
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Status</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.textXl]}>{anObjectMapped.status}</Text>
-                            </Item>
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <Text style={[ t.text2xl,]}>Bills</Text>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.w1_2]}>
-                            {
-                              anObjectMapped.bills.map((bill, billIndex) => { // This will render a row for each data element.
-                                return (
-                                  <Item key={billIndex} style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <TouchableOpacity
-                                      onPress={() => this.downloadFile(bill)}
-                                      style={[ t.pX2, t.pY2, t.justifyStart]}>
-                                      <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
-                                    </TouchableOpacity>
-                                  </Item>
-                                )
-                              })
-                            }
-                          </View>
-                        </Item>
-                        <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                          <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <TouchableOpacity 
-                                onPress={() => this.hideModal()}
-                                style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.hideModal()}>Close</Text>
-                              </TouchableOpacity>
-                            </Item>
-                          </View>
-                          <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                              <TouchableOpacity 
-                                onPress={() => this.showDeleteModal()}
-                                style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
-                                <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.showDeleteModal()}>Delete</Text>
-                              </TouchableOpacity>
-                            </Item>
-                          </View>
-                        </Item>
-                      </View>
-                    )
+                  this.state.selectedRecord.map((value, index) => { // This will render a row for each data element.
+                    if(this.state.modalHead[index] === 'Bills'){
+                      return (
+                        <View key={index}>
+                          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
+                              </Item>
+                            </View>
+                            <View style={[t.roundedLg, t.w1_2]}>
+                              {
+                                value.map((bill, billIndex) => { // This will render a row for each data element.
+                                  return (
+                                    <Item key={billIndex} style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                      <TouchableOpacity
+                                        onPress={() => this.downloadFile(bill)}
+                                        style={[ t.pX2, t.pY2, t.justifyStart]}>
+                                        <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
+                                      </TouchableOpacity>
+                                    </Item>
+                                  )
+                                })
+                              }
+                            </View>
+                          </Item>
+                        </View>
+                      )
+                    } else {
+                      return (
+                        <View key={index}>
+                          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
+                              </Item>
+                            </View>
+                            <View style={[t.roundedLg, t.w1_2]}>
+                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.textXl]}>{value}</Text>
+                              </Item>
+                            </View>
+                          </Item>
+                        </View>
+                      )
+                    }
                   })
                 }
+                <Item style={[t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                  <View style={[t.w5_12,t.roundedLg, t.bgBlue100]}>
+                    <TouchableOpacity 
+                      onPress={() => this.hideModal()}>
+                      <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={[t.w1_12]}/>
+                  <View style={[t.w5_12,t.roundedLg, t.bgRed600]}>
+                    <TouchableOpacity 
+                      onPress={() => this.showDeleteModal()}>
+                      <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Item>
                 </ScrollView>
               </View>
             </View>
