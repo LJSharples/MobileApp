@@ -126,12 +126,11 @@ export default class ServicesScreen extends React.Component {
           const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
           endedArray.push(arrayRow)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
-            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id, bills]
-            activeRowArray.push(arrayRow)
-            console.log(arrayRow)
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id, bills]
+          activeRowArray.push(arrayRow)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
-            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
-            currentArray.push(arrayRow)
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
+          currentArray.push(arrayRow)
         }
       }
     });

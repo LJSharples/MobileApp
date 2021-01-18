@@ -188,6 +188,8 @@ export const updateCompany = /* GraphQL */ `
       industry: $industry
   ) {
     user_name
+    company_name
+    company_number
     address1
     address2
     city
