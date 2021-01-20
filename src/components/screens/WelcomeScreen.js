@@ -21,7 +21,7 @@ export default class WelcomeScreen extends React.Component {
     return (
       <View style={[ t.bgBlue900, t.hFull]}>
         <View style={[t.bgWhite, t.hFull ]}>
-          <Item style={[t.itemsCenter, t.mT40, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.itemsCenter, t.mT16, t.justifyCenter, t.borderTransparent]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[ t.roundedLg, t.itemsCenter]}>
                 <Image 
@@ -30,7 +30,7 @@ export default class WelcomeScreen extends React.Component {
               </View>
             </Item>
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT40]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
                 <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Procure and manage your essential business services in a hassle free way.</Text>

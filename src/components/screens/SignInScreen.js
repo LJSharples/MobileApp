@@ -60,13 +60,13 @@ export default class SignInScreen extends React.Component {
     return (
       <View style={[ t.bgBlue900, t.hFull]}>
         <View style={[t.bgWhite, t.hFull ]}>
-            <Item style={[ t.mT40, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[ t.mT16, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
                 <Image 
                   source={mblogo}
                   style={[ t.objectContain]}
                 />
           </Item>
-          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
+          <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.mT40]}>
             <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
                 <Text style={[t.textLg, t.textGray200, t.textCenter, t.fontLight]}>Please enter your username and password to get started.</Text>
