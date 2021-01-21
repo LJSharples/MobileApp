@@ -230,19 +230,19 @@ export default class ProfileScreen extends React.Component {
                     <Text>First Name</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('first_name', value)} value={this.state.first_name}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('first_name', value)} value={this.state.first_name}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Last Name</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('last_name', value)} value={this.state.last_name}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('last_name', value)} value={this.state.last_name}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Mobile number</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('phone', value)} value={this.state.phone}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('phone', value)} value={this.state.phone}/>
                   </View>
                   <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
                     <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
@@ -280,43 +280,43 @@ export default class ProfileScreen extends React.Component {
                     <Text>Company Name</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('company_name', value)} value={this.state.company_name}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('company_name', value)} value={this.state.company_name}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Company Number</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('company_number', value)} value={this.state.company_number}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('company_number', value)} value={this.state.company_number}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Address 1</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('address1', value)} value={this.state.address1}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('address1', value)} value={this.state.address1}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Address 2</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('address2', value)} value={this.state.address2}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('address2', value)} value={this.state.address2}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>City</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('city', value)} value={this.state.city}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('city', value)} value={this.state.city}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Region</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('region', value)} value={this.state.region}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('region', value)} value={this.state.region}/>
                   </View>
                   <View style={[ t.flex1, t.selfStretch, t.mB1]}>
                     <Text>Post Code</Text>
                   </View>
                   <View style={[ t.flex1, t.selfStretch]}>
-                    <TextInput style={[ t.border, t.borderGray500, t.p2]} onChangeText={value => this.onChangeText('postcode', value)} value={this.state.postcode}/>
+                    <TextInput style={[ t.border, t.borderGray500, t.p2, t.roundedLg]} onChangeText={value => this.onChangeText('postcode', value)} value={this.state.postcode}/>
                   </View>
                   <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
                     <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>

@@ -160,7 +160,7 @@ export default class HomeScreen extends React.Component {
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Item style={[t.w1_3, t.borderTransparent]}/>
-                          <Item style={[t.w1_3, t.borderTransparent]}>
+                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('AddQuote')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
@@ -181,11 +181,11 @@ export default class HomeScreen extends React.Component {
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Item style={[t.w1_3, t.borderTransparent]}/>
-                          <Item style={[t.w1_3, t.borderTransparent]}>
+                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('Services')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Services</Text>
+                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>My Services</Text>
                             </TouchableOpacity>
                           </Item>
                           <Item style={[t.w1_3, t.borderTransparent]}/>
@@ -201,17 +201,17 @@ export default class HomeScreen extends React.Component {
                           <Text style={[ t.textXl, t.textWhite]}>
                             Monthly: £{this.state.monthlyCost}
                             {"\n"}
-                            Yearly:{'     '}£{this.state.annualCost}
+                            Yearly:{'    '}£{this.state.annualCost}
                           </Text>
                           <Text style={[ t.textXl, t.textWhite]}></Text>
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Item style={[t.w1_3, t.borderTransparent]}/>
-                          <Item style={[t.w1_3, t.borderTransparent]}>
+                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('Expenses')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Expenses</Text>
+                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>My Expenses</Text>
                             </TouchableOpacity>
                           </Item>
                           <Item style={[t.w1_3, t.borderTransparent]}/>
@@ -250,7 +250,7 @@ export default class HomeScreen extends React.Component {
                         <TouchableOpacity 
                           onPress={() => this.handleRoute('Services')}
                           style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue600, t.textXl, t.fontMedium, t.p2]}>Services</Text>
+                          <Text style={[ t.textBlue600, t.textXl, t.fontMedium, t.p2]}>My Services</Text>
                         </TouchableOpacity>
                       </Item>
                       <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
@@ -273,7 +273,7 @@ export default class HomeScreen extends React.Component {
                         <TouchableOpacity 
                           onPress={() => this.handleRoute('Expenses')}
                           style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textPurple600, t.textXl, t.fontMedium, t.p2]}>Expenses</Text>
+                          <Text style={[ t.textPurple600, t.textXl, t.fontMedium, t.p2]}>My Expenses</Text>
                         </TouchableOpacity>
                       </Item>
                       <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>

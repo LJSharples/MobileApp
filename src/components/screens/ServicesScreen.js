@@ -38,7 +38,7 @@ export default class ServicesScreen extends React.Component {
     rowsCurrent: [],
     rowsActive: [],
     rowsEnded: [],
-    tableHead: ['Service', 'Supplier', 'Contract End Date', ''],
+    tableHead: ['Service', 'Supplier', 'End Date', ''],
     modalHead: ['Service', 'Supplier', 'Contract End Date', 'Record ID', 'Bills'],
     rowsActiveArray: [
     ],
