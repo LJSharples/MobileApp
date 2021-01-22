@@ -31,10 +31,10 @@ export const DateTimePickerForm = (props) => {
   return (
     <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
       <View>
-        <Button onPress={showDatepicker} title="Select Callback Date" />
+        <Button onPress={showDatepicker} title="Select Callback Date" color="#000000"/>
       </View>
       <View>
-        <Button onPress={showTimepicker} title="Select Callback Time" />
+        <Button onPress={showTimepicker} title="Select Callback Time" color="#000000"/>
       </View>
       {show && (
         <DateTimePicker

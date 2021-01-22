@@ -4,7 +4,7 @@ import {
   Text,
   ScrollView,
   RefreshControl,
-  TouchableHighlight,
+  ImageBackground,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -12,7 +12,6 @@ import {
 import {
   Item
 } from 'native-base'
-import { FontAwesome } from '@expo/vector-icons'; 
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
@@ -23,6 +22,7 @@ import DateTimePickerForm from '../forms/DateTimePickerForm';
 import DateTimePickerContract from '../forms/DateTimePickerContract';
 import FileUpload from "../forms/FileUpload";
 
+const background = require('../images/background.png')
 
 export default class addServiceScreen extends React.Component {
     state = {
@@ -93,6 +93,13 @@ export default class addServiceScreen extends React.Component {
       }
     }
 
+    fileUploadKey = (key) => {
+      this.setState(prevState => ({
+          uploaded_documents: [...prevState.uploaded_documents, key]
+      }))
+    }
+
+
     submitService = async () => {
       console.log("HERE")
       var time = this.state.callback_time;
@@ -140,7 +147,7 @@ export default class addServiceScreen extends React.Component {
 
     render() {
         return (
-            <View style= {[ t.flex1, t.bgBlue200]}>
+            <ImageBackground source={background} style= {[ t.flex1]}>
                 <ScrollView
                     refreshControl={
                     <RefreshControl
@@ -149,162 +156,135 @@ export default class addServiceScreen extends React.Component {
                     />
                     }
                 >
-                    <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                        <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.text2xl, t.textBlue600]}>Add A Service</Text>
-                            </Item>
-                        </View>
+                    <Item style={[ t.mT10, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                      <Text style={[ t.text2xl, t.textWhite]}>Add A Service</Text>
                     </Item>
                     <View style={[ t.flex1, t.justifyCenter, t.alignCenter]}>
                         <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.wFull, t.hFull, t.mT5,]}>
                           <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
                             <View rounded>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>SERVICE NAME {this.state.submitted.includes('service_name') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <DropDownPicker
-                                      items={[
-                                        { label: 'Electricity', value: 'Electric' },
-                                        { label: 'Gas', value: 'Gas' },
-                                        { label: 'Oil', value: 'Oil' },
-                                        { label: 'Water', value: 'Water' },
-                                        { label: 'Energy Reduction', value: 'Energy Reduction' },
-                                        { label: 'Waste Management', value: 'Waste Management' },
-                                        { label: 'Business Rates Review', value: 'Business Rates Review' },
-                                        { label: 'Fuel Cards', value: 'Fuel Cards' },
-                                        { label: 'Telecomms & Broadband', value: 'Telecomms & Broadband' },
-                                        { label: 'Cyber Security', value: 'Cyber Security' },
-                                        { label: 'Printers', value: 'Printers' },
-                                        { label: 'Merchant Services', value: 'Merchant Services' },
-                                        { label: 'Insolvency', value: 'Insolvency' },
-                                      ]}
-                                      placeholder="Please Select a Service"
-                                      placeholderStyle={{
-                                        fontSize: 18,
-                                        textAlign: 'center'
-                                      }}
-                                      containerStyle={{height: 50, width: 360}}
-                                      style={{ backgroundColor: '#fafafa' }}
-                                      dropDownStyle={{ backgroundColor: '#fafafa' }}
-                                      onChangeItem={item => this.setState({
-                                          service_name: item.value
-                                      })}
-                                    />
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold]}>PROVIDER {this.state.submitted.includes('current_supplier') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <TextInput style={[ t.textXl]} placeholder="Your current Supplier"
-                                    onChange={event => this.onChangeText('current_supplier', event)}
-                                    value={this.state.current_supplier}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT END DATE {this.state.submitted.includes('contractDate') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <DateTimePickerContract onChange={this.onChange}/>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CONTRACT LENGTH {this.state.submitted.includes('contract_length') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10, t.bgGray100]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                   <DropDownPicker
-                                      items={[
-                                        { label: '12 Months', value: '12 Months' },
-                                        { label: '18 Months', value: '18 Months' },
-                                        { label: '24 Months', value: '24 Months' },
-                                        { label: '36 Months', value: '36 Months' },
-                                        { label: '48 Months', value: '48 Months' },
-                                        { label: '60 Months', value: '60 Months' },
-                                      ]}
-                                      placeholder="Enter Contract Length"
-                                      placeholderStyle={{
-                                        fontSize: 18,
-                                        textAlign: 'center'
-                                      }}
-                                      containerStyle={{height: 50, width: 360}}
-                                      style={{ backgroundColor: '#fafafa' }}
-                                      dropDownStyle={{ backgroundColor: '#fafafa'}}
-                                      onChangeItem={item => this.setState({
-                                          contract_length: item.value
-                                      })}
-                                    />
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>FILE UPLOAD</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                      <FileUpload/>
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>CALLBACK DATE {this.state.submitted.includes('callback_date') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <DateTimePickerForm onChange={this.onChange}/>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER YEAR(£) {this.state.submitted.includes('cost_year') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <TextInput style={[ t.textXl]} placeholder="£0.00"
-                                    onChange={event => this.onChangeText('cost_year', event)}
+                                    items={[
+                                      { label: 'Electricity', value: 'Electric' },
+                                      { label: 'Gas', value: 'Gas' },
+                                      { label: 'Oil', value: 'Oil' },
+                                      { label: 'Water', value: 'Water' },
+                                      { label: 'Energy Reduction', value: 'Energy Reduction' },
+                                      { label: 'Waste Management', value: 'Waste Management' },
+                                      { label: 'Business Rates Review', value: 'Business Rates Review' },
+                                      { label: 'Fuel Cards', value: 'Fuel Cards' },
+                                      { label: 'Telecomms & Broadband', value: 'Telecomms & Broadband' },
+                                      { label: 'Cyber Security', value: 'Cyber Security' },
+                                      { label: 'Printers', value: 'Printers' },
+                                      { label: 'Merchant Services', value: 'Merchant Services' },
+                                      { label: 'Insolvency', value: 'Insolvency' },
+                                    ]}
+                                    placeholder="Please Select a Service"
+                                    placeholderStyle={{
+                                      fontSize: 18,
+                                      textAlign: 'center'
+                                    }}
+                                    containerStyle={{height: 50, width: 400}}
+                                    style={{ backgroundColor: '#fafafa' }}
+                                    dropDownStyle={{ backgroundColor: '#fafafa' }}
+                                    onChangeItem={item => this.setState({
+                                        service_name: item.value
+                                    })}
+                                  />
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                <TextInput style={[ t.textXl]} placeholder="Your Current Supplier"
+                                  placeholderTextColor="black"
+                                  onChange={event => this.onChangeText('current_supplier', event)}
+                                  value={this.state.current_supplier}/> 
+                                </Item>
+                              </View>
+                              <DateTimePickerContract onChange={this.onChange}/>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z10]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                <DropDownPicker
+                                    items={[
+                                      { label: '12 Months', value: '12 Months' },
+                                      { label: '18 Months', value: '18 Months' },
+                                      { label: '24 Months', value: '24 Months' },
+                                      { label: '36 Months', value: '36 Months' },
+                                      { label: '48 Months', value: '48 Months' },
+                                      { label: '60 Months', value: '60 Months' },
+                                    ]}
+                                    placeholder="Enter Contract Length"
+                                    placeholderStyle={{
+                                      fontSize: 18,
+                                      textAlign: 'center'
+                                    }}
+                                    containerStyle={{height: 50, width: 400}}
+                                    style={{ backgroundColor: '#fafafa' }}
+                                    dropDownStyle={{ backgroundColor: '#fafafa'}}
+                                    onChangeItem={item => this.setState({
+                                        contract_length: item.value
+                                    })}
+                                  />
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                <Item style={[t.pX4, t.pY4, t.pt8, t.borderTransparent]}>
+                                    <FileUpload fileUploadKey={this.fileUploadKey}/>
+                                </Item>
+                              </View>
+                              <DateTimePickerForm onChange={this.onChange}/>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                <TextInput style={[ t.textXl]} placeholder="Cost Per Year: £0.00"
+                                  placeholderTextColor="black"
+                                  onChange={event => this.onChangeText('cost_year', event)}
+                                  keyboardType = 'numeric'
+                                  value={this.state.cost_year}/> 
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  <TextInput style={[ t.textXl]} placeholder="Cost Per Month:£0.00"
+                                  placeholderTextColor="black"
+                                    onChange={event => this.onChangeText('cost_month', event)}
                                     keyboardType = 'numeric'
-                                    value={this.state.cost_year}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>COST PER MONTH(£) {this.state.submitted.includes('cost_month') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <TextInput style={[ t.textXl]} placeholder="£0.00"
-                                      onChange={event => this.onChangeText('cost_month', event)}
-                                      keyboardType = 'numeric'
-                                      value={this.state.cost_month}/> 
-                                  </Item>
-                                </View>
-                              </>
-                              <>
-                                <Text style={[t.textBlue600, t.textCenter, t.fontBold, t.mT2]}>PERMISSION {this.state.submitted.includes('permission') ? <FontAwesome name="check" size={24} color="green" /> : ""}</Text>
-                                <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                  <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                    <CheckBox
-                                      center
-                                      title='Click Here'
-                                      checked={this.state.permission}
-                                      onPress={() => {
-                                        this.setState(prevState => ({
-                                          permission: !prevState.permission
-                                        }));    
-                                      }}
-                                    />
-                                  </Item>
-                                </View>
-                              </>
-                              <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.itemsCenter, t.borderTransparent]}>
-                                <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w1_2]}>
+                                    value={this.state.cost_month}/> 
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                  <CheckBox
+                                    center
+                                    title='Permission To Share Details'
+                                    checked={this.state.permission}
+                                    onPress={() => {
+                                      this.setState(prevState => ({
+                                        permission: !prevState.permission
+                                      }));    
+                                    }}
+                                  />
+                                </Item>
+                              </View>
+                              <Item style={[ t.mT5, t.borderTransparent]}>
+                                <View style={[t.roundedLg, t.bgBlue100, t.w5_12]}>
                                   <TouchableOpacity 
                                     onPress={() => {
                                       this.handleRoute('Services');
                                     }}
-                                    style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                                    <Text style={[ t.textWhite, t.textXl, t.p2]}>{'      '}Cancel</Text>
+                                    style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
+                                    <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]}>Cancel</Text>
                                   </TouchableOpacity>
                                 </View>
-                                <View style={[t.roundedLg, t.itemsCenter, t.textCenter, t.w1_2]}>
+                                <View style={[t.w2_12]}/>
+                                <View style={[t.roundedLg, t.bgBlue100, t.w5_12]}>
                                   <TouchableOpacity 
                                     onPress={() => {
                                       this.submitService();
                                     }}
-                                    style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                                    <Text style={[ t.textWhite, t.textXl, t.p2]}>Add Service</Text>
+                                    style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
+                                    <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]}>Add Service</Text>
                                   </TouchableOpacity>
                                 </View>
                               </Item>
@@ -313,7 +293,7 @@ export default class addServiceScreen extends React.Component {
                         </Item>
                   </View>
                 </ScrollView>
-            </View>
+            </ImageBackground>
         )
     }
 }

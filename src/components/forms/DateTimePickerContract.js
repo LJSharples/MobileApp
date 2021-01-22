@@ -32,7 +32,7 @@ export const DateTimePickerContract = (props) => {
   return (
     <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
       <View>
-        <Button onPress={showDatepicker} title="Select Contract End Date" />
+        <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/>
       </View>
       {show && (
         <DateTimePicker

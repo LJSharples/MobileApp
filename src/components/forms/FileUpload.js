@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -6,10 +6,12 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Storage } from 'aws-amplify';
+import { t } from 'react-native-tailwindcss';
 
-export default function FileUpload() {
+export default function FileUpload(props) {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
+    const [cameraRef, setCameraRef] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -27,8 +29,10 @@ export default function FileUpload() {
 
     return (
         <View style={{ flex: 1 }}>
-            <Camera style={{ flex: 1 }} type={type}>
-                <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row',}}>
+            <Camera style={{ flex: 1 }} type={type} ref={ref => {
+	                setCameraRef(ref);
+	            }} autoFocus="on">
+                <View style={[ t.alignCenter, t.justifyCenter]}>
                     <TouchableOpacity
                         style={{
                             flex:0.1,
@@ -43,6 +47,42 @@ export default function FileUpload() {
                             );
                         }}>
                             <Text style={{ fontSize: 18, marginBottom: 10, color: 'white'}}> Flip</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={async() => {
+                        if(cameraRef){
+                            let photo = await cameraRef.takePictureAsync();
+                            const imageName = photo.uri.replace(/^.*[\\\/]/, '');
+                            Storage.put(imageName, photo.uri, {
+                                level: 'private',
+                                contentType: 'jpg'
+                            })
+                            .then(
+                                result => {
+                                    console.log(result)
+                                    props.fileUploadKey(result.key)
+                                })
+                            .catch(err => console.log(err));
+                        }
+                    }}>
+                        <View style={{ 
+                            borderWidth: 2,
+                            borderRadius:"50%",
+                            borderColor: 'white',
+                            height: 50,
+                            width:50,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <View style={{
+                                borderWidth: 2,
+                                borderRadius:"50%",
+                                borderColor: 'white',
+                                height: 40,
+                                width:40,
+                                backgroundColor: 'white'}} >
+                            </View>
+                        </View> 
                     </TouchableOpacity>
                 </View>
             </Camera>
