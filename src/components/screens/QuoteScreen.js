@@ -18,6 +18,7 @@ import { addService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 
@@ -147,58 +148,61 @@ export default class QuoteScreen extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={background}  style= {[ t.flex1]}>
-        <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-          >
-          <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Get Quote</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textWhite]}>Let our team of experts help you with your business services.</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textWhite]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
-              </Item>
-            </View>
-            <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
-              <TouchableOpacity 
-                onPress={() => this.handleRoute('Services')}
-                style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
-                <Text style={[ t.textBlue100, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
-              </TouchableOpacity>
-            </View>
-          </Item>
-        </ScrollView>
-        <TabBar
-            activeTab={this.state.activeTab}
-            iconStyle={{ width: 50, height: 50 }}
-            tintColor="#2F82EC"
-            onPress={(tabIndex) => {
-                this._handlePress(tabIndex);
-            }}
-            iconActiveTintColor="black"
-            iconInactiveTintColor="#2F82EC"
-            tintColor="#f5f5f7"
-            titleColor="#999999"
-            isRtl={ false }
-            iconSize={25}
-            values={[
-              { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
-              { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-              { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-              { title: "Get Quote", icon: "redo-variant", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialCommunityIcons, activeTab:this.state.activeTab},
-              { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-            ]}
-          />
-      </ImageBackground>
+      <View source={background} style= {[ t.flex1]}>
+        <Header/>
+        <ImageBackground source={background}  style= {[ t.flex1]}>
+          <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh}
+                />
+              }
+            >
+            <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                  <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Get Quote</Text>
+                </Item>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                  <Text style={[ t.textXl, t.textWhite]}>Let our team of experts help you with your business services.</Text>
+                </Item>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                  <Text style={[ t.textXl, t.textWhite]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
+                </Item>
+              </View>
+              <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('Services')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
+                </TouchableOpacity>
+              </View>
+            </Item>
+          </ScrollView>
+          <TabBar
+              activeTab={this.state.activeTab}
+              iconStyle={{ width: 50, height: 50 }}
+              tintColor="#2F82EC"
+              onPress={(tabIndex) => {
+                  this._handlePress(tabIndex);
+              }}
+              iconActiveTintColor="black"
+              iconInactiveTintColor="#2F82EC"
+              tintColor="#f5f5f7"
+              titleColor="#999999"
+              isRtl={ false }
+              iconSize={25}
+              values={[
+                { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
+                { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+                { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+                { title: "Get Quote", icon: "redo-variant", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialCommunityIcons, activeTab:this.state.activeTab},
+                { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              ]}
+            />
+        </ImageBackground>
+      </View>
     )
   }
   

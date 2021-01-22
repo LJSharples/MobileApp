@@ -18,6 +18,7 @@ import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';
 import PieChartSavings from '../forms/PieChartDisplaySavings';
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 
@@ -346,273 +347,276 @@ export default class ExpensesScreen extends React.Component {
     });
 
     return (
-        <ImageBackground source={background} style= {[ t.flex1]}>
-            <ScrollView
-                refreshControl={
-                <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh}
-                />
-                }
-            >
-                <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Expenses</Text>
-                        </Item>
-                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                            <Text style={[ t.textXl, t.textWhite]}>Manage your expenses</Text>
-                        </Item>
-                    </View>
-                </Item>
-                <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                    <CollapsibleList
+        <View source={background} style= {[ t.flex1]}>
+            <Header/>
+            <ImageBackground source={background} style= {[ t.flex1]}>
+                <ScrollView
+                    refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                    />
+                    }
+                >
+                    <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
+                        <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Expenses</Text>
+                            </Item>
+                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                <Text style={[ t.textXl, t.textWhite]}>Manage your expenses</Text>
+                            </Item>
+                        </View>
+                    </Item>
+                    <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <CollapsibleList
+                            numberOfVisibleItems={0}
+                            wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
+                            buttonPosition="top"
+                            onToggle={() => {
+                            this.swapChevron1();
+                            }}
+                            buttonContent={
+                                <View style={[ t.p3, t.flex1]}>
+                                    <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Monthly Expenses
+                                        {'                              '} 
+                                        { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                    <Text style={[ t.textLg]}>{'                     '} £{this.state.monthlyCost}</Text>
+                                    </Text>
+                                </View>
+                            }
+                        >
+                            <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text style={[ t.fontBold]}>Service</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text style={[ t.fontBold]}>Contract End Date</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text style={[ t.fontBold]}>Cost Month</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text style={[ t.fontBold]}>Contract Length</Text>
+                                        </Item>
+                                    </View>
+                                </View>
+                                {
+                                this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
+                                    return (
+                                    <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.service_name}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.contract_end}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>£{anObjectMapped.cost_month}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.contract_length}</Text>
+                                            </Item>
+                                        </View>
+                                    </View>
+                                    )
+                                })
+                                }
+                                <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                                    <PieChart data={data}/>
+                                </View>
+                            </View>
+                        </CollapsibleList>
+                    </Item>
+                    <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <CollapsibleList
                         numberOfVisibleItems={0}
                         wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
                         buttonPosition="top"
                         onToggle={() => {
-                          this.swapChevron1();
+                        this.swapChevron2();
                         }}
                         buttonContent={
                             <View style={[ t.p3, t.flex1]}>
-                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Monthly Expenses
-                                    {'                              '} 
-                                    { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                                <Text style={[ t.textLg]}>{'                     '} £{this.state.monthlyCost}</Text>
+                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Annual Expenses 
+                                    {'                                 '} 
+                                    { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                    <Text style={[ t.textLg]}>{'                     '} £{this.state.annualCost}</Text>
                                 </Text>
                             </View>
                         }
-                    >
-                        <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Service</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Contract End Date</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Cost Month</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Contract Length</Text>
-                                    </Item>
-                                </View>
-                            </View>
-                            {
-                            this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
-                                return (
-                                <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                        >
+                            <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                                <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                         <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.service_name}</Text>
+                                            <Text style={[ t.fontBold]}>Service</Text>
                                         </Item>
                                     </View>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                         <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.contract_end}</Text>
+                                            <Text style={[ t.fontBold]}>Contract End Date</Text>
                                         </Item>
                                     </View>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                         <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>£{anObjectMapped.cost_month}</Text>
+                                            <Text style={[ t.fontBold]}>Cost Year</Text>
                                         </Item>
                                     </View>
                                     <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
                                         <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.contract_length}</Text>
+                                            <Text style={[ t.fontBold]}>Contract Length</Text>
                                         </Item>
                                     </View>
                                 </View>
-                                )
-                            })
-                            }
-                            <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                                <PieChart data={data}/>
-                            </View>
-                        </View>
-                    </CollapsibleList>
-                </Item>
-                <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                    <CollapsibleList
-                    numberOfVisibleItems={0}
-                    wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
-                    buttonPosition="top"
-                    onToggle={() => {
-                      this.swapChevron2();
-                    }}
-                    buttonContent={
-                        <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Annual Expenses 
-                                {'                                 '} 
-                                { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                                <Text style={[ t.textLg]}>{'                     '} £{this.state.annualCost}</Text>
-                            </Text>
-                        </View>
-                    }
-                    >
-                        <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Service</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Contract End Date</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Cost Year</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text style={[ t.fontBold]}>Contract Length</Text>
-                                    </Item>
-                                </View>
-                            </View>
-                            {
-                            this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
-                                return (
-                                <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.service_name}</Text>
-                                        </Item>
+                                {
+                                this.state.activeServices.map((anObjectMapped, index) => { // This will render a row for each data element.
+                                    return (
+                                    <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.service_name}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.contract_end}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>£{anObjectMapped.cost_year}</Text>
+                                            </Item>
+                                        </View>
+                                        <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                            <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                                <Text>{anObjectMapped.contract_length}</Text>
+                                            </Item>
+                                        </View>
                                     </View>
-                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.contract_end}</Text>
-                                        </Item>
-                                    </View>
-                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>£{anObjectMapped.cost_year}</Text>
-                                        </Item>
-                                    </View>
-                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                            <Text>{anObjectMapped.contract_length}</Text>
-                                        </Item>
-                                    </View>
-                                </View>
-                                )
-                            })
-                            }
-                            <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                                <PieChartYear data={data2}/>
-                            </View>
-                        </View>
-                    </CollapsibleList>
-                </Item>
-                <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-                    <CollapsibleList
-                    numberOfVisibleItems={0}
-                    wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
-                    buttonPosition="top"
-                    onToggle={() => {
-                      this.swapChevron3();
-                    }}
-                    buttonContent={
-                        <View style={[ t.p3, t.flex1]}>
-                            <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Savings To Date 
-                                {'                                   '} 
-                                { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                                <Text style={[ t.textLg]}>{'                     '} £{this.state.moneySaved}</Text>
-                            </Text>
-                        </View>
-                    }
-                    >
-                    <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                        <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.fontBold]}>Service</Text>
-                                </Item>
-                            </View>
-                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.fontBold]}>Contract End Date</Text>
-                                </Item>
-                            </View>
-                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.fontBold]}>Savings</Text>
-                                </Item>
-                            </View>
-                            <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                    <Text style={[ t.fontBold]}>Contract Length</Text>
-                                </Item>
-                            </View>
-                        </View>
-                        {
-                        this.state.savings.map((anObjectMapped, index) => { // This will render a row for each data element.
-                            return (
-                            <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text>{anObjectMapped.service_name}</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text>{anObjectMapped.contract_end}</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text>£{anObjectMapped.savings}</Text>
-                                    </Item>
-                                </View>
-                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
-                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                        <Text>{anObjectMapped.contract_length}</Text>
-                                    </Item>
+                                    )
+                                })
+                                }
+                                <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                                    <PieChartYear data={data2}/>
                                 </View>
                             </View>
-                            )
-                        })
+                        </CollapsibleList>
+                    </Item>
+                    <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+                        <CollapsibleList
+                        numberOfVisibleItems={0}
+                        wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
+                        buttonPosition="top"
+                        onToggle={() => {
+                        this.swapChevron3();
+                        }}
+                        buttonContent={
+                            <View style={[ t.p3, t.flex1]}>
+                                <Text style={[ t.textWhite, t.fontMedium, t.textXl, t.p2]}>Savings To Date 
+                                    {'                                   '} 
+                                    { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                                    <Text style={[ t.textLg]}>{'                     '} £{this.state.moneySaved}</Text>
+                                </Text>
+                            </View>
                         }
-                        <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                            <PieChartSavings data={data3}/>
+                        >
+                        <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                            <View style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text style={[ t.fontBold]}>Service</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text style={[ t.fontBold]}>Contract End Date</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text style={[ t.fontBold]}>Savings</Text>
+                                    </Item>
+                                </View>
+                                <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                    <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <Text style={[ t.fontBold]}>Contract Length</Text>
+                                    </Item>
+                                </View>
+                            </View>
+                            {
+                            this.state.savings.map((anObjectMapped, index) => { // This will render a row for each data element.
+                                return (
+                                <View key={index} style={[ t.flex1, t.selfStretch, t.flexRow]}>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text>{anObjectMapped.service_name}</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text>{anObjectMapped.contract_end}</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text>£{anObjectMapped.savings}</Text>
+                                        </Item>
+                                    </View>
+                                    <View style={[t.pX1, t.pY2, t.pt4, t.roundedLg, t.w1_4]}>
+                                        <Item style={[t.pX1, t.pY1, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                            <Text>{anObjectMapped.contract_length}</Text>
+                                        </Item>
+                                    </View>
+                                </View>
+                                )
+                            })
+                            }
+                            <View style={[ t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                                <PieChartSavings data={data3}/>
+                            </View>
                         </View>
-                    </View>
-                    </CollapsibleList>
-                </Item>
-            </ScrollView>
-            <TabBar
-                activeTab={this.state.activeTab}
-                iconStyle={{ width: 50, height: 50 }}
-                tintColor="#2F82EC"
-                onPress={(tabIndex) => {
-                    this._handlePress(tabIndex);
-                }}
-                iconActiveTintColor="black"
-                iconInactiveTintColor="#2F82EC"
-                tintColor="#f5f5f7"
-                titleColor="#999999"
-                isRtl={ false }
-                iconSize={25}
-                values={[
-                    { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
-                    { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-                    { title: "Expenses", icon: "md-wallet", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
-                    { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-                    { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-                ]}
-            />
-        </ImageBackground>
+                        </CollapsibleList>
+                    </Item>
+                </ScrollView>
+                <TabBar
+                    activeTab={this.state.activeTab}
+                    iconStyle={{ width: 50, height: 50 }}
+                    tintColor="#2F82EC"
+                    onPress={(tabIndex) => {
+                        this._handlePress(tabIndex);
+                    }}
+                    iconActiveTintColor="black"
+                    iconInactiveTintColor="#2F82EC"
+                    tintColor="#f5f5f7"
+                    titleColor="#999999"
+                    isRtl={ false }
+                    iconSize={25}
+                    values={[
+                        { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
+                        { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+                        { title: "Expenses", icon: "md-wallet", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
+                        { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
+                        { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+                    ]}
+                />
+            </ImageBackground>
+        </View>
     )
   }
 }

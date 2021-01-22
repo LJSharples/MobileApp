@@ -18,6 +18,7 @@ import { getUserDetails, getServices } from "../../graphql/queries";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 const mblogo = require('../images/managedbill-corporate-logo.png');
@@ -26,6 +27,7 @@ export default class HomeScreen extends React.Component {
   state = {
     username: '',
     firstName: '',
+    affiliateId: '',
     activeServices: 0,
     annualCost: 0,
     monthlyCost: 0,
@@ -73,6 +75,7 @@ export default class HomeScreen extends React.Component {
     this.setState({ firstName: userProfile.data["user"].first_name});
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
+    this.setState({ affiliateId: user.attributes['custom:affiliate_id'] });
 
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
@@ -116,29 +119,10 @@ export default class HomeScreen extends React.Component {
 
 
   }
-  _alertIndex(data, rowData) {
-    this.setState({ 
-      modalVisible: true,
-      selectedRecord: rowData,
-      selectedKey: data 
-    });
-  }
   render() {
-    const element = (data, rowData) => (
-      <TouchableOpacity style={[ t.pY1,t.roundedLg]} onPress={() => this._alertIndex(data, rowData)}>
-        <Text style={[ t.textWhite, t.textCenter]}>
-          <FontAwesome5 name="plus" size={24} color="black" />
-        </Text>
-      </TouchableOpacity>
-    );
     return (
       <View source={background} style= {[ t.flex1]}>
-          <Item style={[ t.mT12, t.mB6, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <Image 
-              source={mblogo}
-              style={[ t.objectContain]}
-            />
-          </Item>
+          <Header/>
           <Tabs style={[t.flex1, t.wFull]}>
             <Tab heading={ <TabHeading><Text>Dashboard</Text></TabHeading>}>
                 <ImageBackground source={background} style= {[ t.flex1]}>
@@ -226,57 +210,10 @@ export default class HomeScreen extends React.Component {
                   <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
                     <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
                       <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
+                        <Text style={[ t.text4xl, t.textWhite, t.fontMedium]}>Affiliate Dashboard</Text>
                       </Item>
                       <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
-                        <Item style={[t.pX16, t.borderTransparent]}/>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AddQuote')}
-                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
-                        </TouchableOpacity>
-                      </Item>
-                    </View>
-                  </Item>
-                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text2xl, t.textWhite, t.fontMedium]}>Services</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Active Services: {this.state.activeServices}</Text>
-                        <Item style={[t.pX8, t.borderTransparent]}/>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('Services')}
-                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue600, t.textXl, t.fontMedium, t.p2]}>My Services</Text>
-                        </TouchableOpacity>
-                      </Item>
-                      <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
-                      </Item>
-                    </View>
-                  </Item>
-                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.pB4, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text2xl, t.textWhite, t.fontMedium]}>Expenses</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>
-                          Monthly: £{this.state.monthlyCost}
-                          {"\n"}
-                          Yearly:{'     '}£{this.state.annualCost}
-                        </Text>
-                        <Text style={[ t.textXl, t.textWhite]}></Text>
-                        <Item style={[t.pX4, t.borderTransparent]}/>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('Expenses')}
-                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textPurple600, t.textXl, t.fontMedium, t.p2]}>My Expenses</Text>
-                        </TouchableOpacity>
-                      </Item>
-                      <Item style={[t.justifyEnd, t.pX8, t.borderTransparent]}>
+                        <Text style={[ t.textXl, t.textWhite]}>Your Affiliate ID is:{this.state.affiliateId}</Text>
                       </Item>
                     </View>
                   </Item>

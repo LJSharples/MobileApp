@@ -23,6 +23,7 @@ import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 
@@ -257,282 +258,285 @@ export default class ServicesScreen extends React.Component {
       </TouchableOpacity>
     );
     return (
-      <ImageBackground source={background} style= {[ t.flex1]}>
-        <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-          >
-          <Item style={[ t.mT5, t.alignCenter, t.borderTransparent]}>
-            <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
-              </Item>
-              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                <Text style={[ t.textXl, t.textWhite]}>Manage all your services in one place</Text>
-              </Item>
-              <Item style={[t.justifyEnd, t.borderTransparent]}>
-                <TouchableOpacity 
-                  onPress={() => this.handleRoute('AddServices')}
-                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
-                </TouchableOpacity>
-              </Item>
-            </View>
-          </Item>
-          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <CollapsibleList
-              numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
-              buttonPosition="top"
-              onToggle={() => {
-                this.swapChevron1();
-              }}
-              buttonContent={
-                <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Live Contracts 
-                  {'                                     '} 
-                  { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                  </Text>
-                </View>
+      <View source={background} style= {[ t.flex1]}>
+        <Header/>
+        <ImageBackground source={background} style= {[ t.flex1]}>
+          <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh}
+                />
               }
             >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <Table borderStyle={[t.borderTransparent]}>
-                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
-                  {
-                    this.state.rowsActiveArray.map((rowData, index) => (
-                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
-                        {
-                          rowData.slice(0, 4).map((cellData, cellIndex) => (
-                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData } textStyle={[t.m2]}/>
-                          ))
-                        }
-                      </TableWrapper>
-                    ))
-                  }
-                </Table>
-              </View>
-            </CollapsibleList>
-          </Item>
-          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <CollapsibleList
-              numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600, t.justifyCenter]}
-              buttonPosition="top"
-              onToggle={() => {
-                this.swapChevron2();
-              }}
-              buttonPosition="top"
-              buttonContent={
-                <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>In Progress 
-                    {'                                           '} 
-                    { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                  </Text>
-                </View>
-              }
-            >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <Table borderStyle={[t.borderTransparent]}>
-                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
-                  {
-                    this.state.rowsCurrent.map((rowData, index) => (
-                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
-                        {
-                          rowData.slice(0, 4).map((cellData, cellIndex) => (
-                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellIndex < 3 ? cellData : ''} textStyle={[t.m2]}/>
-                          ))
-                        }
-                      </TableWrapper>
-                    ))
-                  }
-                </Table>
-              </View>
-            </CollapsibleList>
-          </Item>
-          <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-            <CollapsibleList
-              numberOfVisibleItems={0}
-              wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
-              buttonPosition="top"
-              onToggle={() => {
-                this.swapChevron3();
-              }}
-              buttonContent={
-                <View style={[ t.p3, t.flex1]}>
-                  <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Expired Contracts 
-                    {'                               '} 
-                    { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
-                  </Text>
-                </View>
-              }
-            >
-              <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
-                <Table borderStyle={[t.borderTransparent]}>
-                  <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
-                  {
-                    this.state.rowsEnded.map((rowData, index) => (
-                      <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
-                        {
-                          rowData.slice(0, 4).map((cellData, cellIndex) => (
-                            <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData} textStyle={[t.m2]}/>
-                          ))
-                        }
-                      </TableWrapper>
-                    ))
-                  }
-                </Table>
-              </View>
-            </CollapsibleList>
-          </Item>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
-              <View style={styles.modalView}>
-                <ScrollView>
-                {
-                  this.state.selectedRecord.map((value, index) => { // This will render a row for each data element.
-                    if(this.state.modalHead[index] === 'Bills'){
-                      return (
-                        <View key={index}>
-                          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
-                              </Item>
-                            </View>
-                            <View style={[t.roundedLg, t.w1_2]}>
-                              {
-                                value.map((bill, billIndex) => { // This will render a row for each data element.
-                                  return (
-                                    <Item key={billIndex} style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                      <TouchableOpacity
-                                        onPress={() => this.downloadFile(bill)}
-                                        style={[ t.pX2, t.pY2, t.justifyStart]}>
-                                        <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
-                                      </TouchableOpacity>
-                                    </Item>
-                                  )
-                                })
-                              }
-                            </View>
-                          </Item>
-                        </View>
-                      )
-                    } else {
-                      return (
-                        <View key={index}>
-                          <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                            <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
-                              </Item>
-                            </View>
-                            <View style={[t.roundedLg, t.w1_2]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.textXl]}>{value}</Text>
-                              </Item>
-                            </View>
-                          </Item>
-                        </View>
-                      )
-                    }
-                  })
-                }
-                <Item style={[t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                  <View style={[t.w5_12,t.roundedLg, t.bgBlue100]}>
-                    <TouchableOpacity 
-                      onPress={() => this.hideModal()}>
-                      <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Close</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={[t.w1_12]}/>
-                  <View style={[t.w5_12,t.roundedLg, t.bgRed600]}>
-                    <TouchableOpacity 
-                      onPress={() => this.showDeleteModal()}>
-                      <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Delete</Text>
-                    </TouchableOpacity>
-                  </View>
+            <Item style={[ t.mT5, t.alignCenter, t.borderTransparent]}>
+              <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                  <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
                 </Item>
-                </ScrollView>
+                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                  <Text style={[ t.textXl, t.textWhite]}>Manage all your services in one place</Text>
+                </Item>
+                <Item style={[t.justifyEnd, t.borderTransparent]}>
+                  <TouchableOpacity 
+                    onPress={() => this.handleRoute('AddServices')}
+                    style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                    <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
+                  </TouchableOpacity>
+                </Item>
               </View>
-            </View>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.state.deleteModalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
-              <View style={styles.modalView}>
-                <ScrollView>
-                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg]}>
-                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text style={[ t.textXl, t.p2]}>Please Confirm you wish to delete this service.</Text>
-                      </Item>
+            </Item>
+            <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <CollapsibleList
+                numberOfVisibleItems={0}
+                wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
+                buttonPosition="top"
+                onToggle={() => {
+                  this.swapChevron1();
+                }}
+                buttonContent={
+                  <View style={[ t.p3, t.flex1]}>
+                    <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Live Contracts 
+                    {'                                     '} 
+                    { this.state.chevron1 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                    </Text>
+                  </View>
+                }
+              >
+                <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                  <Table borderStyle={[t.borderTransparent]}>
+                    <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                    {
+                      this.state.rowsActiveArray.map((rowData, index) => (
+                        <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                          {
+                            rowData.slice(0, 4).map((cellData, cellIndex) => (
+                              <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData } textStyle={[t.m2]}/>
+                            ))
+                          }
+                        </TableWrapper>
+                      ))
+                    }
+                  </Table>
+                </View>
+              </CollapsibleList>
+            </Item>
+            <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <CollapsibleList
+                numberOfVisibleItems={0}
+                wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600, t.justifyCenter]}
+                buttonPosition="top"
+                onToggle={() => {
+                  this.swapChevron2();
+                }}
+                buttonPosition="top"
+                buttonContent={
+                  <View style={[ t.p3, t.flex1]}>
+                    <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>In Progress 
+                      {'                                           '} 
+                      { this.state.chevron2 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                    </Text>
+                  </View>
+                }
+              >
+                <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                  <Table borderStyle={[t.borderTransparent]}>
+                    <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                    {
+                      this.state.rowsCurrent.map((rowData, index) => (
+                        <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                          {
+                            rowData.slice(0, 4).map((cellData, cellIndex) => (
+                              <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellIndex < 3 ? cellData : ''} textStyle={[t.m2]}/>
+                            ))
+                          }
+                        </TableWrapper>
+                      ))
+                    }
+                  </Table>
+                </View>
+              </CollapsibleList>
+            </Item>
+            <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+              <CollapsibleList
+                numberOfVisibleItems={0}
+                wrapperStyle={[ t.roundedLg, t.bgWhite, t.flex1, t.bgGray600]}
+                buttonPosition="top"
+                onToggle={() => {
+                  this.swapChevron3();
+                }}
+                buttonContent={
+                  <View style={[ t.p3, t.flex1]}>
+                    <Text style={[ t.textWhite, t.textXl, t.fontMedium, t.p2]}>Expired Contracts 
+                      {'                               '} 
+                      { this.state.chevron3 == false ? <FontAwesome5 name="chevron-up" size={24} color="white" /> : <FontAwesome5 name="chevron-down" size={24} color="white" />}
+                    </Text>
+                  </View>
+                }
+              >
+                <View style={[ t.p3, t.borderB, t.flex1, t.bgWhite, t.alignCenter, t.justifyCenter]}>
+                  <Table borderStyle={[t.borderTransparent]}>
+                    <Row data={this.state.tableHead} style={[t.h10, t.flexAuto]} textStyle={[t.m2]}/>
+                    {
+                      this.state.rowsEnded.map((rowData, index) => (
+                        <TableWrapper key={index} style={[t.flexRow, t.justifyCenter]}>
+                          {
+                            rowData.slice(0, 4).map((cellData, cellIndex) => (
+                              <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, rowData, index) : cellData} textStyle={[t.m2]}/>
+                            ))
+                          }
+                        </TableWrapper>
+                      ))
+                    }
+                  </Table>
+                </View>
+              </CollapsibleList>
+            </Item>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
+            >
+              <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+                <View style={styles.modalView}>
+                  <ScrollView>
+                  {
+                    this.state.selectedRecord.map((value, index) => { // This will render a row for each data element.
+                      if(this.state.modalHead[index] === 'Bills'){
+                        return (
+                          <View key={index}>
+                            <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                  <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.w1_2]}>
+                                {
+                                  value.map((bill, billIndex) => { // This will render a row for each data element.
+                                    return (
+                                      <Item key={billIndex} style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                        <TouchableOpacity
+                                          onPress={() => this.downloadFile(bill)}
+                                          style={[ t.pX2, t.pY2, t.justifyStart]}>
+                                          <Text style={[t.textXl]} onPress={() => this.downloadFile(bill)}>{bill}</Text>
+                                        </TouchableOpacity>
+                                      </Item>
+                                    )
+                                  })
+                                }
+                              </View>
+                            </Item>
+                          </View>
+                        )
+                      } else {
+                        return (
+                          <View key={index}>
+                            <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                              <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                  <Text style={[ t.textXl,]}>{this.state.modalHead[index]}</Text>
+                                </Item>
+                              </View>
+                              <View style={[t.roundedLg, t.w1_2]}>
+                                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                                  <Text style={[ t.textXl]}>{value}</Text>
+                                </Item>
+                              </View>
+                            </Item>
+                          </View>
+                        )
+                      }
+                    })
+                  }
+                  <Item style={[t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                    <View style={[t.w5_12,t.roundedLg, t.bgBlue100]}>
+                      <TouchableOpacity 
+                        onPress={() => this.hideModal()}>
+                        <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Close</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={[t.w1_12]}/>
+                    <View style={[t.w5_12,t.roundedLg, t.bgRed600]}>
+                      <TouchableOpacity 
+                        onPress={() => this.showDeleteModal()}>
+                        <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Delete</Text>
+                      </TouchableOpacity>
                     </View>
                   </Item>
-                  <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
-                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <TouchableOpacity 
-                          onPress={() => this.hideDeleteModal()}
-                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
-                          <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.hideDeleteModal()}>Cancel</Text>
-                        </TouchableOpacity>
-                      </Item>
-                    </View>
-                    <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
-                      <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <TouchableOpacity 
-                          onPress={() => this.deleteService()}
-                          style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
-                          <Text style={[ t.textWhite, t.textXl, t.p2]}>Delete</Text>
-                        </TouchableOpacity>
-                      </Item>
-                    </View>
-                  </Item>
-                </ScrollView>
+                  </ScrollView>
+                </View>
               </View>
-            </View>
-          </Modal>
-        </ScrollView>
-        <TabBar
-            activeTab={this.state.activeTab}
-            iconStyle={{ width: 50, height: 50 }}
-            tintColor="#2F82EC"
-            onPress={(tabIndex) => {
-                this._handlePress(tabIndex);
-            }}
-            iconActiveTintColor="black"
-            iconInactiveTintColor="#2F82EC"
-            tintColor="#f5f5f7"
-            titleColor="#999999"
-            isRtl={ false }
-            iconSize={25}
-            values={[
-              { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
-              { title: "Services", icon: "md-document", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
-              { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-              { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-              { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-            ]}
-          />
-      </ImageBackground>
+            </Modal>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.deleteModalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
+            >
+              <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+                <View style={styles.modalView}>
+                  <ScrollView>
+                    <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg]}>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <Text style={[ t.textXl, t.p2]}>Please Confirm you wish to delete this service.</Text>
+                        </Item>
+                      </View>
+                    </Item>
+                    <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.w1_2]}>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <TouchableOpacity 
+                            onPress={() => this.hideDeleteModal()}
+                            style={[ t.pX2, t.pY2,t.roundedLg, t.bgBlue100, t.justifyStart]}>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]} onPress={() => this.hideDeleteModal()}>Cancel</Text>
+                          </TouchableOpacity>
+                        </Item>
+                      </View>
+                      <View style={[t.roundedLg, t.itemsCenter, t.w1_2]}>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <TouchableOpacity 
+                            onPress={() => this.deleteService()}
+                            style={[ t.pX2, t.pY2,t.roundedLg, t.bgRed600, t.justifyStart]}>
+                            <Text style={[ t.textWhite, t.textXl, t.p2]}>Delete</Text>
+                          </TouchableOpacity>
+                        </Item>
+                      </View>
+                    </Item>
+                  </ScrollView>
+                </View>
+              </View>
+            </Modal>
+          </ScrollView>
+          <TabBar
+              activeTab={this.state.activeTab}
+              iconStyle={{ width: 50, height: 50 }}
+              tintColor="#2F82EC"
+              onPress={(tabIndex) => {
+                  this._handlePress(tabIndex);
+              }}
+              iconActiveTintColor="black"
+              iconInactiveTintColor="#2F82EC"
+              tintColor="#f5f5f7"
+              titleColor="#999999"
+              isRtl={ false }
+              iconSize={25}
+              values={[
+                { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
+                { title: "Services", icon: "md-document", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
+                { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
+                { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
+                { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
+              ]}
+            />
+        </ImageBackground>
+      </View>
     )
   }
   
