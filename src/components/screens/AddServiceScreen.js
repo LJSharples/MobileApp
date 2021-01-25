@@ -5,7 +5,6 @@ import {
   ScrollView,
   RefreshControl,
   ImageBackground,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
 } from 'react-native'
@@ -156,12 +155,12 @@ export default class addServiceScreen extends React.Component {
                     />
                     }
                 >
-                    <Item style={[ t.mT10, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                    <Item style={[ t.mT8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                       <Text style={[ t.text2xl, t.textWhite]}>Add A Service</Text>
                     </Item>
                     <View style={[ t.flex1, t.justifyCenter, t.alignCenter]}>
-                        <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.wFull, t.hFull, t.mT5,]}>
-                          <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
+                        <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.wFull, t.hFull,]}>
+                          <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull]}>
                             <View rounded>
                               <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10, t.bgGray100]}>
                                 <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
@@ -197,7 +196,7 @@ export default class addServiceScreen extends React.Component {
                               </View>
                               <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
                                 <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                <TextInput style={[ t.textXl]} placeholder="Your Current Supplier"
+                                <TextInput style={[ t.textLg]} placeholder="Your Current Supplier"
                                   placeholderTextColor="black"
                                   onChange={event => this.onChangeText('current_supplier', event)}
                                   value={this.state.current_supplier}/> 
@@ -235,26 +234,24 @@ export default class addServiceScreen extends React.Component {
                                 </Item>
                               </View>
                               <DateTimePickerForm onChange={this.onChange}/>
-                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                <TextInput style={[ t.textXl]} placeholder="Cost Per Year: £0.00"
-                                  placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('cost_year', event)}
-                                  keyboardType = 'numeric'
-                                  value={this.state.cost_year}/> 
-                                </Item>
-                              </View>
-                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                  <TextInput style={[ t.textXl]} placeholder="Cost Per Month:£0.00"
-                                  placeholderTextColor="black"
+                              <Item style={[ t.mT2, t.borderTransparent]}>
+                                <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
+                                  <TextInput style={[ t.textLg, t.textCenter]} placeholder="Year Cost"
+                                    placeholderTextColor="black"
+                                    onChange={event => this.onChangeText('cost_year', event)}
+                                    keyboardType = 'numeric'
+                                    value={this.state.cost_year}/> 
+                                </View>
+                                <View style={[t.wPx]}/>
+                                <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
+                                  <TextInput style={[ t.textLg, t.textCenter]} placeholder="Month Cost"
+                                    placeholderTextColor="black"
                                     onChange={event => this.onChangeText('cost_month', event)}
                                     keyboardType = 'numeric'
                                     value={this.state.cost_month}/> 
-                                </Item>
-                              </View>
-                              <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                                <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
+                                </View>
+                              </Item>
+                              <View style={[ t.mT2, t.itemsCenter, t.bgGray100]}>
                                   <CheckBox
                                     center
                                     title='Permission To Share Details'
@@ -265,26 +262,25 @@ export default class addServiceScreen extends React.Component {
                                       }));    
                                     }}
                                   />
-                                </Item>
                               </View>
-                              <Item style={[ t.mT5, t.borderTransparent]}>
-                                <View style={[t.roundedLg, t.bgBlue100, t.w5_12]}>
+                              <Item style={[ t.mT2, t.borderTransparent]}>
+                                <View style={[t.roundedLg, t.bgWhite, t.w5_12]}>
                                   <TouchableOpacity 
                                     onPress={() => {
                                       this.handleRoute('Services');
                                     }}
                                     style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
-                                    <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]}>Cancel</Text>
+                                    <Text style={[ t.textRed600, t.textLg, t.textCenter, t.p2]}>Cancel</Text>
                                   </TouchableOpacity>
                                 </View>
                                 <View style={[t.w2_12]}/>
-                                <View style={[t.roundedLg, t.bgBlue100, t.w5_12]}>
+                                <View style={[t.roundedLg, t.bgWhite, t.w5_12]}>
                                   <TouchableOpacity 
                                     onPress={() => {
                                       this.submitService();
                                     }}
                                     style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
-                                    <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]}>Add Service</Text>
+                                    <Text style={[ t.textBlue600, t.textXl, t.textCenter, t.p2]}>Add Service</Text>
                                   </TouchableOpacity>
                                 </View>
                               </Item>

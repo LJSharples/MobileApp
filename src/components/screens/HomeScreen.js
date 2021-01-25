@@ -134,7 +134,7 @@ export default class HomeScreen extends React.Component {
                       />
                     }
                   >
-                    <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
+                    <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
                       <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                           <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
@@ -143,15 +143,14 @@ export default class HomeScreen extends React.Component {
                           <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
+                          <Item style={[t.w2_3, t.borderTransparent]}/>
                           <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('AddQuote')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
+                              <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>{' '} Get Quote {' '}</Text>
                             </TouchableOpacity>
                           </Item>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
                         </Item>
                       </View>
                     </Item>
@@ -164,15 +163,14 @@ export default class HomeScreen extends React.Component {
                           <Text style={[ t.textXl, t.textWhite]}>Active Services: {this.state.activeServices}</Text>
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
+                          <Item style={[t.w2_3, t.borderTransparent]}/>
                           <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('Services')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>My Services</Text>
+                              <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>My Services</Text>
                             </TouchableOpacity>
                           </Item>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
                         </Item>
                       </View>
                     </Item>
@@ -190,15 +188,14 @@ export default class HomeScreen extends React.Component {
                           <Text style={[ t.textXl, t.textWhite]}></Text>
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
+                          <Item style={[t.w2_3, t.borderTransparent]}/>
                           <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
                             <TouchableOpacity 
                               onPress={() => this.handleRoute('Expenses')}
                               style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>My Expenses</Text>
+                              <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>My Expenses</Text>
                             </TouchableOpacity>
                           </Item>
-                          <Item style={[t.w1_3, t.borderTransparent]}/>
                         </Item>
                       </View>
                     </Item>
@@ -217,6 +214,16 @@ export default class HomeScreen extends React.Component {
                       </Item>
                     </View>
                   </Item>
+                  <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Item style={[t.w2_3, t.borderTransparent]}/>
+                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
+                            <TouchableOpacity 
+                              onPress={() => this.handleRoute('AddQuote')}
+                              style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                              <Text style={[ t.textBlue100, t.text2xl, t.fontBold, t.p2]}>Add Lead</Text>
+                            </TouchableOpacity>
+                          </Item>
+                        </Item>
                 </ImageBackground>
             </Tab>
           </Tabs>
