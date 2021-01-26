@@ -2,6 +2,7 @@ import React from 'react'
 import {
   View,
   Text,
+  Modal,
   ScrollView,
   RefreshControl,
   ImageBackground,
@@ -20,6 +21,7 @@ import { CheckBox } from 'react-native-elements'
 import DateTimePickerForm from '../forms/DateTimePickerForm';
 import DateTimePickerContract from '../forms/DateTimePickerContract';
 import FileUpload from "../forms/FileUpload";
+import SuccessUpload from "../forms/SuccessUpload"
 
 const background = require('../images/background.png')
 
@@ -44,6 +46,7 @@ export default class addServiceScreen extends React.Component {
         submitted: [],
         permission: false,
         user_name: '',
+        displayModal: false
     };
 
     async componentDidMount(){
@@ -57,7 +60,10 @@ export default class addServiceScreen extends React.Component {
     }
     
     handleRoute = async (destination) => {
-        await this.props.navigation.navigate(destination)
+      this.setState({
+        displayModal: false
+      })
+      await this.props.navigation.navigate(destination)
     }
 
     onChangeText = (key, event) => {
@@ -122,6 +128,9 @@ export default class addServiceScreen extends React.Component {
         uploaded_documents: this.state.uploaded_documents,
         permission: this.state.permission
       }
+      this.setState({
+        displayModal: true
+      })
       console.log(data)
       try {
           const re = await API.graphql(graphqlOperation(addService, data));
@@ -284,6 +293,16 @@ export default class addServiceScreen extends React.Component {
                                   </TouchableOpacity>
                                 </View>
                               </Item>
+                              <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={this.state.displayModal}
+                                onRequestClose={() => {
+                                    Alert.alert("Modal has been closed.");
+                                }}
+                              >
+                                <SuccessUpload handleRoute={this.handleRoute}/>
+                              </Modal>
                             </View>
                           </View>
                         </Item>
