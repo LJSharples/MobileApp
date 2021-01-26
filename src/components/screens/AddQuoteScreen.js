@@ -125,9 +125,6 @@ export default class addQuoteScreen extends React.Component {
         uploaded_documents: this.state.uploaded_documents,
         permission: this.state.permission
       }
-      this.setState({
-        displayModal: true
-      })
       console.log(data)
       try {
           const re = await API.graphql(graphqlOperation(addService, data));
@@ -144,6 +141,9 @@ export default class addQuoteScreen extends React.Component {
             uploaded_documents: [],
             submitted: [],
             success: true
+          })
+          this.setState({
+            displayModal: true
           })
       } catch (err) {
           console.log("Error:")

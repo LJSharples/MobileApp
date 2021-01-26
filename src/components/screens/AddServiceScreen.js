@@ -128,13 +128,13 @@ export default class addServiceScreen extends React.Component {
         uploaded_documents: this.state.uploaded_documents,
         permission: this.state.permission
       }
-      this.setState({
-        displayModal: true
-      })
       console.log(data)
       try {
           const re = await API.graphql(graphqlOperation(addService, data));
           console.log("Success");
+          this.setState({
+            displayModal: true
+          })
       } catch (err) {
           console.log("Error:")
           console.log(err);
