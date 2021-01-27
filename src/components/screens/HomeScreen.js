@@ -204,26 +204,117 @@ export default class HomeScreen extends React.Component {
             </Tab>
             <Tab heading={ <TabHeading><Text>Affiliate</Text></TabHeading>}>
                 <ImageBackground source={background} style= {[ t.flex1]}>
-                  <Item style={[t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
-                    <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text4xl, t.textWhite, t.fontMedium]}>Affiliate Dashboard</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Your Affiliate ID is:{this.state.affiliateId}</Text>
-                      </Item>
-                    </View>
-                  </Item>
-                  <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Item style={[t.w2_3, t.borderTransparent]}/>
-                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
-                            <TouchableOpacity 
-                              onPress={() => this.handleRoute('AddQuote')}
-                              style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.text2xl, t.fontBold, t.p2]}>Add Lead</Text>
-                            </TouchableOpacity>
-                          </Item>
+                  <ScrollView
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                      />
+                    }
+                  >
+                    <Item style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY2, t.pt4, t.wFull]}>
+                        <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.text4xl, t.textWhite, t.fontMedium]}>Affiliate Dashboard</Text>
                         </Item>
+                        <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.textXl, t.textWhite]}>Your Affiliate ID is:{this.state.affiliateId}</Text>
+                        </Item>
+                      </View>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                      <Item style={[t.w7_12, t.borderTransparent]}/>
+                      <Item style={[t.w5_12, t.wFull, t.borderTransparent]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('AddQuote')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.fontBold, t.p2]}>Add Lead</Text>
+                        </TouchableOpacity>
+                      </Item>
+                    </Item>
+                    <Item style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
+                        <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.textXl, t.textWhite]}>Your Total Customers: 0</Text>
+                        </Item>
+                      </View>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('AddCustomer')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Add Customer</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={[t.wPx]}/>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('Customers')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>My Customers</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </Item>
+                    <Item style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
+                        <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.textXl, t.textWhite]}>Your Total Affiliates: 0</Text>
+                        </Item>
+                      </View>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('AddAffiliate')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Add Affiliate</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={[t.wPx]}/>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('Affiliates')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>My Affiliates</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </Item>
+                    
+                    <Item style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent]}>
+                      <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
+                        <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                          <Text style={[ t.textXl, t.textWhite]}>Your Affiliate Commission:</Text>
+                        </Item>
+                      </View>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                      <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                        <Text style={[ t.textWhite, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Current Month: £{this.state.monthlyCost}</Text>
+                      </View>
+                      <View style={[t.wPx]}/>
+                      <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                        <Text style={[ t.textWhite, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Year To Date: £{this.state.annualCost}</Text>
+                      </View>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('AffiliateExpenses')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>View Details</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={[t.wPx]}/>
+                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                        <TouchableOpacity 
+                          onPress={() => this.handleRoute('AffiliateExpenses')}
+                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>View Details</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </Item>
+                  </ScrollView>
                 </ImageBackground>
             </Tab>
           </Tabs>

@@ -22,6 +22,9 @@ import ServicesScreen from './src/components/screens/ServicesScreen';
 import ExpensesScreen from './src/components/screens/ExpensesScreen';
 import QuoteScreen from './src/components/screens/QuoteScreen';
 import SettingsScreen from './src/components/screens/SettingsScreen'
+import CustomersScreen from "./src/components/screens/CustomersScreen";
+import AffiliatesScreen from './src/components/screens/AffiliatesScreen';
+import AffiliateExpensesScreen from './src/components/screens/AffiliateExpensesScreen';
 import ProfileScreen from './src/components/screens/ProfileScreen'
 import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen';
 
@@ -33,6 +36,8 @@ import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
 import NotificationsScreen from './src/components/screens/NotificationsScreen';
 import AddServiceScreen from './src/components/screens/AddServiceScreen';
 import AddQuoteScreen from './src/components/screens/AddQuoteScreen';
+import AddAffiliateScreen from './src/components/screens/AddAffiliateScreen';
+import AddCustomerScreen from './src/components/screens/AddCustomerScreen';
 import TermsConditionsScreen from './src/components/screens/TermsConditionsScreen'
 
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
@@ -67,6 +72,54 @@ const configurations = {
     screen: AddServiceScreen,
     navigationOptions: {
       tabBarLabel: 'Add Service',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons 
+          style={{ fontSize: 20, color: tintColor }} 
+          name="ios-home" 
+        />
+      ),
+    }
+  },
+  Customers: {
+    screen: CustomersScreen,
+    navigationOptions: {
+      tabBarLabel: 'Customers',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 20, color: tintColor }}
+          name="ios-power"
+        />
+      ),
+    },
+  },
+  AddCustomer: {
+    screen: AddCustomerScreen,
+    navigationOptions: {
+      tabBarLabel: 'Add Customer',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons 
+          style={{ fontSize: 20, color: tintColor }} 
+          name="ios-home" 
+        />
+      ),
+    }
+  },
+  Affiliates: {
+    screen: AffiliatesScreen,
+    navigationOptions: {
+      tabBarLabel: 'Affiliates',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 20, color: tintColor }}
+          name="ios-power"
+        />
+      ),
+    },
+  },
+  AddAffiliate: {
+    screen: AddAffiliateScreen,
+    navigationOptions: {
+      tabBarLabel: 'Add Affiliate',
       tabBarIcon: ({ tintColor }) => (
         <Ionicons 
           style={{ fontSize: 20, color: tintColor }} 
@@ -114,6 +167,18 @@ const configurations = {
   Expenses: {
     screen: ExpensesScreen,
     tabBarLabel: 'Money',
+    navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          style={{ fontSize: 20, color: tintColor }}
+          name="ios-card"
+        />
+      ),
+    },
+  },
+  AffiliateExpenses: {
+    screen: AffiliateExpensesScreen,
+    tabBarLabel: 'Affiliate Income',
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
@@ -194,6 +259,20 @@ const AppStackNavigator = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
     Home: HomeScreen,
     Services: ServicesScreen,
+    Customers: CustomersScreen,
+    Affiliates: AffiliatesScreen,
+    AddAffiliate: {
+      screen: AddAffiliateScreen,
+      navigationOptions: () => ({
+        title: 'Add Affiliate',
+      }),
+    },
+    AddCustomer: {
+      screen: AddCustomerScreen,
+      navigationOptions: () => ({
+        title: 'Add Customer',
+      }),
+    },
     AddServices: {
       screen: AddServiceScreen,
       navigationOptions: () => ({
@@ -216,6 +295,12 @@ const AppDrawerNavigator = createDrawerNavigator({
       screen: ExpensesScreen,
       navigationOptions: () => ({
         title: 'My Money',
+      }),
+    },
+    AffiliateExpenses: {
+      screen: AffiliateExpensesScreen,
+      navigationOptions: () => ({
+        title: 'Affiliate Income',
       }),
     },
     Quote: {
