@@ -89,7 +89,8 @@ export default class HomeScreen extends React.Component {
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
     this.setState({ affiliateId: user.attributes['custom:affiliate_id'] });
-    if(this.state.affiliateId !== ""){
+    if(this.state.affiliateId !== "" && user.attributes['custom:affiliate_id'] !== undefined){
+      console.log(user.attributes['custom:affiliate_id'] + "HERE")
       this.setState({ affiliateStatus: true});
     }
 
