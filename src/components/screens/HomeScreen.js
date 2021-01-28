@@ -17,8 +17,8 @@ import {
 import { getUserDetails, getServices } from "../../graphql/queries";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { t } from 'react-native-tailwindcss';
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import Header from "../forms/Header";
+import NavBar from "../forms/NavBar";
 
 const background = require('../images/background.png')
 const mblogo = require('../images/managedbill-corporate-logo.png');
@@ -28,6 +28,7 @@ export default class HomeScreen extends React.Component {
     username: '',
     firstName: '',
     affiliateId: '',
+    affiliateStatus: false,
     activeServices: 0,
     annualCost: 0,
     monthlyCost: 0,
@@ -44,6 +45,13 @@ export default class HomeScreen extends React.Component {
       'Quote',
       'Account',
       'AddQuote'
+    ],
+    affiliateRoutes: [
+      'home',
+      'Customers',
+      'AffiliateExpenses',
+      'Affiliates',
+      'Account',
     ]
   };
 
@@ -61,6 +69,13 @@ export default class HomeScreen extends React.Component {
     this.handleRoute(this.state.routes[index]);
   }
 
+  _handlePressAffiliate = (index) => {
+    this.setState({ 
+      curTab: index
+    })
+    this.handleRoute(this.state.affiliateRoutes[index]);
+  }
+
   handleRoute = async (destination) => {
     await this.props.navigation.navigate(destination)
   }
@@ -76,6 +91,9 @@ export default class HomeScreen extends React.Component {
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
     this.setState({ affiliateId: user.attributes['custom:affiliate_id'] });
+    if(this.state.affiliateId !== ""){
+      this.setState({ affiliateStatus: true});
+    }
 
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
@@ -318,27 +336,7 @@ export default class HomeScreen extends React.Component {
                 </ImageBackground>
             </Tab>
           </Tabs>
-          <TabBar
-            activeTab={this.state.activeTab}
-            iconStyle={{ width: 50, height: 50 }}
-            tintColor="#2F82EC"
-            onPress={(tabIndex) => {
-                this._handlePress(tabIndex);
-            }}
-            iconActiveTintColor="black"
-            iconInactiveTintColor="#2F82EC"
-            tintColor="#f5f5f7"
-            titleColor="#999999"
-            isRtl={ false }
-            iconSize={25}
-            values={[
-              { title: "Dashboard", icon: "home", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab },
-              { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-              { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-              { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-              { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-            ]}
-          />
+          <NavBar activeTab={[1,0,0,0,0]} index={this.state.activeTab} affilaite={this.state.affiliateStatus} _handlePressAffiliate={this._handlePressAffiliate} _handlePress={this._handlePress}/>
       </View>
     )
   }

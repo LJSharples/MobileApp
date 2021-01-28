@@ -19,6 +19,7 @@ import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';
 import PieChartSavings from '../forms/PieChartDisplaySavings';
 import Header from "../forms/Header";
+import NavBar from "../forms/NavBar";
 
 const background = require('../images/background.png')
 
@@ -594,27 +595,7 @@ export default class ExpensesScreen extends React.Component {
                         </CollapsibleList>
                     </Item>
                 </ScrollView>
-                <TabBar
-                    activeTab={this.state.activeTab}
-                    iconStyle={{ width: 50, height: 50 }}
-                    tintColor="#2F82EC"
-                    onPress={(tabIndex) => {
-                        this._handlePress(tabIndex);
-                    }}
-                    iconActiveTintColor="black"
-                    iconInactiveTintColor="#2F82EC"
-                    tintColor="#f5f5f7"
-                    titleColor="#999999"
-                    isRtl={ false }
-                    iconSize={25}
-                    values={[
-                        { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
-                        { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-                        { title: "Expenses", icon: "md-wallet", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
-                        { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-                        { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-                    ]}
-                />
+                <NavBar activeTab={[0,0,1,0,0]} index={this.state.activeTab} _handlePress={this._handlePress}/>
             </ImageBackground>
         </View>
     )

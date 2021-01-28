@@ -21,6 +21,7 @@ import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Header from "../forms/Header";
+import NavBar from "../forms/NavBar";
 
 const background = require('../images/background.png')
 
@@ -510,27 +511,7 @@ export default class ProfileScreen extends React.Component {
               </View>
             </Item>
           </ScrollView>
-          <TabBar
-              activeTab={this.state.activeTab}
-              iconStyle={{ width: 50, height: 50 }}
-              tintColor="#2F82EC"
-              onPress={(tabIndex) => {
-                  this._handlePress(tabIndex);
-              }}
-              iconActiveTintColor="black"
-              iconInactiveTintColor="#2F82EC"
-              tintColor="#f5f5f7"
-              titleColor="#999999"
-              isRtl={ false }
-              iconSize={25}
-              values={[
-                { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons,  },
-                { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-                { title: "Expenses", icon: "md-wallet", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-                { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-                { title: "Profile", icon: "person-outline", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.MaterialIcons, activeTab:this.state.activeTab},
-              ]}
-            />
+          <NavBar activeTab={[0,0,0,0,1]} index={this.state.activeTab} _handlePress={this._handlePress}/>
         </ImageBackground>
       </View>
     )

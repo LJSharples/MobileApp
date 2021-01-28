@@ -13,12 +13,12 @@ import { t } from 'react-native-tailwindcss';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getServices } from '../../graphql/queries'
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';
 import PieChartSavings from '../forms/PieChartDisplaySavings';
 import Header from "../forms/Header";
+import NavBar from "../forms/NavBar";
 
 const background = require('../images/background.png')
 
@@ -32,6 +32,8 @@ export default class AffiliateExpensesScreen extends React.Component {
     chevron1: false,
     chevron2: false,
     chevron3: false,
+    affiliateId: '',
+    affiliateStatus: false,
     refreshing: false,
     services: [],
     activeServices: [],
@@ -42,6 +44,13 @@ export default class AffiliateExpensesScreen extends React.Component {
       'Expenses',
       'Quote',
       'Account'
+    ],
+    affiliateRoutes: [
+      'Home',
+      'Customers',
+      'AffiliateExpenses',
+      'Affiliates',
+      'Account',
     ]
   }
 
@@ -50,12 +59,23 @@ export default class AffiliateExpensesScreen extends React.Component {
     this.handleRoute(this.state.routes[index]);
   }
 
+  _handlePressAffiliate = (index) => {
+    this.setState({ 
+      curTab: index
+    })
+    this.handleRoute(this.state.affiliateRoutes[index]);
+  }
+
   handleRoute = async (destination) => {
     await this.props.navigation.navigate(destination)
   }
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
+    this.setState({ affiliateId: user.attributes['custom:affiliate_id'] });
+    if(this.state.affiliateId !== ""){
+      this.setState({ affiliateStatus: true});
+    }
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     const savings = [];
     const activeServices = [];
@@ -594,27 +614,7 @@ export default class AffiliateExpensesScreen extends React.Component {
                         </CollapsibleList>
                     </Item>
                 </ScrollView>
-                <TabBar
-                    activeTab={this.state.activeTab}
-                    iconStyle={{ width: 50, height: 50 }}
-                    tintColor="#2F82EC"
-                    onPress={(tabIndex) => {
-                        this._handlePress(tabIndex);
-                    }}
-                    iconActiveTintColor="black"
-                    iconInactiveTintColor="#2F82EC"
-                    tintColor="#f5f5f7"
-                    titleColor="#999999"
-                    isRtl={ false }
-                    iconSize={25}
-                    values={[
-                        { title: "Dashboard", icon: "home", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons },
-                        { title: "Services", icon: "md-document", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.Ionicons},
-                        { title: "Expenses", icon: "md-wallet", tintColor: "#2F82EC", isIcon: true, iconType: iconTypes.Ionicons, activeTab:this.state.activeTab},
-                        { title: "Get Quote", icon: "redo-variant", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialCommunityIcons},
-                        { title: "Profile", icon: "person-outline", tintColor: "#bee3f8", isIcon: true, iconType: iconTypes.MaterialIcons},
-                    ]}
-                />
+                <NavBar activeTab={[0,0,1,0,0]} index={this.state.activeTab} affilaite={this.state.affiliateStatus} _handlePressAffiliate={this._handlePressAffiliate} _handlePress={this._handlePress}/>
             </ImageBackground>
         </View>
     )
