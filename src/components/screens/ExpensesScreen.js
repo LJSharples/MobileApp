@@ -13,7 +13,6 @@ import { t } from 'react-native-tailwindcss';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getServices } from '../../graphql/queries'
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import PieChart from '../forms/PieChartDisplay';
 import PieChartYear from '../forms/PieChartDisplayYear';

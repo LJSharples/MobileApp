@@ -1,9 +1,8 @@
 import React from 'react'
 import {
   View,
-  Text,
 } from 'react-native'
-import { ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import Auth from '@aws-amplify/auth';
 
 export default class AuthLoadingScreen extends React.Component {

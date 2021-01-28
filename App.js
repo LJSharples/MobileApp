@@ -21,7 +21,6 @@ import HomeScreen from './src/components/screens/HomeScreen'
 import ServicesScreen from './src/components/screens/ServicesScreen';
 import ExpensesScreen from './src/components/screens/ExpensesScreen';
 import QuoteScreen from './src/components/screens/QuoteScreen';
-import SettingsScreen from './src/components/screens/SettingsScreen'
 import CustomersScreen from "./src/components/screens/CustomersScreen";
 import AffiliatesScreen from './src/components/screens/AffiliatesScreen';
 import AffiliateExpensesScreen from './src/components/screens/AffiliateExpensesScreen';
@@ -40,7 +39,6 @@ import AddAffiliateScreen from './src/components/screens/AddAffiliateScreen';
 import AddCustomerScreen from './src/components/screens/AddCustomerScreen';
 import TermsConditionsScreen from './src/components/screens/TermsConditionsScreen'
 
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import addQuoteScreen from './src/components/screens/AddQuoteScreen';
 
 const configurations = {

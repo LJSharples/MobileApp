@@ -14,10 +14,8 @@ import {
   Item
 } from 'native-base'
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
-import { addService } from '../../graphql/mutations';
 import { getServices, getUserDetails } from '../../graphql/queries'
 import { t } from 'react-native-tailwindcss';
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import Header from "../forms/Header";
 import NavBar from "../forms/NavBar";
 

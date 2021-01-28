@@ -8,7 +8,6 @@ import {
   Modal,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Linking,
   ImageBackground
 } from 'react-native'

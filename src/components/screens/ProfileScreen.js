@@ -13,11 +13,10 @@ import {
   Item
 } from 'native-base'
 import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
-import { getServices, getUserDetails } from '../../graphql/queries'
+import { getUserDetails } from '../../graphql/queries'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { updateCompany, updateUser} from '../../graphql/mutations'
 import { t } from 'react-native-tailwindcss';
-import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 import CollapsibleList from "react-native-collapsible-list";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Header from "../forms/Header";

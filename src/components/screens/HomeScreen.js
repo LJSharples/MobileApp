@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Image,
   ScrollView,
   RefreshControl
 } from 'react-native'
@@ -21,7 +20,6 @@ import Header from "../forms/Header";
 import NavBar from "../forms/NavBar";
 
 const background = require('../images/background.png')
-const mblogo = require('../images/managedbill-corporate-logo.png');
 
 export default class HomeScreen extends React.Component {
   state = {

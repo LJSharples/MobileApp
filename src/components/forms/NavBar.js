@@ -1,6 +1,4 @@
 import React, { Component} from "react"
-
-import { t } from 'react-native-tailwindcss';
 import TabBar, { iconTypes } from "react-native-fluidbottomnavigation";
 
 export default class NavBar extends Component{
