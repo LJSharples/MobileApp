@@ -12,14 +12,9 @@ import {
 import {
   Item
 } from 'native-base'
-import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
-import DropDownPicker from 'react-native-dropdown-picker';
-
-import DateTimePickerForm from '../forms/DateTimePickerForm';
-import DateTimePickerContract from '../forms/DateTimePickerContract';
-import FileUpload from "../forms/FileUpload";
 import SuccessUpload from "../forms/SuccessUpload"
 
 const background = require('../images/background.png')
@@ -59,13 +54,6 @@ export default class addAffiliateScreen extends React.Component {
         this.setState({ [key]: value})
         this.verifyInput(key);
     };
-
-    onChange = (key, value) => {
-      this.setState({
-        [key]: value
-      })
-      this.verifyInput(key);
-    }; 
     
     verifyInput = (key) => {
       if(key !== ""){

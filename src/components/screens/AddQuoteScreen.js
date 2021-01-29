@@ -59,11 +59,6 @@ export default class addQuoteScreen extends React.Component {
         this.setState({refreshing: false});
       });
     }
-      
-    _handlePress = (index) => {
-        this.setState({ curTab: index})
-        this.handleRoute(this.state.routes[index]);
-    }
     
     handleRoute = async (destination) => {
       this.setState({

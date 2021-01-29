@@ -151,26 +151,24 @@ export default class HomeScreen extends React.Component {
                       />
                     }
                   >
-                    <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
-                      <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                        <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
+                    <View style={[ t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
+                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
+                      </Item>
+                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
+                      </Item>
+                      <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.w2_3, t.borderTransparent]}/>
+                        <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
+                          <TouchableOpacity 
+                            onPress={() => this.handleRoute('AddQuote')}
+                            style={[ t.p1, t.roundedLg, t.bgWhite]}>
+                            <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>{' '} Get Quote {' '}</Text>
+                          </TouchableOpacity>
                         </Item>
-                        <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
-                        </Item>
-                        <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                          <Item style={[t.w2_3, t.borderTransparent]}/>
-                          <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
-                            <TouchableOpacity 
-                              onPress={() => this.handleRoute('AddQuote')}
-                              style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                              <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>{' '} Get Quote {' '}</Text>
-                            </TouchableOpacity>
-                          </Item>
-                        </Item>
-                      </View>
-                    </Item>
+                      </Item>
+                    </View>
                     <Item style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent]}>
                       <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>

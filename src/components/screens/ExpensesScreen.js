@@ -358,16 +358,14 @@ export default class ExpensesScreen extends React.Component {
                     />
                     }
                 >
-                    <Item style={[ t.mT5,t.alignCenter, t.borderTransparent]}>
-                        <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Expenses</Text>
-                            </Item>
-                            <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                                <Text style={[ t.textXl, t.textWhite]}>Manage your expenses</Text>
-                            </Item>
-                        </View>
-                    </Item>
+                    <View style={[t.mT5,t.alignCenter, t.borderTransparent,t.pX3, t.pY4, t.pt8, t.wFull]}>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Expenses</Text>
+                        </Item>
+                        <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                            <Text style={[ t.textXl, t.textWhite]}>Manage your expenses</Text>
+                        </Item>
+                    </View>
                     <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
                         <CollapsibleList
                             numberOfVisibleItems={0}

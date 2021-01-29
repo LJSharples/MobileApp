@@ -1,12 +1,10 @@
 import React from 'react'
 import {
-  AsyncStorage,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StyleSheet,
   Text,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,

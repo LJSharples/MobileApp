@@ -1,24 +1,10 @@
 import React from 'react'
 import {
-  StyleSheet,
   View,
   Text,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  Alert,
-  Modal,
-  FlatList,
-  Switch
 } from 'react-native'
 import {
-  Container,
   Item,
-  Icon,
-  Input,
-  DatePicker
 } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { t } from 'react-native-tailwindcss';

@@ -1,10 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-    Alert,
-    Modal,
     Text,
     TouchableOpacity,
-    View,
     ImageBackground
 } from "react-native"
 import {

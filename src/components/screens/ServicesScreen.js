@@ -268,23 +268,21 @@ export default class ServicesScreen extends React.Component {
                 />
               }
             >
-            <Item style={[ t.mT5, t.alignCenter, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY4, t.pt8, t.wFull]}>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
-                </Item>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.textXl, t.textWhite]}>Manage all your services in one place</Text>
-                </Item>
-                <Item style={[t.justifyEnd, t.borderTransparent]}>
-                  <TouchableOpacity 
-                    onPress={() => this.handleRoute('AddServices')}
-                    style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
-                    <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
-                  </TouchableOpacity>
-                </Item>
-              </View>
-            </Item>
+            <View style={[ t.mT5, t.alignCenter, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Services</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textWhite]}>Manage all your services in one place</Text>
+              </Item>
+              <Item style={[t.justifyEnd, t.borderTransparent]}>
+                <TouchableOpacity 
+                  onPress={() => this.handleRoute('AddServices')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Add Service</Text>
+                </TouchableOpacity>
+              </Item>
+            </View>
             <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
               <CollapsibleList
                 numberOfVisibleItems={0}

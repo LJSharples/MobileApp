@@ -53,11 +53,6 @@ export default class addServiceScreen extends React.Component {
       let user = await Auth.currentAuthenticatedUser();
       this.setState({ user_name: user.username})
     }
-      
-    _handlePress = (index) => {
-        this.setState({ curTab: index})
-        this.handleRoute(this.state.routes[index]);
-    }
     
     handleRoute = async (destination) => {
       this.setState({

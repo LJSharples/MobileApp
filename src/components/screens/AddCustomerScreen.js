@@ -12,14 +12,9 @@ import {
 import {
   Item
 } from 'native-base'
-import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
-import DropDownPicker from 'react-native-dropdown-picker';
-
-import DateTimePickerForm from '../forms/DateTimePickerForm';
-import DateTimePickerContract from '../forms/DateTimePickerContract';
-import FileUpload from "../forms/FileUpload";
 import SuccessUpload from "../forms/SuccessUpload"
 
 const background = require('../images/background.png')
@@ -49,11 +44,6 @@ export default class addCustomerScreen extends React.Component {
         this.setState({refreshing: false});
       });
     }
-      
-    _handlePress = (index) => {
-        this.setState({ curTab: index})
-        this.handleRoute(this.state.routes[index]);
-    }
     
     handleRoute = async (destination) => {
       this.setState({
@@ -64,13 +54,6 @@ export default class addCustomerScreen extends React.Component {
 
     onChangeText = (key, value) => {
       this.setState({ [key]: value})
-      this.verifyInput(key);
-    };
-
-    onChange = (key, value) => {
-      this.setState({
-        [key]: value
-      })
       this.verifyInput(key);
     }; 
     
