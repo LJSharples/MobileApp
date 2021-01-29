@@ -241,11 +241,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                       </Item>
                     </Item>
-                    <View style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Your Total Customers: 0</Text>
-                      </Item>
-                    </View>
+                    <Item style={[t.mT2, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull, t.itemsStart, t.justifyStart]}>
+                      <Text style={[ t.textXl, t.textWhite]}>Your Total Customers: 0</Text>
+                    </Item>
                     <Item style={[t.borderTransparent]}>
                       <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
                         <TouchableOpacity 
@@ -263,11 +261,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                       </View>
                     </Item>
-                    <View style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Your Total Affiliates: 0</Text>
-                      </Item>
-                    </View>
+                    <Item style={[t.mT2,t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent,t.wFull, t.h54, t.pX3, t.pY4, t.pt8,]}>
+                      <Text style={[ t.textXl, t.textWhite]}>Your Total Affiliates: 0</Text>
+                    </Item>
                     <Item style={[t.borderTransparent]}>
                       <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
                         <TouchableOpacity 
@@ -285,11 +281,9 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                       </View>
                     </Item>
-                    <View style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Your Affiliate Commission:</Text>
-                      </Item>
-                    </View>
+                    <Item style={[t.mT2, t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent, t.wFull, t.h54, t.pX3, t.pY4, t.pt8]}>
+                      <Text style={[ t.textXl, t.textWhite]}>Your Affiliate Commission:</Text>
+                    </Item>
                     <Item style={[t.borderTransparent]}>
                       <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
                         <Text style={[ t.textWhite, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Current Month: £{this.state.monthlyCost}</Text>
