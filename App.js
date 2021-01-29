@@ -32,7 +32,6 @@ import WelcomeScreen from './src/components/screens/WelcomeScreen'
 import SignUpScreen from './src/components/screens/SignUpScreen'
 import SignInScreen from './src/components/screens/SignInScreen'
 import ForgetPasswordScreen from './src/components/screens/ForgetPasswordScreen'
-import NotificationsScreen from './src/components/screens/NotificationsScreen';
 import AddServiceScreen from './src/components/screens/AddServiceScreen';
 import AddQuoteScreen from './src/components/screens/AddQuoteScreen';
 import AddAffiliateScreen from './src/components/screens/AddAffiliateScreen';
@@ -186,18 +185,6 @@ const configurations = {
       ),
     },
   },
-  Notifications: {
-    screen: NotificationsScreen,
-    navigationOptions: {
-      tabBarLabel: 'Notices',
-      tabBarIcon: ({ tintColor }) => (
-        <Ionicons
-          style={{ fontSize: 20, color: tintColor }}
-          name="ios-mail"
-        />
-      ),
-    },
-  },
 };
 
 const options = {
@@ -305,12 +292,6 @@ const AppDrawerNavigator = createDrawerNavigator({
       screen: QuoteScreen,
       navigationOptions: () => ({
         title: 'Get Quote',
-      }),
-    },
-    Notifications: {
-      screen: NotificationsScreen,
-      navigationOptions: () => ({
-        title: 'Notices',
       }),
     },
   },{

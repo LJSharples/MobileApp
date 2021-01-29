@@ -12,7 +12,7 @@ import {
 import {
   Item
 } from 'native-base'
-import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
 import DropDownPicker from 'react-native-dropdown-picker';

@@ -496,17 +496,15 @@ export default class ProfileScreen extends React.Component {
                 </View>
               </CollapsibleList>
             </Item>
-            <Item style={[ t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
-              <View style={[ t.flex1, t.selfStretch, t.mT2, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
-                <TouchableOpacity
-                  style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
-                  onPress={this.signOutAlert}>
-                  <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
-                    Logout
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </Item>
+            <View style={[ t.flex1, t.selfStretch, t.mT2, t.mT4, t.alignCenter, t.justifyCenter, t.borderTransparent, t.itemsCenter]}>
+              <TouchableOpacity
+                style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
+                onPress={this.signOutAlert}>
+                <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
+                  Logout
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
           <NavBar activeTab={[0,0,0,0,1]} index={this.state.activeTab} _handlePress={this._handlePress}/>
         </ImageBackground>
