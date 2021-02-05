@@ -18,7 +18,6 @@ export default class AffiliateTab extends React.Component {
         affiliateData: {}
     }
     componentDidMount() {
-        console.log(this.props)
         if(this.props.url === '' || this.props.requestOptions === ''){
             this.setState({ isLoading: false });
         } else {
@@ -54,7 +53,7 @@ export default class AffiliateTab extends React.Component {
                             <TouchableOpacity 
                                 onPress={() => this.handleRoute('AddQuote')}
                                 style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                <Text style={[ t.textBlue100, t.text2xl, t.fontBold, t.p2]}>Add Lead</Text>
+                                <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>Add Lead</Text>
                             </TouchableOpacity>
                             </Item>
                         </Item>
@@ -66,7 +65,7 @@ export default class AffiliateTab extends React.Component {
                                 <TouchableOpacity 
                                     onPress={() => this.handleRoute('AddCustomer')}
                                     style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                    <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>Add Customer</Text>
+                                    <Text style={[ t.textBlue100, t.textXl, t.textCenter, t.fontBold]}>Add Customer</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={[t.wPx]}/>
@@ -74,7 +73,7 @@ export default class AffiliateTab extends React.Component {
                                 <TouchableOpacity 
                                     onPress={() => this.handleRoute('Customers')}
                                     style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                    <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>My Customers</Text>
+                                    <Text style={[ t.textBlue100, t.textXl, t.textCenter, t.fontBold]}>My Customers</Text>
                                 </TouchableOpacity>
                             </View>
                         </Item>
@@ -86,7 +85,7 @@ export default class AffiliateTab extends React.Component {
                             <TouchableOpacity 
                                 onPress={() => this.handleRoute('AddAffiliate')}
                                 style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>Add Affiliate</Text>
+                                <Text style={[ t.textBlue100, t.textXl, t.textCenter, t.fontBold]}>Add Affiliate</Text>
                             </TouchableOpacity>
                             </View>
                             <View style={[t.wPx]}/>
@@ -94,7 +93,7 @@ export default class AffiliateTab extends React.Component {
                             <TouchableOpacity 
                                 onPress={() => this.handleRoute('Affiliates')}
                                 style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>My Affiliates</Text>
+                                <Text style={[ t.textBlue100, t.textXl, t.textCenter, t.fontBold]}>My Affiliates</Text>
                             </TouchableOpacity>
                             </View>
                         </Item>
@@ -111,19 +110,14 @@ export default class AffiliateTab extends React.Component {
                             </View>
                         </Item>
                         <Item style={[t.borderTransparent]}>
-                            <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2]}>
-                                <TouchableOpacity 
-                                    onPress={() => this.handleRoute('AffiliateExpenses')}
-                                    style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                    <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>View Details</Text>
-                                </TouchableOpacity>
+                            <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2]}>
                             </View>
                             <View style={[t.wPx]}/>
                             <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2]}>
                                 <TouchableOpacity 
                                     onPress={() => this.handleRoute('AffiliateExpenses')}
                                     style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                                    <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold]}>View Details</Text>
+                                    <Text style={[ t.textBlue100, t.textXl, t.textCenter, t.fontBold]}>View Details</Text>
                                 </TouchableOpacity>
                             </View>
                         </Item>
