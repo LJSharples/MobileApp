@@ -18,6 +18,7 @@ import { Auth, API, graphqlOperation } from "aws-amplify";
 import { t } from 'react-native-tailwindcss';
 import Header from "../forms/Header";
 import NavBar from "../forms/NavBar";
+import AffiliateTab from "../forms/AffiliateTab"
 
 const background = require('../images/background.png')
 
@@ -26,6 +27,8 @@ export default class HomeScreen extends React.Component {
     username: '',
     firstName: '',
     affiliateId: '',
+    requestOptions: '',
+    url: '',
     affiliateStatus: false,
     activeServices: 0,
     annualCost: 0,
@@ -80,23 +83,41 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
+    if(user.attributes['custom:affiliate_id'] !== undefined){
+      console.log("here")
+      this.setState({ affiliateStatus: true});
+      var url = "https://affiliates.managedbills.com/wp-json/affwp/v1/affiliates/" + user.attributes['custom:affiliate_id'];
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWZmaWxpYXRlcy5tYW5hZ2VkYmlsbHMuY29tIiwiaWF0IjoxNjEyMjY0MTMwLCJuYmYiOjE2MTIyNjQxMzAsImV4cCI6MTYxMjg2ODkzMCwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.Qm7Vw7k85UsVysexE7h6PTtv4NtEmxrBf1QXF9Woz-8");
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      }
+      this.setState({
+        requestOptions: requestOptions,
+        url: url
+      })
+    }
+    this.getUserProfile(user);
+    this.getServiceAndFinance(user);
+  }
+
+  getUserProfile = async (user) => {
     const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
     this.setState({ 
-      username: user.username
+      username: userProfile.data["user"].username,
+      firstName: userProfile.data["user"].first_name,
+      affiliateId: user.attributes['custom:affiliate_id'] ,
+      userProfile: userProfile.data["user"],
+      userCompany: userProfile.data["getCompany"]
     });
+  }
 
-    this.setState({ firstName: userProfile.data["user"].first_name});
-    this.setState({ userProfile: userProfile.data["user"]});
-    this.setState({ userCompany: userProfile.data["getCompany"]});
-    this.setState({ affiliateId: user.attributes['custom:affiliate_id'] });
-    if(this.state.affiliateId !== "" && user.attributes['custom:affiliate_id'] !== undefined){
-      console.log(user.attributes['custom:affiliate_id'] + "HERE")
-      this.setState({ affiliateStatus: true});
-    }
-
+  getServiceAndFinance = async (user) => {
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
-
       var dateCurrent = new Date();
       var contractEndDate = new Date(current.contract_end);
       if(contractEndDate.toISOString() > dateCurrent.toISOString()){
@@ -133,9 +154,8 @@ export default class HomeScreen extends React.Component {
     if(isNaN(sum3)){
         this.setState({annualSave: '0.00'})
     }
-
-
   }
+
   render() {
     return (
       <View source={background} style= {[ t.flex1]}>
@@ -215,102 +235,7 @@ export default class HomeScreen extends React.Component {
             </Tab>
             <Tab heading={ <TabHeading><Text>Affiliate</Text></TabHeading>}>
                 <ImageBackground source={background} style= {[ t.flex1]}>
-                  <ScrollView
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh}
-                      />
-                    }
-                  >
-                    <View style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY2, t.pt4, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text4xl, t.textWhite, t.fontMedium]}>Affiliate Dashboard</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Your Affiliate ID is:{this.state.affiliateId}</Text>
-                      </Item>
-                    </View>
-                    <Item style={[t.borderTransparent]}>
-                      <Item style={[t.w7_12, t.borderTransparent]}/>
-                      <Item style={[t.w5_12, t.wFull, t.borderTransparent]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AddQuote')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.fontBold, t.p2]}>Add Lead</Text>
-                        </TouchableOpacity>
-                      </Item>
-                    </Item>
-                    <Item style={[t.mT2, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull, t.itemsStart, t.justifyStart]}>
-                      <Text style={[ t.textXl, t.textWhite]}>Your Total Customers: 0</Text>
-                    </Item>
-                    <Item style={[t.borderTransparent]}>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AddCustomer')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Add Customer</Text>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={[t.wPx]}/>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('Customers')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>My Customers</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </Item>
-                    <Item style={[t.mT2,t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent,t.wFull, t.h54, t.pX3, t.pY4, t.pt8,]}>
-                      <Text style={[ t.textXl, t.textWhite]}>Your Total Affiliates: 0</Text>
-                    </Item>
-                    <Item style={[t.borderTransparent]}>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AddAffiliate')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Add Affiliate</Text>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={[t.wPx]}/>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('Affiliates')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>My Affiliates</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </Item>
-                    <Item style={[t.mT2, t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent, t.wFull, t.h54, t.pX3, t.pY4, t.pt8]}>
-                      <Text style={[ t.textXl, t.textWhite]}>Your Affiliate Commission:</Text>
-                    </Item>
-                    <Item style={[t.borderTransparent]}>
-                      <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
-                        <Text style={[ t.textWhite, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Current Month: £{this.state.monthlyCost}</Text>
-                      </View>
-                      <View style={[t.wPx]}/>
-                      <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt6]}>
-                        <Text style={[ t.textWhite, t.text2xl, t.textCenter, t.fontBold, t.p2]}>Year To Date: £{this.state.annualCost}</Text>
-                      </View>
-                    </Item>
-                    <Item style={[t.borderTransparent]}>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt8]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AffiliateExpenses')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>View Details</Text>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={[t.wPx]}/>
-                      <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX2, t.pY2, t.pt6]}>
-                        <TouchableOpacity 
-                          onPress={() => this.handleRoute('AffiliateExpenses')}
-                          style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                          <Text style={[ t.textBlue100, t.text2xl, t.textCenter, t.fontBold, t.p2]}>View Details</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </Item>
-                  </ScrollView>
+                    <AffiliateTab requestOptions={this.state.requestOptions} url={this.state.url}/>
                 </ImageBackground>
             </Tab>
           </Tabs>
