@@ -108,7 +108,6 @@ export default class ServicesScreen extends React.Component {
     this.setState({ email: user.email});
     this.setState({ userProfile: userProfile.data["user"]});
     this.setState({ userCompany: userProfile.data["getCompany"]});
-  
     const currentArray = [];
     const endedArray = [];
     const activeRowArray = [];
@@ -122,6 +121,9 @@ export default class ServicesScreen extends React.Component {
         }
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
+        if(isNaN(contractEndDate)){
+          contractEndDate = new Date()
+        }
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
           const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
           endedArray.push(arrayRow)

@@ -120,6 +120,9 @@ export default class HomeScreen extends React.Component {
     let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
       var dateCurrent = new Date();
       var contractEndDate = new Date(current.contract_end);
+      if(isNaN(contractEndDate)){
+        contractEndDate = new Date()
+      }
       if(contractEndDate.toISOString() > dateCurrent.toISOString()){
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
             return prev + +1 
@@ -130,13 +133,17 @@ export default class HomeScreen extends React.Component {
     this.setState({activeServices: serviceSum });
     let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
       if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-          return prev + +parseFloat(current.cost_year) 
+          if(!isNaN(parseFloat(current.cost_year))){
+            return prev + +parseFloat(current.cost_year) 
+          }
        }
        return prev
     }, 0);
     let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
       if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-          return prev + +parseFloat(current.cost_month) 
+          if(!isNaN(parseFloat(current.cost_month))){
+            return prev + +parseFloat(current.cost_month) 
+          }
        }
        return prev
     }, 0);

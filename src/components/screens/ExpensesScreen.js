@@ -61,14 +61,18 @@ export default class ExpensesScreen extends React.Component {
     const activeServices = [];
     let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-           return prev + +parseFloat(current.cost_year) 
+            if(!isNaN(parseFloat(current.cost_year))){
+                return prev + +parseFloat(current.cost_year) 
+            }
         }
         return prev
     }, 0);
 
     let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-           return prev + +parseFloat(current.cost_month) 
+            if(!isNaN(parseFloat(current.cost_month))){
+                return prev + +parseFloat(current.cost_month) 
+            }
         }
         return prev
     }, 0);
@@ -88,6 +92,9 @@ export default class ExpensesScreen extends React.Component {
     userServices.data["getServices"].items.map(lead => {
         if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
             var date = new Date(lead.contract_end);
+            if(isNaN(date)){
+                date = new Date()
+            }
             var dateString = date.toLocaleString();
             const newValue = {
                 service_name: lead.service_name,
