@@ -102,6 +102,9 @@ export default class QuoteScreen extends React.Component {
       } else {
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
+        if(isNaN(contractEndDate)){
+          contractEndDate = new Date()
+        }
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
           const newValue = {
               service_name: lead.service_name,
