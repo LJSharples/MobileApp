@@ -257,11 +257,10 @@ export default class SignUpScreen extends React.Component {
   }
 
   async redirectToHome() {
-    await Auth.signIn(username, password)
+    await Auth.signIn(this.state.username, this.state.password)
     .then(user => {
       this.setState({ user })
-      this.createDetails()
-      this.props.navigation.navigate('Authloading')
+      this.createDetails();
     })
     .catch(err => {
       if (! err.message) {
@@ -278,20 +277,20 @@ export default class SignUpScreen extends React.Component {
     const { username, firstName, lastName, password, authCode, phoneNumber, companyName, companyNumber, industrySector, buildingNumber, postCode } = this.state
     try {
       await API.graphql(graphqlOperation(addProfile, {
-        user_name: username,
+        user_name: username.toLowerCase(),
         full_name: firstName + " " + lastName,
         first_name: firstName,
         last_name: lastName,
         phone: phoneNumber
       }));
+      console.log("USER")
     } catch (err) {
-        console.log("Error User:")
-        console.log(err);
+        console.log("Error User: " + err);
     }
 
     try{
       await API.graphql(graphqlOperation(addCompany, {
-        user_name: username,
+        user_name: username.toLowerCase(),
         company_name: companyName,
         company_number: companyNumber,
         address1: buildingNumber,
@@ -299,9 +298,9 @@ export default class SignUpScreen extends React.Component {
         industry: industrySector
       }));
     }catch(err){
-      console.log("Error Company:")
-      console.log(err);
+      console.log("Error Company: " + err);
     }
+    this.props.navigation.navigate('Authloading')
   }
   
   // Resend code if not received already
