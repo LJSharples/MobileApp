@@ -66,6 +66,11 @@ export default class ServicesScreen extends React.Component {
     await this.props.navigation.navigate(destination)
   }
 
+  handleQuoteRoute = async (destination) => {
+    this.setState({ modalVisible: false});
+    await this.props.navigation.navigate(destination)
+  }
+
   setModalVisible = (visible, record, key) => {
     var records = []
     records.push(record)
@@ -470,6 +475,14 @@ export default class ServicesScreen extends React.Component {
                       <TouchableOpacity 
                         onPress={() => this.showDeleteModal()}>
                         <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Item>
+                  <Item style={[t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                    <View style={[t.w11_12,t.roundedLg, t.bgBlue100]}>
+                      <TouchableOpacity 
+                        onPress={() => this.handleQuoteRoute('AddQuote')}>
+                        <Text style={[ t.textWhite, t.textXl, t.textCenter, t.p2]} >Get Quote</Text>
                       </TouchableOpacity>
                     </View>
                   </Item>

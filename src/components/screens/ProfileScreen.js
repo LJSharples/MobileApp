@@ -111,6 +111,14 @@ export default class ProfileScreen extends React.Component {
     }
     try {
         await API.graphql(graphqlOperation(updateUser, data));
+        Alert.alert(
+          'Success',
+          'Your update was successful — Your details have been updated!',
+          [
+            {text: 'Close', style: 'cancel'},
+          ],
+          { cancelable: false }
+        )
       } catch (err) {
         console.log("Error:")
         console.log(err);
@@ -134,6 +142,14 @@ export default class ProfileScreen extends React.Component {
     }
     try{
       await API.graphql(graphqlOperation(updateCompany, data));
+      Alert.alert(
+        'Success',
+        'Your update was successful — Your details have been updated!',
+        [
+          {text: 'Close', style: 'cancel'},
+        ],
+        { cancelable: false }
+      )
     }catch(err){
       console.log("Error:");
       console.log(err);

@@ -342,8 +342,6 @@ export default class ExpensesScreen extends React.Component {
         if(anObjectMapped.savings > 0){
             //get index and value from existing labels and add to new 
             var index = labelsData.findIndex(obj => obj === anObjectMapped.service_name)
-            console.log(labelsData)
-            console.log(index);
             let entry = {
                 key: data3.length + 1,
                 value: Number(anObjectMapped.savings),
