@@ -68,6 +68,8 @@ export default class addQuoteScreen extends React.Component {
     }
 
     onChangeText = (key, value) => {
+      console.log(key)
+      console.log(value)
       if(key === "contractDate"){
           this.setState({ s_contractDate: value})
           let month = value.getMonth() + 1
@@ -85,6 +87,7 @@ export default class addQuoteScreen extends React.Component {
     };
 
     onChange = (key, value) => {
+      console.log(value)
       this.setState({
         [key]: value
       })
@@ -200,7 +203,7 @@ export default class addQuoteScreen extends React.Component {
                               <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                               <TextInput style={[ t.textLg]} placeholder="Your Current Supplier"
                                 placeholderTextColor="black"
-                                onChange={event => this.onChangeText('current_supplier', event)}
+                                onChange={event => this.onChangeText('current_supplier', event.nativeEvent.text)}
                                 value={this.state.current_supplier}/> 
                               </Item>
                             </View>
@@ -240,7 +243,7 @@ export default class addQuoteScreen extends React.Component {
                               <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
                                 <TextInput style={[ t.textLg, t.textCenter]} placeholder="Year Cost"
                                   placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('cost_year', event)}
+                                  onChange={event => this.onChangeText('cost_year', event.nativeEvent.text)}
                                   keyboardType = 'numeric'
                                   value={this.state.cost_year}/> 
                               </View>
@@ -248,7 +251,7 @@ export default class addQuoteScreen extends React.Component {
                               <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
                                 <TextInput style={[ t.textLg, t.textCenter]} placeholder="Month Cost"
                                   placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('cost_month', event)}
+                                  onChange={event => this.onChangeText('cost_month', event.nativeEvent.text)}
                                   keyboardType = 'numeric'
                                   value={this.state.cost_month}/> 
                               </View>

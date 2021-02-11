@@ -283,7 +283,6 @@ export default class SignUpScreen extends React.Component {
         last_name: lastName,
         phone: phoneNumber
       }));
-      console.log("USER")
     } catch (err) {
         console.log("Error User: " + err);
     }

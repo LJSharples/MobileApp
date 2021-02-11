@@ -39,7 +39,7 @@ export default class ServicesScreen extends React.Component {
     rowsActive: [],
     rowsEnded: [],
     tableHead: ['Service', 'Supplier', 'End Date', ''],
-    modalHead: ['Service', 'Supplier', 'Contract End Date', 'Record ID', 'Bills'],
+    modalHead: ['Service', 'Supplier', 'Contract End Date', 'Status', 'Record ID', 'Bills'],
     rowsActiveArray: [
     ],
     email: '',
@@ -112,6 +112,7 @@ export default class ServicesScreen extends React.Component {
     const endedArray = [];
     const activeRowArray = [];
     userServices.data["getServices"].items.map(lead => {
+      console.log(lead)
       if(lead.status === "CUSTOMER DELETED"){
       } else {
         let bills = []
@@ -125,14 +126,15 @@ export default class ServicesScreen extends React.Component {
           contractEndDate = new Date()
         }
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
           endedArray.push(arrayRow)
         } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id, bills]
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
           activeRowArray.push(arrayRow)
         }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(),lead.id]
+          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
           currentArray.push(arrayRow)
+          console.log(arrayRow);
         }
       }
     });
@@ -150,6 +152,7 @@ export default class ServicesScreen extends React.Component {
   }
 
   deleteService = async () => {
+    console.log()
     const id = this.state.selectedKey
     const data = {
         user_name: this.state.userProfile.user_name,
@@ -168,6 +171,7 @@ export default class ServicesScreen extends React.Component {
     const endedArray = [];
     const userServices = await API.graphql(graphqlOperation(getServices, { user_name: this.state.userProfile.user_name}));
     userServices.data["getServices"].items.map(lead => {
+      console.log(lead);
       if(lead.status === "CUSTOMER DELETED"){
       } else {
         let bills = []
@@ -177,6 +181,9 @@ export default class ServicesScreen extends React.Component {
         }
         var dateCurrent = new Date();
         var contractEndDate = new Date(lead.contract_end);
+        if(isNaN(contractEndDate)){
+          contractEndDate = new Date()
+        }
         if(contractEndDate.toISOString() < dateCurrent.toISOString()){
           const newValue = {
               service_name: lead.service_name,

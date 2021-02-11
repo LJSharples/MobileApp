@@ -104,7 +104,7 @@ export default class RegisterCompanyDetails extends React.Component {
                                     { label: 'Other / Not listed', value: 'Other / Not listed' },
                                 ]}
                                 placeholder="Which industry are you part of?"
-                                containerStyle={{height: 50, width: 285}}
+                                containerStyle={{height: 50, width: 400}}
                                 style={{ backgroundColor: '#fafafa' }}
                                 dropDownStyle={{ 
                                     backgroundColor: '#e2e8f0',

@@ -84,7 +84,6 @@ export default class HomeScreen extends React.Component {
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     if(user.attributes['custom:affiliate_id'] !== undefined){
-      console.log("here")
       this.setState({ affiliateStatus: true});
       var url = "https://affiliates.managedbills.com/wp-json/affwp/v1/affiliates/" + user.attributes['custom:affiliate_id'];
       var myHeaders = new Headers();

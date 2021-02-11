@@ -49,6 +49,22 @@ export default class addServiceScreen extends React.Component {
         displayModal: false
     };
 
+    _onRefresh = async () => {
+      this.componentDidMount();
+      this.setState({
+        service_name: '',
+        current_supplier: '',
+        contractDate: '',
+        contract_length: '',
+        callback_time: '',
+        callback_date: '',
+        cost_year: '',
+        cost_month: '',
+        uploaded_documents: [],
+        submitted: []
+      })
+    }
+
     async componentDidMount(){
       let user = await Auth.currentAuthenticatedUser();
       this.setState({ user_name: user.username})
@@ -128,24 +144,22 @@ export default class addServiceScreen extends React.Component {
           const re = await API.graphql(graphqlOperation(addService, data));
           console.log("Success");
           this.setState({
-            displayModal: true
+            displayModal: true,
+            service_name: '',
+            current_supplier: '',
+            contractDate: '',
+            contract_length: '',
+            callback_time: '',
+            callback_date: '',
+            cost_year: '',
+            cost_month: '',
+            uploaded_documents: [],
+            submitted: []
           })
       } catch (err) {
           console.log("Error:")
           console.log(err);
       }
-      this.setState({
-        service_name: '',
-        current_supplier: '',
-        contractDate: '',
-        contract_length: '',
-        callback_time: '',
-        callback_date: '',
-        cost_year: '',
-        cost_month: '',
-        uploaded_documents: [],
-        submitted: []
-      })
     }
 
     render() {
