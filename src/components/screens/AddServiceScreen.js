@@ -72,7 +72,17 @@ export default class addServiceScreen extends React.Component {
     
     handleRoute = async (destination) => {
       this.setState({
-        displayModal: false
+        displayModal: false,
+        service_name: '',
+        current_supplier: '',
+        contractDate: '',
+        contract_length: '',
+        callback_time: '',
+        callback_date: '',
+        cost_year: '',
+        cost_month: '',
+        uploaded_documents: [],
+        submitted: []
       })
       await this.props.navigation.navigate(destination)
     }
