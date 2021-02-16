@@ -177,65 +177,82 @@ export default class HomeScreen extends React.Component {
                       />
                     }
                   >
-                    <View style={[ t.mT2, t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite, t.fontMedium]}>Hi, welcome back</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.text4xl, t.textWhite]}>{this.state.firstName}</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Item style={[t.w2_3, t.borderTransparent]}/>
-                        <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
-                          <TouchableOpacity 
-                            onPress={() => this.handleRoute('AddQuote')}
+                    <Item style={[t.borderTransparent]}>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}>Hi, welcome back</Text>
+                        </View>
+                        <View style={[t.wPx]}/>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}></Text>
+                        </View>
+                    </Item>
+                    <Item style={[t.pX4, t.pY2, t.pt8, t.itemsStart, t.justifyStart, t.borderTransparent, t.wFull, t.h54, t.pX3, t.pY4, t.pt8]}>
+                      <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                        <Text style={[ t.mL5, t.text4xl, t.textWhite, t.fontMedium]}>{this.state.firstName}</Text>
+                      </View>  
+                    </Item>
+                    <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.w3_5, t.borderTransparent]}/>
+                        <Item style={[t.w3_6,, t.borderTransparent]}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.handleRoute('AddQuote')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                            <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>{' '} Get Quote {' '}</Text>
-                          </TouchableOpacity>
+                            <Text style={[ t.textBlue100, t.textXl, t.pX4,t.fontBold, t.p2]}> Get Quote {'  '}</Text>
+                        </TouchableOpacity>
                         </Item>
-                      </Item>
-                    </View>
-                    <View style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.wPx]}/>
+                    </Item>
+                    
+                    <Item style={[t.mT2, t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent, t.wFull, t.h54, t.pX3, t.pY4, t.pt8]}>
                         <Text style={[ t.text2xl, t.textWhite, t.fontMedium]}>Services</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>Active Services: {this.state.activeServices}</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Item style={[t.w2_3, t.borderTransparent]}/>
-                        <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
-                          <TouchableOpacity 
-                            onPress={() => this.handleRoute('Services')}
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}>Active Services: {this.state.activeServices}</Text>
+                        </View>
+                        <View style={[t.wPx]}/>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}></Text>
+                        </View>
+                    </Item>
+                    <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.w3_5, t.borderTransparent]}/>
+                        <Item style={[t.w3_6,, t.borderTransparent]}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.handleRoute('Services')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                            <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>My Services</Text>
-                          </TouchableOpacity>
+                            <Text style={[ t.textBlue100, t.textXl, t.pX4,t.fontBold, t.p2]}>My Services</Text>
+                        </TouchableOpacity>
                         </Item>
-                      </Item>
-                    </View>
-                    <View style={[ t.alignCenter, t.justifyCenter, t.wFull, t.h40, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
-                      <Item style={[t.pX3, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.wPx]}/>
+                    </Item>
+
+                    <Item style={[t.mT2, t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent, t.wFull, t.h54, t.pX3, t.pY4, t.pt8]}>
                         <Text style={[ t.text2xl, t.textWhite, t.fontMedium]}>Expenses</Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Text style={[ t.textXl, t.textWhite]}>
+                    </Item>
+                    <Item style={[t.borderTransparent]}>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt8]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}>
                           Monthly: £{this.state.monthlyCost}
                           {"\n"}
-                          Yearly:{'    '}£{this.state.annualCost}
-                        </Text>
-                        <Text style={[ t.textXl, t.textWhite]}></Text>
-                      </Item>
-                      <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                        <Item style={[t.w2_3, t.borderTransparent]}/>
-                        <Item style={[t.w1_3, t.wFull, t.borderTransparent]}>
-                          <TouchableOpacity 
-                            onPress={() => this.handleRoute('Expenses')}
+                          {' '}Yearly:{'    '}£{this.state.annualCost}</Text>
+                        </View>
+                        <View style={[t.wPx]}/>
+                        <View style={[t.roundedLg, t.w6_12, t.pX2, t.pY2, t.pt6]}>
+                            <Text style={[ t.textWhite, t.textXl, t.textCenter]}></Text>
+                        </View>
+                    </Item>
+                    <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                        <Item style={[t.w3_5, t.borderTransparent]}/>
+                        <Item style={[t.w3_6,, t.borderTransparent]}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.handleRoute('Expenses')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
-                            <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>My Expenses</Text>
-                          </TouchableOpacity>
+                            <Text style={[ t.textBlue100, t.textXl, t.pX2,t.fontBold, t.p2]}>My Expenses</Text>
+                        </TouchableOpacity>
                         </Item>
-                      </Item>
-                    </View>
+                        <Item style={[t.wPx]}/>
+                    </Item>
                   </ScrollView>
                 </ImageBackground>
             </Tab>

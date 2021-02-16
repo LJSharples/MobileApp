@@ -161,26 +161,24 @@ export default class QuoteScreen extends React.Component {
                 />
               }
             >
-            <Item style={[ t.mT5, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-              <View style={[t.pX3, t.pY4, t.pt8, t.roundedLg, t.w7_12]}>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Get Quote</Text>
-                </Item>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.textXl, t.textWhite]}>Let our team of experts help you with your business services.</Text>
-                </Item>
-                <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
-                  <Text style={[ t.textXl, t.textWhite]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
-                </Item>
-              </View>
-              <View style={[t.roundedLg, t.itemsCenter, t.w5_2]}>
+            <View style={[ t.mT5, t.alignCenter, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull]}>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.text3xl, t.fontSemibold, t.textWhite]}>Get Quote</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textWhite]}>Let our team of experts help you with your business services.</Text>
+              </Item>
+              <Item style={[t.pX2, t.pY2, t.pt4, t.itemsStart, t.justifyStart, t.borderTransparent]}>
+                <Text style={[ t.textXl, t.textWhite]}>Just click 'Get Quote' to get started or call our Team '01244 391 500'.</Text>
+              </Item>
+              <Item style={[t.mT5, t.justifyEnd, t.borderTransparent, t.alignCenter, t.justifyCenter]}>
                 <TouchableOpacity 
-                  onPress={() => this.handleRoute('Services')}
-                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite, t.justifyStart]}>
-                  <Text style={[ t.textBlue100, t.textXl, t.p2]} onPress={() => this.handleRoute('AddQuote')}>Get Quote</Text>
+                  onPress={() => this.handleRoute('AddQuote')}
+                  style={[ t.pX2, t.pY2,t.roundedLg, t.bgWhite]}>
+                  <Text style={[ t.textBlue100, t.textXl, t.fontMedium, t.p2]}>Get Quote</Text>
                 </TouchableOpacity>
-              </View>
-            </Item>
+              </Item>
+            </View>
           </ScrollView>
           <NavBar activeTab={[0,0,0,1,0]} index={this.state.activeTab} _handlePress={this._handlePress}/>
         </ImageBackground>
