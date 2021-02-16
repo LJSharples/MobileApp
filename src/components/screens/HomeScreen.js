@@ -241,7 +241,7 @@ export default class HomeScreen extends React.Component {
             </Tab>
             <Tab heading={ <TabHeading><Text>Affiliate</Text></TabHeading>}>
                 <ImageBackground source={background} style= {[ t.flex1]}>
-                    <AffiliateTab requestOptions={this.state.requestOptions} url={this.state.url}/>
+                    <AffiliateTab requestOptions={this.state.requestOptions} handleRoute={this.handleRoute} url={this.state.url}/>
                 </ImageBackground>
             </Tab>
           </Tabs>

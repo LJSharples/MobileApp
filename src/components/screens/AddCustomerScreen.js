@@ -15,7 +15,8 @@ import {
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
-import SuccessUpload from "../forms/SuccessUpload"
+import SuccessUpload from "../forms/SuccessUpload";
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 
@@ -87,6 +88,8 @@ export default class addCustomerScreen extends React.Component {
 
     render() {
         return (
+          <View source={background} style= {[ t.flex1]}>
+            <Header/>
             <ImageBackground source={background}  style= {[ t.flex1]}>
                 <ScrollView
                     refreshControl={
@@ -150,6 +153,7 @@ export default class addCustomerScreen extends React.Component {
                   </View>
                 </ScrollView>
             </ImageBackground>
+          </View>
         )
     }
 }

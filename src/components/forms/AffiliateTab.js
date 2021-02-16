@@ -21,9 +21,11 @@ export default class AffiliateTab extends React.Component {
         if(this.props.url === '' || this.props.requestOptions === ''){
             this.setState({ isLoading: false });
         } else {
+            console.log(this.props)
             fetch(this.props.url, this.props.requestOptions)
             .then(response => response.json())
             .then(result => {
+                console.log(result)
               this.setState({affiliateData: result})
             })
             .catch(error => console.log('error', error))
@@ -51,7 +53,7 @@ export default class AffiliateTab extends React.Component {
                             <Item style={[t.w3_5, t.borderTransparent]}/>
                             <Item style={[t.w3_6,, t.borderTransparent]}>
                             <TouchableOpacity 
-                                onPress={() => this.handleRoute('AddQuote')}
+                                onPress={() => this.props.handleRoute('AddQuote')}
                                 style={[ t.p1, t.roundedLg, t.bgWhite]}>
                                 <Text style={[ t.textBlue100, t.pX8, t.textXl, t.fontBold, t.p2]}>Add Lead</Text>
                             </TouchableOpacity>
@@ -65,7 +67,7 @@ export default class AffiliateTab extends React.Component {
                             <Item style={[t.w3_5, t.borderTransparent]}/>
                             <Item style={[t.w3_6,, t.borderTransparent]}>
                                 <TouchableOpacity 
-                                    onPress={() => this.handleRoute('Customers')}
+                                    onPress={() => this.props.handleRoute('Customers')}
                                     style={[ t.p1, t.roundedLg, t.bgWhite]}>
                                     <Text style={[ t.textBlue100, t.textXl, t.fontBold, t.p2]}>My Customers</Text>
                                 </TouchableOpacity>
@@ -80,7 +82,7 @@ export default class AffiliateTab extends React.Component {
                             <Item style={[t.w3_5, t.borderTransparent]}/>
                             <Item style={[t.w3_6, t.borderTransparent]}>
                                 <TouchableOpacity 
-                                    onPress={() => this.handleRoute('Affiliates')}
+                                    onPress={() => this.props.handleRoute('Affiliates')}
                                     style={[ t.p1, t.roundedLg, t.bgWhite]}>
                                     <Text style={[ t.textBlue100, t.pX4, t.textXl, t.fontBold, t.p2]}>My Affiliates</Text>
                                 </TouchableOpacity>
@@ -103,7 +105,7 @@ export default class AffiliateTab extends React.Component {
                             <Item style={[t.w3_5, t.borderTransparent]}/>
                             <Item style={[t.w3_6,, t.borderTransparent]}>
                             <TouchableOpacity 
-                                onPress={() => this.handleRoute('AffiliateExpenses')}
+                                onPress={() => this.props.handleRoute('AffiliateExpenses')}
                                 style={[ t.p1, t.roundedLg, t.bgWhite]}>
                                 <Text style={[ t.textBlue100, t.textXl, t.pX4,t.fontBold, t.p2]}>View Details</Text>
                             </TouchableOpacity>

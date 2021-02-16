@@ -20,7 +20,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerForm from '../forms/DateTimePickerForm';
 import DateTimePickerContract from '../forms/DateTimePickerContract';
 import FileUpload from "../forms/FileUpload";
-import SuccessUpload from "../forms/SuccessUpload"
+import SuccessUpload from "../forms/SuccessUpload";
+import Header from "../forms/Header";
 
 const background = require('../images/background.png')
 
@@ -151,6 +152,8 @@ export default class addQuoteScreen extends React.Component {
 
     render() {
         return (
+          <View source={background} style= {[ t.flex1]}>
+            <Header/>
             <ImageBackground source={background}  style= {[ t.flex1]}>
                 <ScrollView
                     refreshControl={
@@ -293,6 +296,7 @@ export default class addQuoteScreen extends React.Component {
                   </View>
                 </ScrollView>
             </ImageBackground>
+          </View>
         )
     }
 }
