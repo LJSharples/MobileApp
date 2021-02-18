@@ -2,17 +2,21 @@ import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { t } from 'react-native-tailwindcss';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export const DateTimePickerForm = (props) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [highlight, showHighlight] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
     props.onChange('callback_time', currentDate)
+    props.highlightInput('contractDate_highlight');
+    showHighlight(true);
   };
 
   const showMode = (currentMode) => {
@@ -47,6 +51,7 @@ export const DateTimePickerForm = (props) => {
           style={[t.flex1]}
         />
       )}
+      {highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
     </View>
   );
 };

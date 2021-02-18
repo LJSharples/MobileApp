@@ -16,7 +16,8 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import DateTimePickerForm from '../forms/DateTimePickerForm';
 import DateTimePickerContract from '../forms/DateTimePickerContract';
@@ -43,6 +44,14 @@ export default class addServiceScreen extends React.Component {
         callback_date: '',
         cost_year: '',
         cost_month: '',
+        service_name_highlight: false,
+        current_supplier_highlight: false,
+        contractDate_highlight: false,
+        contract_length_highlight: false,
+        callback_time_highlight: false,
+        callback_date_highlight: false,
+        cost_year_highlight: false,
+        cost_month_highlight: false,
         uploaded_documents: [],
         submitted: [],
         permission: false,
@@ -118,6 +127,13 @@ export default class addServiceScreen extends React.Component {
         var joined = this.state.submitted.concat(key);
         this.setState({ submitted: joined })
       }
+    }
+
+    highlightInput = (key) => {
+      this.setState(prevState => ({
+        [key]: !prevState.key
+      }));
+      
     }
 
     fileUploadKey = (key) => {
@@ -220,20 +236,24 @@ export default class addServiceScreen extends React.Component {
                                     style={{ backgroundColor: '#fafafa' }}
                                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                                     onChangeItem={item => this.setState({
-                                        service_name: item.value
+                                        service_name: item.value,
+                                        service_name_highlight: true
                                     })}
                                   />
                                 </Item>
+                                {this.state.service_name_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
                               </View>
                               <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
                                 <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                <TextInput style={[ t.textLg]} placeholder="Your Current Supplier"
-                                  placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('current_supplier', event)}
-                                  value={this.state.current_supplier}/> 
+                                  <TextInput style={[ t.textLg]} placeholder="Your Current Supplier"
+                                    placeholderTextColor="black"
+                                    onChange={event => this.onChangeText('current_supplier', event)}
+                                    value={this.state.current_supplier}
+                                    onBlur={event => this.highlightInput('current_supplier_highlight', event)}/> 
+                                    {this.state.current_supplier_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
                                 </Item>
                               </View>
-                              <DateTimePickerContract onChange={this.onChange}/>
+                              <DateTimePickerContract onChange={this.onChange} highlightInput={this.highlightInput}/>
                               <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z10]}>
                                 <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
                                 <DropDownPicker
@@ -254,24 +274,28 @@ export default class addServiceScreen extends React.Component {
                                     style={{ backgroundColor: '#fafafa' }}
                                     dropDownStyle={{ backgroundColor: '#fafafa'}}
                                     onChangeItem={item => this.setState({
-                                        contract_length: item.value
+                                        contract_length: item.value,
+                                        contract_length_highlight: true
                                     })}
                                   />
                                 </Item>
+                                {this.state.contract_length_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
                               </View>
                               <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
                                 <Item style={[t.pX4, t.pY4, t.pt8, t.borderTransparent]}>
                                     <FileUpload fileUploadKey={this.fileUploadKey}/>
                                 </Item>
                               </View>
-                              <DateTimePickerForm onChange={this.onChange}/>
+                              <DateTimePickerForm onChange={this.onChange} highlightInput={this.highlightInput}/>
                               <Item style={[ t.mT2, t.borderTransparent]}>
                                 <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
                                   <TextInput style={[ t.textLg, t.textCenter]} placeholder="Year Cost"
                                     placeholderTextColor="black"
                                     onChange={event => this.onChangeText('cost_year', event)}
                                     keyboardType = 'numeric'
-                                    value={this.state.cost_year}/> 
+                                    value={this.state.cost_year}
+                                    onBlur={event => this.highlightInput('cost_year_highlight', event)}/> 
+                                    {this.state.cost_year_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null } 
                                 </View>
                                 <View style={[t.wPx]}/>
                                 <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
@@ -279,7 +303,9 @@ export default class addServiceScreen extends React.Component {
                                     placeholderTextColor="black"
                                     onChange={event => this.onChangeText('cost_month', event)}
                                     keyboardType = 'numeric'
-                                    value={this.state.cost_month}/> 
+                                    value={this.state.cost_month}
+                                    onBlur={event => this.highlightInput('cost_month_highlight', event)}/> 
+                                    {this.state.cost_month_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null } 
                                 </View>
                               </Item>
                               <View style={[ t.mT2, t.itemsCenter, t.bgGray100]}>
