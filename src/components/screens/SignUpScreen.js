@@ -23,6 +23,9 @@ import CompanyAddress from '../forms/RegisterCompanyAddress';
 import RefferalDetails from '../forms/RegisterRefferalDetails';
 import TermsConditions from '../forms/RegisterTermsConditions';
 import ConfirmCode from '../forms/RegisterConfirmCode';
+import Header from "../forms/Header";
+
+const background = require('../images/background.png')
 
 export default class SignUpScreen extends React.Component {
   constructor(){
@@ -320,52 +323,55 @@ export default class SignUpScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={[t.hFull, t.bgWhite]}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-          />
-        }
-      >
-        <UserDetails
-          currentStep={this.state.currentStep}
-          onUpdate={this.onUpdate}
-          username={this.state.username}
-          email={this.state.email}/>
-        <ConfirmCode
-          currentStep={this.state.currentStep}/>
-        <UserPhone
-          currentStep={this.state.currentStep}
-          phoneNumber={this.state.phoneNumber}
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          onUpdate={this.onUpdate}/>
-        <CompanyDetails
-          currentStep={this.state.currentStep}
-          companyName={this.state.companyName}
-          companyNumber={this.state.companyNumber}
-          industrySector={this.state.industrySector}
-          onUpdate={this.onUpdate}/>
-        <CompanyAddress
-          currentStep={this.state.currentStep}
-          buildingNumber={this.state.buildingNumber}
-          postCode={this.state.postCode}
-          onUpdate={this.onUpdate}/>
-        <RefferalDetails
-          currentStep={this.state.currentStep}
-          refferalCode={this.state.refferalCode}
-          onUpdate={this.onUpdate}/>
-        <TermsConditions
-          currentStep={this.state.currentStep}
-          onUpdate={this.onUpdate}/>
-        {this.nextButton}
-        {this.authCode}
-        {this.finish}
-        {this.backButton}
-        {this.returnButton}
-      </ScrollView>
+      <View source={background} style= {[ t.flex1, t.bgWhite]}>
+        <Header/>
+        <ScrollView
+          style={[t.hFull, t.bgWhite]}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
+          <UserDetails
+            currentStep={this.state.currentStep}
+            onUpdate={this.onUpdate}
+            username={this.state.username}
+            email={this.state.email}/>
+          <ConfirmCode
+            currentStep={this.state.currentStep}/>
+          <UserPhone
+            currentStep={this.state.currentStep}
+            phoneNumber={this.state.phoneNumber}
+            firstName={this.state.firstName}
+            lastName={this.state.lastName}
+            onUpdate={this.onUpdate}/>
+          <CompanyDetails
+            currentStep={this.state.currentStep}
+            companyName={this.state.companyName}
+            companyNumber={this.state.companyNumber}
+            industrySector={this.state.industrySector}
+            onUpdate={this.onUpdate}/>
+          <CompanyAddress
+            currentStep={this.state.currentStep}
+            buildingNumber={this.state.buildingNumber}
+            postCode={this.state.postCode}
+            onUpdate={this.onUpdate}/>
+          <RefferalDetails
+            currentStep={this.state.currentStep}
+            refferalCode={this.state.refferalCode}
+            onUpdate={this.onUpdate}/>
+          <TermsConditions
+            currentStep={this.state.currentStep}
+            onUpdate={this.onUpdate}/>
+          {this.nextButton}
+          {this.authCode}
+          {this.finish}
+          {this.backButton}
+          {this.returnButton}
+        </ScrollView>
+      </View>
     )
   }
 }

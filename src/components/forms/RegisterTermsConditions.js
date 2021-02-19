@@ -27,7 +27,7 @@ export default class RegisterTermsConditions extends React.Component {
                             <Text style={[ t.text2xl, t.textBlue600]}> Terms & Conditions</Text>
                         </Item>
                         <Item style={[ t.mT5, t.borderTransparent, t.justifyCenter, t.itemsCenter]}>
-                            <Text style={[t.textBlue600]}>Have you been reffered by somebody to try out Managed Bills?</Text>
+                            <Text style={[t.textBlue600]}>Please read the T&C's and agree to confirm your signup to Managed Bills</Text>
                         </Item>
                     </View>
                 </Item>
