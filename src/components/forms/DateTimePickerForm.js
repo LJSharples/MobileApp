@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
+import {
+  Item
+} from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { t } from 'react-native-tailwindcss';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -40,6 +43,9 @@ export const DateTimePickerForm = (props) => {
       <View>
         <Button onPress={showTimepicker} title="Select Callback Time" color="#000000"/>
       </View>
+      <Item style={[t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+        {highlight ? <FontAwesome5 name="check" size={24}  color="green" /> : null }
+      </Item>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -51,7 +57,6 @@ export const DateTimePickerForm = (props) => {
           style={[t.flex1]}
         />
       )}
-      {highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
     </View>
   );
 };

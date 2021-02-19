@@ -78,8 +78,6 @@ export default class addQuoteScreen extends React.Component {
     }
 
     onChangeText = (key, value) => {
-      console.log(key)
-      console.log(value)
       if(key === "contractDate"){
           this.setState({ s_contractDate: value})
           let month = value.getMonth() + 1

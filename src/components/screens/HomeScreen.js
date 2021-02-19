@@ -195,7 +195,7 @@ export default class HomeScreen extends React.Component {
                         <Item style={[t.w3_5, t.borderTransparent]}/>
                         <Item style={[t.w3_6,, t.borderTransparent]}>
                         <TouchableOpacity 
-                            onPress={() => this.props.handleRoute('AddQuote')}
+                            onPress={() => this.handleRoute('AddQuote')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
                             <Text style={[ t.textBlue100, t.textXl, t.pX4,t.fontBold, t.p2]}> Get Quote {'  '}</Text>
                         </TouchableOpacity>
@@ -219,7 +219,7 @@ export default class HomeScreen extends React.Component {
                         <Item style={[t.w3_5, t.borderTransparent]}/>
                         <Item style={[t.w3_6,, t.borderTransparent]}>
                         <TouchableOpacity 
-                            onPress={() => this.props.handleRoute('Services')}
+                            onPress={() => this.handleRoute('Services')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
                             <Text style={[ t.textBlue100, t.textXl, t.pX4,t.fontBold, t.p2]}>My Services</Text>
                         </TouchableOpacity>
@@ -246,7 +246,7 @@ export default class HomeScreen extends React.Component {
                         <Item style={[t.w3_5, t.borderTransparent]}/>
                         <Item style={[t.w3_6,, t.borderTransparent]}>
                         <TouchableOpacity 
-                            onPress={() => this.props.handleRoute('Expenses')}
+                            onPress={() => this.handleRoute('Expenses')}
                             style={[ t.p1, t.roundedLg, t.bgWhite]}>
                             <Text style={[ t.textBlue100, t.textXl, t.pX2,t.fontBold, t.p2]}>My Expenses</Text>
                         </TouchableOpacity>

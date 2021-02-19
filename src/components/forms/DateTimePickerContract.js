@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
+import {
+  Item
+} from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { t } from 'react-native-tailwindcss';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -38,6 +41,9 @@ export const DateTimePickerContract = (props) => {
       <View>
         <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/>
       </View>
+      <Item style={[t.alignCenter, t.justifyCenter, t.borderTransparent]}>
+        {highlight ? <FontAwesome5 name="check" size={24}  color="green" /> : null }
+      </Item>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -48,7 +54,6 @@ export const DateTimePickerContract = (props) => {
           onChange={onChange}
         />
       )}
-      {highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
     </View>
   );
 };
