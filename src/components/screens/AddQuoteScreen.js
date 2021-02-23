@@ -217,6 +217,10 @@ export default class addQuoteScreen extends React.Component {
                                   }}
                                   containerStyle={{height: 50, width: 400}}
                                   style={{ backgroundColor: '#fafafa' }}
+                                  selectedLabelStyle={{
+                                    fontSize: 18,
+                                    textAlign: 'center',
+                                  }}
                                   dropDownStyle={{ backgroundColor: '#fafafa' }}
                                   onChangeItem={item => this.setState({
                                       service_name: item.value,
@@ -255,6 +259,10 @@ export default class addQuoteScreen extends React.Component {
                                   }}
                                   containerStyle={{height: 50, width: 400}}
                                   style={{ backgroundColor: '#fafafa' }}
+                                  selectedLabelStyle={{
+                                    fontSize: 18,
+                                    textAlign: 'center',
+                                  }}
                                   dropDownStyle={{ backgroundColor: '#fafafa'}}
                                   onChangeItem={item => this.setState({
                                       contract_length: item.value,

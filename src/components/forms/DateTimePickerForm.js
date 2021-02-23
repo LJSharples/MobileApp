@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {View, Button, Platform, Text} from 'react-native';
 import {
   Item
 } from 'native-base';
@@ -11,15 +11,12 @@ export const DateTimePickerForm = (props) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [highlight, showHighlight] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
     props.onChange('callback_time', currentDate)
-    props.highlightInput('contractDate_highlight');
-    showHighlight(true);
   };
 
   const showMode = (currentMode) => {
@@ -36,7 +33,7 @@ export const DateTimePickerForm = (props) => {
   };
 
   return (
-    <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
+    <View style={[t.mT2, t.bgGray100, t.roundedLg, t.w4_5]}>
       <View>
         <Button onPress={showDatepicker} title="Select Callback Date" color="#000000"/>
       </View>
@@ -44,8 +41,8 @@ export const DateTimePickerForm = (props) => {
         <Button onPress={showTimepicker} title="Select Callback Time" color="#000000"/>
       </View>
       <Item style={[t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-        {highlight ? <FontAwesome5 name="check" size={24}  color="green" /> : null }
-      </Item>
+        <Text style={[t.textXl]}>{date.toLocaleDateString()}{''}</Text><FontAwesome5 name="check" size={24}  color="green" />
+      </Item> 
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -54,7 +51,6 @@ export const DateTimePickerForm = (props) => {
           is24Hour={true}
           display="default"
           onChange={onChange}
-          style={[t.flex1]}
         />
       )}
     </View>

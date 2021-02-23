@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {View, Button, Platform, Text} from 'react-native';
 import {
   Item
 } from 'native-base';
@@ -11,16 +11,15 @@ export const DateTimePickerContract = (props) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [highlight, showHighlight] = useState(false);
+  const [display, showDisplay] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
     props.onChange('contractDate', currentDate);
-    props.highlightInput('contractDate_highlight');
-    showHighlight(true);
+    //time delay 3-5 seconds
+    showDisplay(true);
   };
 
   const showMode = (currentMode) => {
@@ -37,13 +36,17 @@ export const DateTimePickerContract = (props) => {
   };
 
   return (
-    <View style={[t.mT2, t.bgGray100, t.roundedLg]}>
+    <View style={[t.mT2, t.bgGray100, t.roundedLg, t.w4_5]}>
       <View>
-        <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/>
+        <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/> 
+        {display ? 
+            <Item style={[t.alignCenter, t.justifyCenter, t.itemsCenter, t.mT2, t.borderTransparent]}>
+              <Text style={[t.textXl]}>{date.toLocaleDateString()}{'   '}</Text><FontAwesome5 name="check" size={24}  color="green" />
+            </Item> 
+          : 
+          null
+        }
       </View>
-      <Item style={[t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-        {highlight ? <FontAwesome5 name="check" size={24}  color="green" /> : null }
-      </Item>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
