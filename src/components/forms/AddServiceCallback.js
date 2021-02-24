@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity, TextInput, Text, StyleSheet } from "react-native";
+import { Image, View, TouchableOpacity, TextInput, Modal, Text, StyleSheet } from "react-native";
 import {
   Item
 } from 'native-base'
@@ -17,7 +17,8 @@ export class AddServiceCallback extends Component {
     this.state = {
       totalSteps: "",
       currentStep: "",
-      permission: false
+      permission: false,
+      displayModal: false
     };
   }
 
@@ -39,8 +40,14 @@ export class AddServiceCallback extends Component {
 
   cancel = () => {
     this.onChange( "status", "Cancel" );
-    this.nextStep();
+    this.setState({ displayModal: true});
   };
+
+  confirmCancel(){
+    const { next } = this.props;
+    this.setState({ displayModal: false})
+    next();
+  }
 
   saveState(key, value) {
       const { saveState } = this.props;
@@ -95,6 +102,41 @@ export class AddServiceCallback extends Component {
             <FontAwesome5 name="minus" size={24} color="white" />
           </TouchableOpacity>
         </View>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.displayModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                }}
+              >
+              <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+                <View style={styles.modalView}>
+                  <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd, t.borderTransparent]}>
+                      <Text style={[ t.text2xl, t.textBlue600]}>Are you sure you wish to cancel this request</Text>
+                  </Item>
+                  <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd,t.wFull, t.borderTransparent]}>
+                      <TouchableOpacity
+                          style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
+                          onPress={() =>
+                              this.confirmCancel()
+                          }
+                      >
+                          <Text style={[ t.text2xl, t.textWhite]}>Cancel</Text>
+                      </TouchableOpacity>
+                      <Item style={[ t.mL1]}/>
+                      <TouchableOpacity
+                          style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
+                          onPress={() =>
+                              this.confirmCancel()
+                          }
+                      >
+                          <Text style={[ t.text2xl, t.textWhite]}>Confirm</Text>
+                      </TouchableOpacity>
+                  </Item>
+                </View>
+                </View>
+              </Modal>
       </View>
     );
   }
@@ -138,6 +180,21 @@ const styles = StyleSheet.create({
     marginAround: {
       width: "40%",
       justifyContent: "space-between"
+    },
+    modalView: {
+      margin: 5,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 10,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5
     },
   });
 export default AddServiceCallback;
