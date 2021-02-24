@@ -85,13 +85,10 @@ export default class HomeScreen extends React.Component {
     let user = await Auth.currentAuthenticatedUser();
     if(user.attributes['custom:affiliate_id'] !== undefined){
       this.setState({ affiliateStatus: true});
-      var url = "https://affiliates.managedbills.com/wp-json/affwp/v1/affiliates/" + user.attributes['custom:affiliate_id'];
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWZmaWxpYXRlcy5tYW5hZ2VkYmlsbHMuY29tIiwiaWF0IjoxNjEyMjY0MTMwLCJuYmYiOjE2MTIyNjQxMzAsImV4cCI6MTYxMjg2ODkzMCwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.Qm7Vw7k85UsVysexE7h6PTtv4NtEmxrBf1QXF9Woz-8");
+      var url = "https://siugsrwucj.execute-api.eu-west-2.amazonaws.com/prod/affiliates/" + user.attributes['custom:affiliate_id'];
 
       var requestOptions = {
         method: 'GET',
-        headers: myHeaders,
         redirect: 'follow'
       }
       this.setState({

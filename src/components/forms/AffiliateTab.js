@@ -21,12 +21,11 @@ export default class AffiliateTab extends React.Component {
         if(this.props.url === '' || this.props.requestOptions === ''){
             this.setState({ isLoading: false });
         } else {
-            console.log(this.props)
             fetch(this.props.url, this.props.requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
-              this.setState({affiliateData: result})
+                console.log(JSON.parse(result))
+                this.setState({affiliateData: JSON.parse(result)})
             })
             .catch(error => console.log('error', error))
             .finally(() => {
