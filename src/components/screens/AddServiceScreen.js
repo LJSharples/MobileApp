@@ -178,6 +178,10 @@ export default class addServiceScreen extends React.Component {
                 onFinish={this.finish}
                 onBack={this.onBack}
                 onNext={this.onNext}//fadeInLeft
+                comeInOnNext="fadeInRight"
+                OutOnNext="fadeOutRight"
+                comeInOnBack="fadeInRight"
+                OutOnBack="fadeOutRight"
               />
               <Modal
                 animationType="slide"

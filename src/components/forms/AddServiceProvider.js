@@ -23,7 +23,6 @@ class AddServiceProvider extends Component {
     }
 
     static getDerivedStateFromProps = props => {
-      console.log(props)
         const { getTotalSteps, getCurrentStep, getState } = props;
         const state = getState();
         return {
@@ -60,7 +59,7 @@ class AddServiceProvider extends Component {
         this.setState({ [highlight]: true});
     }
 
-    render() {
+  render() {
     const { currentStep, totalSteps, currentSupplier } = this.state;
     return (
         <View style={[styles.container]}>
@@ -147,7 +146,7 @@ class AddServiceProvider extends Component {
         </View>
         </View>
     );
-    }
+  }
 }
 const styles = StyleSheet.create({
     container: {

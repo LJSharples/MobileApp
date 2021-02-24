@@ -46,7 +46,7 @@ export class AddServiceCallback extends Component {
   confirmCancel(){
     const { next } = this.props;
     this.setState({ displayModal: false})
-    next();
+    this.nextStep();
   }
 
   abort(){
