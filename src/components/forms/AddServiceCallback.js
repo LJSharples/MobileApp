@@ -49,6 +49,10 @@ export class AddServiceCallback extends Component {
     next();
   }
 
+  abort(){
+    this.setState({ displayModal: false});
+  }
+
   saveState(key, value) {
       const { saveState } = this.props;
       saveState({ [key]: value});
@@ -119,7 +123,7 @@ export class AddServiceCallback extends Component {
                       <TouchableOpacity
                           style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
                           onPress={() =>
-                              this.confirmCancel()
+                              this.abort()
                           }
                       >
                           <Text style={[ t.text2xl, t.textWhite]}>Cancel</Text>
