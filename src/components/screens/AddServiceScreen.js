@@ -3,11 +3,9 @@ import {
   View,
   Text,
   Modal,
-  ScrollView,
-  RefreshControl,
   ImageBackground,
   TouchableOpacity,
-  TextInput,
+  ActivityIndicator
 } from 'react-native'
 import {
   Item
@@ -35,13 +33,6 @@ const success = {uri: "https://i.pinimg.com/originals/e8/06/52/e80652af2c77e3a73
 
 export default class addServiceScreen extends React.Component {
     state = {
-        routes: [
-            'Home',
-            'Services',
-            'Expenses',
-            'Quote',
-            'Account'
-        ],
         service_name: '',
         current_supplier: '',
         contractDate: '',
@@ -50,26 +41,22 @@ export default class addServiceScreen extends React.Component {
         callback_date: '',
         cost_year: '',
         cost_month: '',
-        service_name_highlight: false,
-        current_supplier_highlight: false,
-        contractDate_highlight: false,
-        contract_length_highlight: false,
-        callback_time_highlight: false,
-        callback_date_highlight: false,
-        cost_year_highlight: false,
-        cost_month_highlight: false,
         uploaded_documents: [],
-        submitted: [],
         permission: false,
         user_name: '',
-        displayModal: false
+        displayModal: false,
+        isLoading : true
     };
 
     async componentDidMount(){
       let user = await Auth.currentAuthenticatedUser();
       this.setState({ user_name: user.username})
+      this.props.navigation.addListener('didFocus', () => {
+        console.log("LOAD")
+        this.setState({ isLoading: false});
+      })
     }
-    
+
     handleRoute = async (destination) => {
       this.setState({
         displayModal: false,
@@ -81,8 +68,7 @@ export default class addServiceScreen extends React.Component {
         callback_date: '',
         cost_year: '',
         cost_month: '',
-        uploaded_documents: [],
-        submitted: []
+        uploaded_documents: []
       })
       await this.props.navigation.navigate(destination)
     }
@@ -92,7 +78,6 @@ export default class addServiceScreen extends React.Component {
           uploaded_documents: [...prevState.uploaded_documents, key]
       }))
     }
-
 
     submitService = async (finalState) => {
       console.log("HERE")
@@ -131,8 +116,7 @@ export default class addServiceScreen extends React.Component {
             callback_date: '',
             cost_year: '',
             cost_month: '',
-            uploaded_documents: [],
-            submitted: []
+            uploaded_documents: []
           })
       } catch (err) {
           console.log("Error:")
@@ -158,9 +142,11 @@ export default class addServiceScreen extends React.Component {
       if(finalState.status === "Cancel"){
         console.log("CANCEL")
         console.log(finalState)
+        this.setState({ isLoading: true});
         this.handleRoute('Services')
       } else {
         console.log("SUBMIT")
+        this.setState({ isLoading: true});
         this.submitService(finalState)
       }
     };
@@ -173,16 +159,18 @@ export default class addServiceScreen extends React.Component {
               <Item style={[ t.mT8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textWhite]}>Add A Service</Text>
               </Item>
-              <AnimatedMultistep
-                steps={allSteps}
-                onFinish={this.finish}
-                onBack={this.onBack}
-                onNext={this.onNext}//fadeInLeft
-                comeInOnNext="fadeInRight"
-                OutOnNext="fadeOutRight"
-                comeInOnBack="fadeInRight"
-                OutOnBack="fadeOutRight"
-              />
+                {this.state.isLoading ? <ActivityIndicator/> : (
+                  <AnimatedMultistep
+                    steps={allSteps}
+                    onFinish={this.finish}
+                    onBack={this.onBack}
+                    onNext={this.onNext}//fadeInLeft
+                    comeInOnNext="fadeInRight"
+                    OutOnNext="fadeOutRight"
+                    comeInOnBack="fadeInRight"
+                    OutOnBack="fadeOutRight"
+                  />
+                )}
               <Modal
                 animationType="slide"
                 transparent={true}
