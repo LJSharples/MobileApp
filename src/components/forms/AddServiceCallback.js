@@ -69,7 +69,7 @@ export class AddServiceCallback extends Component {
   render() {
     const { currentStep, totalSteps } = this.state;
     return (
-      <View style={[styles.container]}>
+      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT6]}>
         <View>
           <Text
             style={[ t.textWhite, t.textXl]}
@@ -88,102 +88,68 @@ export class AddServiceCallback extends Component {
             />
         </View>
 
-        <View style={[styles.btnContainer, styles.marginAround]}>
-          <TouchableOpacity onPress={this.props.back} style={styles.btnStyle}>
+        <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
+          <TouchableOpacity onPress={this.props.back} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
               style={[styles.btnImage, styles.backBtn]}
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextStep} style={styles.btnStyle}>
+          <TouchableOpacity onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <FontAwesome5 name="plus" size={28} color="white" />
           </TouchableOpacity>
-        </View>
-        <View style={[styles.btnContainer, styles.marginAround]}>
-          <Item style={[t.mL3]}/>
-          <TouchableOpacity onPress={this.cancel} style={[t.mL24, t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter]}>
+          <TouchableOpacity onPress={this.cancel} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <FontAwesome5 name="minus" size={24} color="white" />
           </TouchableOpacity>
         </View>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.state.displayModal}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                }}
-              >
-              <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
-                <View style={styles.modalView}>
-                  <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd, t.borderTransparent]}>
-                      <Text style={[ t.text2xl, t.textBlue600]}>Are you sure you wish to cancel this request</Text>
-                  </Item>
-                  <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd,t.wFull, t.borderTransparent]}>
-                      <TouchableOpacity
-                          style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
-                          onPress={() =>
-                              this.abort()
-                          }
-                      >
-                          <Text style={[ t.text2xl, t.textWhite]}>Cancel</Text>
-                      </TouchableOpacity>
-                      <Item style={[ t.mL1]}/>
-                      <TouchableOpacity
-                          style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
-                          onPress={() =>
-                              this.confirmCancel()
-                          }
-                      >
-                          <Text style={[ t.text2xl, t.textWhite]}>Confirm</Text>
-                      </TouchableOpacity>
-                  </Item>
-                </View>
-                </View>
-              </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.displayModal}
+          onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+          }}
+        >
+        <View style={[ t.flex1, t.justifyCenter, t.alignCenter, t.mT5]}>
+          <View style={styles.modalView}>
+            <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd, t.borderTransparent]}>
+                <Text style={[ t.text2xl, t.textBlue600]}>Are you sure you wish to cancel this request</Text>
+            </Item>
+            <Item style={[ t.mT2, t.alignCenter, t.justifyCenter, t.contentEnd,t.wFull, t.borderTransparent]}>
+                <TouchableOpacity
+                    style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
+                    onPress={() =>
+                        this.abort()
+                    }
+                >
+                    <Text style={[ t.text2xl, t.textWhite]}>Cancel</Text>
+                </TouchableOpacity>
+                <Item style={[ t.mL1]}/>
+                <TouchableOpacity
+                    style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgBlue100]}
+                    onPress={() =>
+                        this.confirmCancel()
+                    }
+                >
+                    <Text style={[ t.text2xl, t.textWhite]}>Confirm</Text>
+                </TouchableOpacity>
+            </Item>
+          </View>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      marginTop: "6%"
-    },
-    btnContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      marginTop: "6%"
-    },
-    input: {
-      width: "80%",
-      borderColor: "#fff",
-      borderWidth: 2,
-      borderRadius: 6,
-      paddingHorizontal: 8,
-      marginTop: "6%"
-    },
-    btnStyle: {
-      borderColor: "#fff",
-      borderWidth: 2,
-      borderRadius: 100,
-      width: 60,
-      height: 60,
-      justifyContent: "center",
-      alignItems: "center"
-    },
     btnImage: {
       width: "40%",
       height: "40%"
     },
     backBtn: {
       transform: [{ rotate: "180deg" }]
-    },
-    marginAround: {
-      width: "40%",
-      justifyContent: "space-between"
     },
     modalView: {
       margin: 5,

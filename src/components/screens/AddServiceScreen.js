@@ -81,10 +81,8 @@ export default class addServiceScreen extends React.Component {
 
     submitService = async (finalState) => {
       console.log("HERE")
-      var time = this.state.callback_time;
-      var date = this.state.callback_date;
       var status = "CURRENT";
-      if(this.state.permission){
+      if(finalState.permission){
           status = "LEAD"
       }
 
@@ -93,14 +91,14 @@ export default class addServiceScreen extends React.Component {
         status: status,
         email: this.state.email,
         service_name: finalState.service_name,
-        callback_time: date + 'T' + time,
+        callback_time: finalState.callback_time,
         contract_end: finalState.contractDate,
         contract_length: finalState.contract_length,
         current_supplier: finalState.current_supplier,
         cost_year: finalState.cost_year,
         cost_month: finalState.cost_month,
         uploaded_documents: this.state.uploaded_documents,
-        permission: this.state.permission
+        permission: finalState.permission
       }
       console.log(data)
       try {

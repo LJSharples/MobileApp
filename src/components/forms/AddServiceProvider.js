@@ -62,7 +62,7 @@ class AddServiceProvider extends Component {
   render() {
     const { currentStep, totalSteps, currentSupplier } = this.state;
     return (
-        <View style={[styles.container]}>
+      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT6]}>
         <View>
             <Text
             style={[ t.textWhite, t.textXl]}
@@ -134,7 +134,7 @@ class AddServiceProvider extends Component {
           </View>
         </Item>
     
-        <View style={[styles.btnContainer, styles.marginAround]}>
+        <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
           <Item style={[t.mL3]}/>
           <TouchableOpacity onPress={this.nextStep} style={[t.mL24, t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter]}>
             <Image
@@ -149,16 +149,6 @@ class AddServiceProvider extends Component {
   }
 }
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      marginTop: "6%"
-    },
-    btnContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      marginTop: "6%"
-    },
     input: {
       width: "80%",
       borderColor: "#fff",
@@ -167,22 +157,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: 8,
       marginTop: "6%"
     },
-    btnStyle: {
-      borderColor: "#fff",
-      borderWidth: 2,
-      borderRadius: 100,
-      width: 60,
-      height: 60,
-      justifyContent: "center",
-      alignItems: "center"
-    },
     btnImage: {
       width: "40%",
       height: "40%"
-    },
-    marginAround: {
-      width: "40%",
-      justifyContent: "space-between"
     },
   });
 export default AddServiceProvider;

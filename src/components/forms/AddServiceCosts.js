@@ -49,7 +49,7 @@ export class AddServiceCosts extends Component {
   render() {
     const { currentStep, totalSteps } = this.state;
     return (
-      <View style={[styles.container, styles.step1]}>
+      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT6]}>
         <View>
           <Text
             style={[ t.textWhite, t.textXl]}
@@ -94,15 +94,15 @@ export class AddServiceCosts extends Component {
           </View>
         </Item>
 
-        <View style={[styles.btnContainer, styles.marginAround]}>
-          <TouchableOpacity onPress={this.props.back} style={styles.btnStyle}>
+        <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
+          <TouchableOpacity onPress={this.props.back} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
               style={[styles.btnImage, styles.backBtn]}
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextStep} style={styles.btnStyle}>
+          <TouchableOpacity onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
               style={styles.btnImage}
@@ -116,28 +116,6 @@ export class AddServiceCosts extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      marginTop: "6%"
-    },
-    btnContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      marginTop: "6%"
-    },
-    step1: {
-      flex: 1
-    },
-    step2: {
-      flex: 1
-    },
-    step3: {
-      flex: 1
-    },
-    step4: {
-      flex: 1
-    },
     input: {
       width: "80%",
       borderColor: "#fff",
@@ -146,25 +124,12 @@ const styles = StyleSheet.create({
       paddingHorizontal: 8,
       marginTop: "6%"
     },
-    btnStyle: {
-      borderColor: "#fff",
-      borderWidth: 2,
-      borderRadius: 100,
-      width: 60,
-      height: 60,
-      justifyContent: "center",
-      alignItems: "center"
-    },
     btnImage: {
       width: "40%",
       height: "40%"
     },
     backBtn: {
       transform: [{ rotate: "180deg" }]
-    },
-    marginAround: {
-      width: "40%",
-      justifyContent: "space-between"
     },
   });
 export default AddServiceCosts;
