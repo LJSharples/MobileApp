@@ -32,23 +32,8 @@ export default function FileUpload(props) {
             <Camera style={{ flex: 1 }} type={type} ref={ref => {
 	                setCameraRef(ref);
 	            }} autoFocus="on">
-                <View style={[ t.alignCenter, t.justifyCenter]}>
-                    <TouchableOpacity
-                        style={{
-                            flex:0.1,
-                            alignSelf: 'flex-end',
-                            alignItems: 'center'
-                        }}
-                        onPress={() => {
-                            setType(
-                                type === Camera.Constants.Type.back
-                                ? Camera.Constants.Type.front
-                                : Camera.Constants.Type.back
-                            );
-                        }}>
-                            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white'}}> Flip</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={async() => {
+                <View style={[t.flexRow, t.mT64, t.justifyAround ]}>
+                  <TouchableOpacity onPress={async() => {
                         if(cameraRef){
                             let photo = await cameraRef.takePictureAsync();
                             const imageName = photo.uri.replace(/^.*[\\\/]/, '');
@@ -63,27 +48,12 @@ export default function FileUpload(props) {
                                 })
                             .catch(err => console.log(err));
                         }
-                    }}>
-                        <View style={{ 
-                            borderWidth: 2,
-                            borderRadius:"50%",
-                            borderColor: 'white',
-                            height: 50,
-                            width:50,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <View style={{
-                                borderWidth: 2,
-                                borderRadius:"50%",
-                                borderColor: 'white',
-                                height: 40,
-                                width:40,
-                                backgroundColor: 'white'}} >
-                            </View>
-                        </View> 
-                    </TouchableOpacity>
+                    }} style={[ t.bgWhite, t.roundedLg, t.mT64, t.pX2, t.pY2, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
+                    <Text style={[ t.textXl]}> Capture </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={props.modal} style={[ t.bgWhite, t.mT64,  t.roundedLg, t.pX2, t.pY2, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
+                    <Text style={[ t.textXl]}> Cancel </Text>
+                  </TouchableOpacity>
                 </View>
             </Camera>
         </View>

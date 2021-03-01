@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity, TextInput, Text, StyleSheet } from "react-native";
+import { Image, View, TouchableOpacity, Modal, Text, StyleSheet } from "react-native";
 import {
   Item
 } from 'native-base'
@@ -21,6 +21,7 @@ class AddServiceContract extends Component {
           value: '',
           contract: false,
           upload: false,
+          displayModal: false,
           uploaded_documents: []
       };
   }
@@ -48,11 +49,19 @@ class AddServiceContract extends Component {
     saveState({ [key]: value});
   }
 
+  modal = () => {
+    this.setState(prevState => ({
+      displayModal: !prevState.displayModal
+    }))
+    this.saveState('uploaded_documents', this.state.uploaded_documents, 'upload')
+  }
+
   fileUploadKey = (key) => {
     this.setState(prevState => ({
         uploaded_documents: [...prevState.uploaded_documents, key]
     }))
-    this.saveState('uploaded_documents', this.state.uploaded_documents, 'upload')
+    console.log("HERE")
+    console.log(key)
   }
 
 
@@ -102,6 +111,23 @@ class AddServiceContract extends Component {
                 /> : null } 
           </View>
         </Item>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.displayModal}
+          onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+          }}
+        >
+          <FileUpload modal={this.modal} fileUploadKey={this.fileUploadKey}/>
+        </Modal>
+        <TouchableOpacity
+          style={[t.itemsCenter, t.justifyCenter, t.mT2, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
+          onPress={this.modal}>
+          <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
+            Add Picture
+          </Text>
+        </TouchableOpacity>
         <DateTimePickerContract onChange={this.onChange}/>
         <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
           <TouchableOpacity onPress={this.props.back} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
