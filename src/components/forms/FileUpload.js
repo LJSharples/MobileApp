@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
+  Image,
   TouchableOpacity
 } from "react-native";
 import { Camera } from "expo-camera";
@@ -12,6 +13,7 @@ export default function FileUpload(props) {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [cameraRef, setCameraRef] = useState(null)
+    const [photoUri, setPhotoUri] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -37,6 +39,8 @@ export default function FileUpload(props) {
                         if(cameraRef){
                             let photo = await cameraRef.takePictureAsync();
                             const imageName = photo.uri.replace(/^.*[\\\/]/, '');
+                            console.log(photo.uri);
+                            //setPhotoUri(photo.uri);
                             Storage.put(imageName, photo.uri, {
                                 level: 'private',
                                 contentType: 'jpg'
@@ -52,8 +56,14 @@ export default function FileUpload(props) {
                     <Text style={[ t.textXl]}> Capture </Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={props.modal} style={[ t.bgWhite, t.mT64,  t.roundedLg, t.pX2, t.pY2, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
-                    <Text style={[ t.textXl]}> Cancel </Text>
+                    <Text style={[ t.textXl]}> Close </Text>
                   </TouchableOpacity>
+                </View>
+                <View style={[t.flexRow, t.justifyAround ]}>
+                    <Image
+                    source={photoUri}
+                    resizeMode="cover"
+                    />
                 </View>
             </Camera>
         </View>

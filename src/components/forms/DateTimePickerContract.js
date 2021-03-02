@@ -17,7 +17,7 @@ export const DateTimePickerContract = (props) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    props.onChange('contractDate', currentDate);
+    props.onChange('contractDate', currentDate, true);
     //time delay 3-5 seconds
     showDisplay(true);
   };
@@ -38,13 +38,12 @@ export const DateTimePickerContract = (props) => {
   return (
     <View style={[t.mT2, t.bgGray100, t.roundedLg, t.w4_5]}>
       <View>
-        <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/> 
         {display ? 
-            <Item style={[t.alignCenter, t.justifyCenter, t.itemsCenter, t.mT2, t.borderTransparent]}>
-              <Text style={[t.textXl]}>{date.toLocaleDateString()}{'   '}</Text><FontAwesome5 name="check" size={24}  color="green" />
+            <Item style={[t.alignCenter, t.justifyCenter, t.itemsCenter, t.mT1, t.borderTransparent]}>
+              <Text style={[t.textLg]}>Contract End Date: {date.toLocaleDateString()}{'   '}</Text><FontAwesome5 name="check" size={24}  color="green" />
             </Item> 
           : 
-          null
+          <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/> 
         }
       </View>
       {show && (

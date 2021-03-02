@@ -18,7 +18,8 @@ class AddServiceProvider extends Component {
             currentSupplier: "",
             service_name: "",
             supplier: false,
-            service: false
+            service: false,
+            verify: true
         };
     }
 
@@ -32,13 +33,9 @@ class AddServiceProvider extends Component {
             service_name: state.service_name
         };
     };
-    
-    handleRoute = async () => {
-      await this.props.navigation.navigate("Services")
-    }
 
     nextStep = () => {
-        const { next, saveState, getState } = this.props;
+        const { next, getState } = this.props;
         // Save state for use in other steps
         const result = getState();
         console.log(result);
@@ -57,6 +54,13 @@ class AddServiceProvider extends Component {
         saveState({ [key]: value});
         //do highlight
         this.setState({ [highlight]: true});
+        this.verifyState();
+    }
+
+    verifyState = () => {
+      if(this.state.service && this.state.supplier){
+        this.setState({ verify: false})
+      }
     }
 
   render() {
@@ -87,6 +91,7 @@ class AddServiceProvider extends Component {
                   { label: 'Merchant Services', value: 'Merchant Services' },
                   { label: 'Insolvency', value: 'Insolvency' },
               ]}
+              defaultValue={this.state.service_name}
               placeholder="Please Select a Service"
               placeholderStyle={{
                   fontSize: 18,
@@ -136,7 +141,7 @@ class AddServiceProvider extends Component {
     
         <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
           <Item style={[t.mL3]}/>
-          <TouchableOpacity onPress={this.nextStep} style={[t.mL24, t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter]}>
+          <TouchableOpacity disabled={this.state.verify} onPress={this.nextStep} style={[t.mL24, t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter]}>
             <Image
               source={arrow}
               style={styles.btnImage}

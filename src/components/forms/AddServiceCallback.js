@@ -58,9 +58,16 @@ export class AddServiceCallback extends Component {
       saveState({ [key]: value});
   }
 
-  onChange = (key, value) =>{
+  onChange = (key, value, highlight) =>{
     const { saveState } = this.props;
     saveState({ [key]: value});
+    this.verifyState(highlight);
+  }
+
+  verifyState = (highlight) => {
+    if(this.state.permission && highlight){
+      this.setState({ verify: false})
+    }
   }
   toggleChecked = () => {
     this.saveState("permission", !this.state.permission);
@@ -96,7 +103,7 @@ export class AddServiceCallback extends Component {
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
+          <TouchableOpacity disabled={this.state.verify} onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <FontAwesome5 name="plus" size={28} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.cancel} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>

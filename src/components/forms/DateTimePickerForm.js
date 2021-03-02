@@ -16,7 +16,7 @@ export const DateTimePickerForm = (props) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    props.onChange('callback_time', currentDate)
+    props.onChange('callback_time', currentDate, true)
   };
 
   const showMode = (currentMode) => {

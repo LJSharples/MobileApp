@@ -19,19 +19,20 @@ export class AddServiceCosts extends Component {
       month: "",
       year: "",
       year_h: false,
-      month_h: false
+      month_h: false,
+      verify: true
     };
   }
 
   static getDerivedStateFromProps = props => {
     const { getTotalSteps, getCurrentStep, getState } = props;
     const state = getState();
-    console.log(state)
     return {
       totalSteps: getTotalSteps(),
       currentStep: getCurrentStep(),
       month: state.cost_month,
-      year: state.cost_year
+      year: state.cost_year,
+      verify: display
     };
   };
 
@@ -44,6 +45,13 @@ export class AddServiceCosts extends Component {
       const { saveState } = this.props;
       saveState({ [key]: value});
       this.setState({ [highlight]: true});
+      this.verifyState()
+  }
+
+  verifyState = () => {
+    if(this.state.month_h && this.state.year_h){
+      this.setState({ verify: false})
+    }
   }
 
   render() {
@@ -102,7 +110,7 @@ export class AddServiceCosts extends Component {
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
+          <TouchableOpacity disabled={this.state.verify} onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
               style={styles.btnImage}

@@ -19,18 +19,22 @@ class AddServiceContract extends Component {
           currentStep: "",
           key: '',
           value: '',
+          picturesTaken: 0,
           contract: false,
           upload: false,
+          verify: true,
           displayModal: false,
           uploaded_documents: []
       };
   }
 
   static getDerivedStateFromProps = props => {
-    const { getTotalSteps, getCurrentStep } = props;
+    const { getTotalSteps, getCurrentStep, getState } = props;
+    const state = getState();
     return {
       totalSteps: getTotalSteps(),
-      currentStep: getCurrentStep()
+      currentStep: getCurrentStep(),
+      contract: state.contract_length
     };
   };
 
@@ -44,9 +48,16 @@ class AddServiceContract extends Component {
     this.setState({ [highlight]: true});
   }
 
-  onChange = (key, value) =>{
+  onChange = (key, value, highlight) =>{
     const { saveState } = this.props;
     saveState({ [key]: value});
+    this.verifyState(highlight)
+  }
+
+  verifyState = (highlight) => {
+    if(this.state.contract && highlight){
+      this.setState({ verify: false})
+    }
   }
 
   modal = () => {
@@ -60,6 +71,7 @@ class AddServiceContract extends Component {
     this.setState(prevState => ({
         uploaded_documents: [...prevState.uploaded_documents, key]
     }))
+    this.setState({ picturesTaken: this.state.picturesTaken + 1 })
     console.log("HERE")
     console.log(key)
   }
@@ -68,7 +80,7 @@ class AddServiceContract extends Component {
   render() {
     const { currentStep, totalSteps } = this.state;
     return (
-      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT6]}>
+      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT5]}>
         <View>
           <Text
             style={[ t.textWhite, t.textXl]}
@@ -96,8 +108,8 @@ class AddServiceContract extends Component {
                 textAlign: 'center'
               }}
               style={{ backgroundColor: '#fafafa' }}
-              dropDownStyle={{ backgroundColor: '#fafafa', height: 220 }}
-              dropDownMaxHeight={220}
+              dropDownStyle={{ backgroundColor: '#fafafa', height: 240 }}
+              dropDownMaxHeight={240}
               onChangeItem={item => this.saveState('contract_length', item.value, "contract")}
           />
           </View>
@@ -124,12 +136,15 @@ class AddServiceContract extends Component {
         <TouchableOpacity
           style={[t.itemsCenter, t.justifyCenter, t.mT2, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
           onPress={this.modal}>
-          <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
+          <Text style={[ t.textBlue100, t.textLg, t.p2, t.textCenter]}>
             Add Picture
+          </Text>
+          <Text style={[ t.textBlue100, t.p2, t.textCenter]}>
+            Pictures Taken: {this.state.picturesTaken}
           </Text>
         </TouchableOpacity>
         <DateTimePickerContract onChange={this.onChange}/>
-        <View style={[t.flexRow, t.mT6, t.justifyAround ]}>
+        <View style={[t.flexRow, t.mT3, t.justifyAround ]}>
           <TouchableOpacity onPress={this.props.back} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
@@ -137,7 +152,7 @@ class AddServiceContract extends Component {
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
+          <TouchableOpacity disabled={this.state.verify} onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
             <Image
               source={arrow}
               style={styles.btnImage}
