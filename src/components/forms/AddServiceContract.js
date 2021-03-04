@@ -46,6 +46,7 @@ class AddServiceContract extends Component {
     const { saveState } = this.props;
     saveState({ [key]: value});
     this.setState({ [highlight]: true});
+    this.verifyState(highlight)
   }
 
   onChange = (key, value, highlight) =>{
@@ -55,7 +56,9 @@ class AddServiceContract extends Component {
   }
 
   verifyState = (highlight) => {
-    if(this.state.contract && highlight){
+    console.log("VERIFY")
+    if(this.state.contract && highlight === 'upload'){
+      console.log("CLEARED")
       this.setState({ verify: false})
     }
   }
@@ -71,6 +74,7 @@ class AddServiceContract extends Component {
     this.setState(prevState => ({
         uploaded_documents: [...prevState.uploaded_documents, key]
     }))
+    console.log(this.state.uploaded_documents);
     this.setState({ picturesTaken: this.state.picturesTaken + 1 })
     console.log("HERE")
     console.log(key)
@@ -86,8 +90,6 @@ class AddServiceContract extends Component {
             style={[ t.textWhite, t.textXl]}
           >{`Step ${currentStep} of ${totalSteps}`}</Text>
         </View>
-        <Item style={[ t.mT2, t.borderTransparent, t.w3_4, t.z10]}>
-          <View style={[t.roundedLg, t.bgWhite, t.wFull, t.pX4, t.pY4, t.pt8]}>
             <DropDownPicker
               items={[
                   { label: '12 Months', value: '12 Months' },
@@ -102,7 +104,7 @@ class AddServiceContract extends Component {
                   fontSize: 18,
                   textAlign: 'center'
               }}
-              containerStyle={{height: 50, width: 280}}
+              containerStyle={{height: 50, width: "76%"}}
               labelStyle={{
                 fontSize: 18,
                 textAlign: 'center'
@@ -112,7 +114,6 @@ class AddServiceContract extends Component {
               dropDownMaxHeight={240}
               onChangeItem={item => this.saveState('contract_length', item.value, "contract")}
           />
-          </View>
           <View style={[t.wPx]}/>
           <View> 
             {this.state.contract ? 
@@ -122,7 +123,6 @@ class AddServiceContract extends Component {
                   resizeMode="cover"
                 /> : null } 
           </View>
-        </Item>
         <Modal
           animationType="slide"
           transparent={true}

@@ -2,29 +2,34 @@ import React from 'react'
 import {
   View,
   Text,
-  ScrollView,
-  RefreshControl,
   TouchableOpacity,
   ImageBackground,
-  TextInput,
+  ActivityIndicator,
   Modal
 } from 'react-native'
 import {
   Item
 } from 'native-base'
-import { Auth, API, graphqlOperation, Storage } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { addService } from '../../graphql/mutations';
 import { t } from 'react-native-tailwindcss';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { FontAwesome5 } from '@expo/vector-icons';
+import AnimatedMultistep from "react-native-animated-multistep";
 
-import DateTimePickerForm from '../forms/DateTimePickerForm';
-import DateTimePickerContract from '../forms/DateTimePickerContract';
-import FileUpload from "../forms/FileUpload";
-import SuccessUpload from "../forms/SuccessUpload";
 import Header from "../forms/Header";
+import AddServiceProvider from '../forms/AddServiceProvider';
+import AddServiceContract from '../forms/AddServiceContract';
+import AddServiceCosts from '../forms/AddServiceCosts';
+import AddQuoteCallback from '../forms/AddQuoteCallback';
+
+const allSteps = [
+  {name: "Step 1", component: AddServiceProvider},
+  {name: "Step 2", component: AddServiceContract},
+  {name: "Step 3", component: AddServiceCosts},
+  {name: "Step 4", component: AddQuoteCallback}
+]
 
 const background = require('../images/background.png')
+const success = {uri: "https://i.pinimg.com/originals/e8/06/52/e80652af2c77e3a73858e16b2ffe5f9a.gif"}
 
 export default class addQuoteScreen extends React.Component {
     state = {
@@ -43,17 +48,7 @@ export default class addQuoteScreen extends React.Component {
         callback_date: '',
         cost_year: '',
         cost_month: '',
-        service_name_highlight: false,
-        current_supplier_highlight: false,
-        contractDate_highlight: false,
-        contract_length_highlight: false,
-        callback_time_highlight: false,
-        callback_date_highlight: false,
-        cost_year_highlight: false,
-        cost_month_highlight: false,
         uploaded_documents: [],
-        submitted: [],
-        permission: true,
         user_name: '',
         displayModal: false
     };
@@ -63,13 +58,6 @@ export default class addQuoteScreen extends React.Component {
       this.setState({ user_name: user.username})
     }
 
-    _onRefresh = () => {
-      this.setState({refreshing: true});
-      this.componentDidMount().then(() => {
-        this.setState({refreshing: false});
-      });
-    }
-    
     handleRoute = async (destination) => {
       this.setState({
         displayModal: false
@@ -77,72 +65,33 @@ export default class addQuoteScreen extends React.Component {
       await this.props.navigation.navigate(destination)
     }
 
-    onChangeText = (key, value) => {
-      if(key === "contractDate"){
-          this.setState({ s_contractDate: value})
-          let month = value.getMonth() + 1
-          let date = value.getFullYear() + "-" + month + "-" + value.getDate();
-          this.setState({ contractDate : date})
-      } else if(key === "callback_date"){
-          let time = value.toLocaleString();
-          this.setState({ s_callback_date: value})
-          this.setState({ callback_date : value.toLocaleDateString()})
-          this.setState({ callback_time : time.substr(12, 8)})
-      } else {
-          this.setState({ [key]: value})
-      }
-      this.verifyInput(key);
-    };
-
-    onChange = (key, value) => {
-      console.log(value)
-      this.setState({
-        [key]: value
-      })
-      this.verifyInput(key);
-    }; 
-    
-    verifyInput = (key) => {
-      if(key !== ""){
-        var joined = this.state.submitted.concat(key);
-        this.setState({ submitted: joined })
-      }
-    } 
-
-    highlightInput = (key) => {
-      this.setState(prevState => ({
-        [key]: !prevState.key
-      }));
-      
-    }
-
-    submitService = async () => {
-      var time = this.state.callback_time;
-      var date = this.state.callback_date;
+    submitService = async (finalState) => {
+      console.log("HERE")
       var status = "CURRENT";
-      if(this.state.permission){
+      if(finalState.permission){
           status = "LEAD"
       }
 
       const data = {
         user_name: this.state.user_name,
-        status: "CURRENT",
+        status: status,
         email: this.state.email,
-        service_name: this.state.service_name,
-        callback_time: date + 'T' + time,
-        contract_end: this.state.contractDate,
-        contract_length: this.state.contract_length,
-        current_supplier: this.state.current_supplier,
-        cost_year: this.state.cost_year,
-        cost_month: this.state.cost_month,
-        uploaded_documents: this.state.uploaded_documents,
-        permission: this.state.permission
+        service_name: finalState.service_name,
+        callback_time: finalState.callback_time,
+        contract_end: finalState.contractDate,
+        contract_length: finalState.contract_length,
+        current_supplier: finalState.current_supplier,
+        cost_year: finalState.cost_year,
+        cost_month: finalState.cost_month,
+        uploaded_documents: finalState.uploaded_documents,
+        permission: finalState.permission
       }
       console.log(data)
       try {
           const re = await API.graphql(graphqlOperation(addService, data));
           console.log("Success");
           this.setState({
+            displayModal: true,
             service_name: '',
             current_supplier: '',
             contractDate: '',
@@ -151,190 +100,86 @@ export default class addQuoteScreen extends React.Component {
             callback_date: '',
             cost_year: '',
             cost_month: '',
-            service_name_highlight: false,
-            current_supplier_highlight: false,
-            contractDate_highlight: false,
-            contract_length_highlight: false,
-            callback_time_highlight: false,
-            callback_date_highlight: false,
-            cost_year_highlight: false,
-            cost_month_highlight: false,
-            uploaded_documents: [],
-            submitted: [],
-            success: true
-          })
-          this.setState({
-            displayModal: true
+            uploaded_documents: []
           })
       } catch (err) {
           console.log("Error:")
+          console.log(err);
       }
     }
+
+    onNext = () => {
+      console.log("Next");
+    };
+  
+    /* define the method to be called when you go on back step */
+  
+    onBack = () => {
+      console.log("Back");
+    };
+  
+    /* define the method to be called when the wizard is finished */
+  
+    finish = finalState => {
+      console.log("HERE")
+      console.log(finalState);
+      if(finalState.status === "Cancel"){
+        console.log("CANCEL")
+        console.log(finalState)
+        this.setState({ isLoading: true});
+        this.handleRoute('Services')
+      } else {
+        console.log("SUBMIT")
+        this.setState({ isLoading: true});
+        this.submitService(finalState)
+      }
+    };
 
 
     render() {
         return (
           <View source={background} style= {[ t.flex1]}>
             <Header/>
-            <ImageBackground source={background}  style= {[ t.flex1]}>
-                <ScrollView
-                    refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh}
-                    />
-                    }
-                >
-                    <Item style={[ t.mT8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
-                      <Text style={[ t.text2xl, t.textWhite]}>Get Quote</Text>
-                    </Item>
-                    <View style={[ t.flex1, t.justifyCenter, t.alignCenter]}>
-                      <Item style={[t.pX1, t.pY1, t.pt2, t.alignCenter, t.justifyCenter, t.wFull, t.hFull, t.mT5,]}>
-                        <View style={[t.pX1, t.pY1, t.pt2, t.roundedLg, t.wFull, t.hFull, t.mT2]}>
-                          <View rounded>
-                            <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.z10, t.bgGray100]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                                <DropDownPicker
-                                  items={[
-                                    { label: 'Electricity', value: 'Electric' },
-                                    { label: 'Gas', value: 'Gas' },
-                                    { label: 'Oil', value: 'Oil' },
-                                    { label: 'Water', value: 'Water' },
-                                    { label: 'Energy Reduction', value: 'Energy Reduction' },
-                                    { label: 'Waste Management', value: 'Waste Management' },
-                                    { label: 'Business Rates Review', value: 'Business Rates Review' },
-                                    { label: 'Fuel Cards', value: 'Fuel Cards' },
-                                    { label: 'Telecomms & Broadband', value: 'Telecomms & Broadband' },
-                                    { label: 'Cyber Security', value: 'Cyber Security' },
-                                    { label: 'Printers', value: 'Printers' },
-                                    { label: 'Merchant Services', value: 'Merchant Services' },
-                                    { label: 'Insolvency', value: 'Insolvency' },
-                                  ]}
-                                  placeholder="Please Select a Service"
-                                  placeholderStyle={{
-                                    fontSize: 18,
-                                    textAlign: 'center'
-                                  }}
-                                  containerStyle={{height: 50, width: 400}}
-                                  style={{ backgroundColor: '#fafafa' }}
-                                  selectedLabelStyle={{
-                                    fontSize: 18,
-                                    textAlign: 'center',
-                                  }}
-                                  dropDownStyle={{ backgroundColor: '#fafafa' }}
-                                  onChangeItem={item => this.setState({
-                                      service_name: item.value,
-                                      service_name_highlight: true
-                                  })}
-                                />
-                              </Item>
-                                {this.state.service_name_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
-                            </View>
-                            <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z0]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                              <TextInput style={[ t.textLg]} placeholder="Your Current Supplier"
-                                placeholderTextColor="black"
-                                onChange={event => this.onChangeText('current_supplier', event.nativeEvent.text)}
-                                value={this.state.current_supplier} 
-                                onBlur={event => this.highlightInput('current_supplier_highlight', event)}/> 
-                                {this.state.current_supplier_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
-                              </Item>
-                            </View>
-                            <DateTimePickerContract onChange={this.onChange} highlightInput={this.highlightInput}/>
-                            <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100, t.z10]}>
-                              <Item style={[t.pX2, t.pY2, t.pt4, t.borderTransparent]}>
-                              <DropDownPicker
-                                  items={[
-                                    { label: '12 Months', value: '12 Months' },
-                                    { label: '18 Months', value: '18 Months' },
-                                    { label: '24 Months', value: '24 Months' },
-                                    { label: '36 Months', value: '36 Months' },
-                                    { label: '48 Months', value: '48 Months' },
-                                    { label: '60 Months', value: '60 Months' },
-                                  ]}
-                                  placeholder="Enter Contract Length"
-                                  placeholderStyle={{
-                                    fontSize: 18,
-                                    textAlign: 'center'
-                                  }}
-                                  containerStyle={{height: 50, width: 400}}
-                                  style={{ backgroundColor: '#fafafa' }}
-                                  selectedLabelStyle={{
-                                    fontSize: 18,
-                                    textAlign: 'center',
-                                  }}
-                                  dropDownStyle={{ backgroundColor: '#fafafa'}}
-                                  onChangeItem={item => this.setState({
-                                      contract_length: item.value,
-                                      contract_length_highlight: true
-                                  })}
-                                />
-                              </Item>
-                                {this.state.contract_length_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null }
-                            </View>
-                            <View style={[t.roundedLg, t.itemsCenter, t.roundedLg, t.mT2, t.bgGray100]}>
-                              <Item style={[t.pX4, t.pY4, t.pt8, t.borderTransparent]}>
-                                  <FileUpload fileUploadKey={this.fileUploadKey}/>
-                              </Item>
-                            </View>
-                            <DateTimePickerForm onChange={this.onChange} highlightInput={this.highlightInput}/>
-                            <Item style={[ t.mT2, t.borderTransparent]}>
-                              <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
-                                <TextInput style={[ t.textLg, t.textCenter]} placeholder="Year Cost"
-                                  placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('cost_year', event.nativeEvent.text)}
-                                  keyboardType = 'numeric'
-                                  value={this.state.cost_year}
-                                  onBlur={event => this.highlightInput('cost_year_highlight', event)}/> 
-                                  {this.state.cost_year_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null } 
-                              </View>
-                              <View style={[t.wPx]}/>
-                              <View style={[t.roundedLg, t.bgWhite, t.w6_12, t.pX4, t.pY4, t.pt8]}>
-                                <TextInput style={[ t.textLg, t.textCenter]} placeholder="Month Cost"
-                                  placeholderTextColor="black"
-                                  onChange={event => this.onChangeText('cost_month', event.nativeEvent.text)}
-                                  keyboardType = 'numeric'
-                                  value={this.state.cost_month}
-                                  onBlur={event => this.highlightInput('cost_month_highlight', event)}/> 
-                                  {this.state.cost_month_highlight ? <FontAwesome5 name="check" size={24} color="green" /> : null } 
-                              </View>
-                            </Item>
-                            <Item style={[ t.mT2, t.borderTransparent]}>
-                              <View style={[t.roundedLg, t.bgWhite, t.w5_12]}>
-                                <TouchableOpacity 
-                                  onPress={() => {
-                                    this.handleRoute('Quote');
-                                  }}
-                                  style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
-                                  <Text style={[ t.textRed600, t.textLg, t.textCenter, t.p2]}>Cancel</Text>
-                                </TouchableOpacity>
-                              </View>
-                              <View style={[t.w2_12]}/>
-                              <View style={[t.roundedLg, t.bgWhite, t.w5_12]}>
-                                <TouchableOpacity 
-                                  onPress={() => {
-                                    this.submitService();
-                                  }}
-                                  style={[ t.pX3, t.pY4, t.pt8, t.roundedLg,]}>
-                                  <Text style={[ t.textBlue600, t.textXl, t.textCenter, t.p2]}>Get Quote</Text>
-                                </TouchableOpacity>
-                              </View>
-                            </Item>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={this.state.displayModal}
-                                onRequestClose={() => {
-                                    Alert.alert("Modal has been closed.");
-                                }}
-                            >
-                              <SuccessUpload handleRoute={this.handleRoute}/>
-                            </Modal>
-                          </View>
-                        </View>
-                      </Item>                        
-                  </View>
-                </ScrollView>
+            <ImageBackground source={background} style= {[ t.flex1]}>
+              <Item style={[ t.mT8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
+                <Text style={[ t.text2xl, t.textWhite]}>Get A Quote</Text>
+              </Item>
+                {this.state.isLoading ? <ActivityIndicator/> : (
+                  <AnimatedMultistep
+                    steps={allSteps}
+                    onFinish={this.finish}
+                    onBack={this.onBack}
+                    onNext={this.onNext}//fadeInLeft
+                    comeInOnNext="fadeInRight"
+                    OutOnNext="fadeOutRight"
+                    comeInOnBack="fadeInRight"
+                    OutOnBack="fadeOutRight"
+                  />
+                )}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.displayModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                }}
+              >
+                <ImageBackground source={success}  style= {[ t.flex1]}>
+                  <Item style={[ t.mT48, t.alignCenter, t.justifyCenter, t.contentEnd,t.wFull, t.borderTransparent]}>
+                      <Text style={[ t.text2xl, t.textWhite]}>Your request was successfully sent</Text>
+                  </Item>
+                  <Item style={[ t.mT64, t.alignCenter, t.justifyCenter, t.contentEnd,t.wFull, t.borderTransparent]}>
+                      <TouchableOpacity
+                          style={[ t.pX3, t.pY4, t.pt8, t.roundedLg, t.mT12, t.bgWhite]}
+                          onPress={() =>
+                              this.handleRoute('Services')
+                          }
+                      >
+                          <Text style={[ t.text2xl, t.textBlue600]}>Close</Text>
+                      </TouchableOpacity>
+                  </Item>
+                </ImageBackground>
+              </Modal>
             </ImageBackground>
           </View>
         )

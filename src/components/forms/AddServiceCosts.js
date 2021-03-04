@@ -31,8 +31,7 @@ export class AddServiceCosts extends Component {
       totalSteps: getTotalSteps(),
       currentStep: getCurrentStep(),
       month: state.cost_month,
-      year: state.cost_year,
-      verify: display
+      year: state.cost_year
     };
   };
 

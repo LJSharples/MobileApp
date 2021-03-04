@@ -73,8 +73,6 @@ class AddServiceProvider extends Component {
             >{`Step ${currentStep} of ${totalSteps}`}</Text>
         </View>
         
-        <Item style={[ t.mT2, t.borderTransparent, t.w3_4, t.z10]}>
-          <View style={[t.roundedLg, t.bgWhite, t.wFull, t.pX4, t.pY4, t.pt8]}>
             <DropDownPicker
               items={[
                   { label: 'Electricity', value: 'Electric' },
@@ -97,27 +95,22 @@ class AddServiceProvider extends Component {
                   fontSize: 18,
                   textAlign: 'center'
               }}
-              containerStyle={{height: 50, width: 280}}
+              containerStyle={{height: 50, width: "76%"}}
               labelStyle={{
                 fontSize: 18,
                 textAlign: 'center'
               }}
               style={{backgroundColor: '#fafafa'}}
-              dropDownStyle={{ backgroundColor: '#fafafa', height: 350 }}
+              dropDownStyle={{ backgroundColor: '#fafafa' }}
               dropDownMaxHeight={350}
               onChangeItem={item => this.saveState('service_name', item.value, "service")}
             />
-          </View>
-          <View style={[t.wPx]}/>
-          <View> 
-            {this.state.service ? 
+              {this.state.service ? 
               <Image
-                style={[ t.w10, t.h10, t.mL1]}
+                style={[ t.w10, t.h10, t.mT2]}
                   source={check}
                   resizeMode="cover"
                 /> : null } 
-          </View>
-        </Item>
         <Item style={[ t.mT2, t.borderTransparent, t.w3_4, t.z0]}>
           <View style={[t.roundedLg, t.bgWhite, t.wFull, t.pX4, t.pY4, t.pt8]}>
             <TextInput

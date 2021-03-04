@@ -97,7 +97,7 @@ export default class addServiceScreen extends React.Component {
         current_supplier: finalState.current_supplier,
         cost_year: finalState.cost_year,
         cost_month: finalState.cost_month,
-        uploaded_documents: this.state.uploaded_documents,
+        uploaded_documents: finalState.uploaded_documents,
         permission: finalState.permission
       }
       console.log(data)
@@ -136,7 +136,7 @@ export default class addServiceScreen extends React.Component {
   
     finish = finalState => {
       console.log("HERE")
-      console.log(finalState.status);
+      console.log(finalState);
       if(finalState.status === "Cancel"){
         console.log("CANCEL")
         console.log(finalState)

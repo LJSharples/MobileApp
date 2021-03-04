@@ -60,7 +60,7 @@ export default class AffiliateTab extends React.Component {
                             <Item style={[t.wPx]}/>
                         </Item>
                         <Item style={[t.mT2, t.wFull, t.h54, t.borderTransparent, t.pX3, t.pY4, t.pt8, t.wFull, t.itemsStart, t.justifyStart]}>
-                            <Text style={[ t.textXl, t.textWhite]}>Your Total Customers: {affiliateData.referrals}</Text>
+                            <Text style={[ t.textXl, t.textWhite]}>Number Of Referrals: {affiliateData.referrals}</Text>
                         </Item>
                         <Item style={[t.pX4, t.pY2, t.pt2, t.itemsStart, t.justifyStart, t.borderTransparent]}>
                             <Item style={[t.w3_5, t.borderTransparent]}/>

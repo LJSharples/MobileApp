@@ -274,7 +274,7 @@ export default class ExpensesScreen extends React.Component {
     ];
     const labelsData = [
         'Gas',
-        'Electricity',
+        'Electric',
         'Water',
         'Oil',
         'Energy Reduction',
