@@ -26,8 +26,7 @@ export default class RegisterUserPhone extends React.Component {
         }
 
         return (
-            <View style={[ t.bgBlue900]}>
-                <View style={[t.bgWhite, t.hFull ]}>
+                <View style={[t.bgWhite ]}>
                     <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
                         <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
@@ -69,8 +68,8 @@ export default class RegisterUserPhone extends React.Component {
                                 onChange={(value) => this.update('phoneNumber', value)}/>
                         </Item>
                     </Item>
+                        <Item style={[t.pX8, t.pY6, t.pt4, t.alignCenter, t.justifyCenter, t.w5_6, t.borderTransparent]}/>
                 </View>
-            </View>
         )
     }
 }

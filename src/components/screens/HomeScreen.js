@@ -26,7 +26,6 @@ export default class HomeScreen extends React.Component {
   state = {
     username: '',
     firstName: '',
-    affiliateId: '',
     requestOptions: '',
     url: '',
     affiliateStatus: false,
@@ -38,6 +37,7 @@ export default class HomeScreen extends React.Component {
     userCompany: {},
     curTab: 0,
     activeTab: 0,
+    page:0,
     refreshing: false,
     routes: [
       'home',
@@ -84,7 +84,11 @@ export default class HomeScreen extends React.Component {
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
     if(user.attributes['custom:affiliate_id'] !== undefined){
-      this.setState({ affiliateStatus: true});
+      console.log("HERE");
+      this.setState({ 
+        affiliateStatus: true,
+        page: 1
+      });
       var url = "https://siugsrwucj.execute-api.eu-west-2.amazonaws.com/prod/affiliates/" + user.attributes['custom:affiliate_id'];
 
       var requestOptions = {
@@ -105,7 +109,6 @@ export default class HomeScreen extends React.Component {
     this.setState({ 
       username: userProfile.data["user"].username,
       firstName: userProfile.data["user"].first_name,
-      affiliateId: user.attributes['custom:affiliate_id'] ,
       userProfile: userProfile.data["user"],
       userCompany: userProfile.data["getCompany"]
     });
@@ -163,7 +166,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View source={background} style= {[ t.flex1]}>
           <Header/>
-          <Tabs style={[t.flex1, t.wFull]}>
+          <Tabs initialPage={this.state.page} style={[t.flex1, t.wFull]}>
             <Tab heading={ <TabHeading><Text>Dashboard</Text></TabHeading>}>
                 <ImageBackground source={background} style= {[ t.flex1]}>
                   <ScrollView

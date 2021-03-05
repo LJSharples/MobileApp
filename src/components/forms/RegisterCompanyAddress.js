@@ -25,8 +25,7 @@ export default class RegisterCompanyAddress extends React.Component {
         }
 
         return (
-            <View style={[ t.bgBlue900, t.hFull]}>
-                <View style={[t.bgWhite, t.hFull ]}>
+                <View style={[t.bgWhite ]}>
                     <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent]}>
                         <Item style={[t.pX3, t.pY2, t.pt4, t.alignCenter, t.justifyCenter, t.borderTransparent]}>
                         <View style={[t.pX3, t.pY2, t.pt4, t.roundedLg, t.itemsCenter]}>
@@ -56,8 +55,10 @@ export default class RegisterCompanyAddress extends React.Component {
                                 onChange={(value) => this.update('postCode', value)}/>
                         </Item>
                     </Item>
+
+                    <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t.pY6]}>
+                    </Item>
                 </View>
-            </View>
         )
     }
 }

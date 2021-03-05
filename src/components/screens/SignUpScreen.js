@@ -76,7 +76,7 @@ export default class SignUpScreen extends React.Component {
   get nextButton(){
     if(this.state.currentStep > 2 && this.state.currentStep < 7){
       return (
-        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t._mT4]}>
+        <Item style={[t.itemsCenter, t.justifyCenter, t.borderTransparent, t._mT8]}>
           <TouchableOpacity 
             onPress={() => this._next()}
             style={[t.p4, t.roundedLg, t.bgBlue100, t.itemsCenter, t.w10_12]}
