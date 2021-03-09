@@ -69,30 +69,35 @@ export default class ProfileScreen extends React.Component {
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-    const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
-    this.setState({ email: user.email});
-    this.setState({ userProfile: userProfile.data["user"]});
-    this.setState({
-      user_name: user.username,
-      full_name: userProfile.data["user"].full_name,
-      first_name: userProfile.data["user"].first_name,
-      last_name: userProfile.data["user"].last_name,
-      phone: userProfile.data["user"].phone
-    });
-    this.setState({ userCompany: userProfile.data["getCompany"]});
-    this.setState({
-      company_name: userProfile.data["getCompany"].Data,
-      address1: userProfile.data["getCompany"].address1,
-      address2: userProfile.data["getCompany"].address2,
-      city: userProfile.data["getCompany"].city,
-      postcode: userProfile.data["getCompany"].postcode,
-      region: userProfile.data["getCompany"].region,
-      company_number: userProfile.data["getCompany"].company_number,
-      years_trading: userProfile.data["getCompany"].years_trading,
-      yearly_turnover: userProfile.data["getCompany"].yearly_turnover,
-      num_employees: userProfile.data["getCompany"].num_employees,
-      industry: userProfile.data["getCompany"].industry
-    });
+    var userProfile = {} 
+    try{
+      userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+      this.setState({ email: user.email});
+      this.setState({ userProfile: userProfile.data["user"]});
+      this.setState({
+        user_name: user.username,
+        full_name: userProfile.data["user"].full_name,
+        first_name: userProfile.data["user"].first_name,
+        last_name: userProfile.data["user"].last_name,
+        phone: userProfile.data["user"].phone
+      });
+      this.setState({ userCompany: userProfile.data["getCompany"]});
+      this.setState({
+        company_name: userProfile.data["getCompany"].Data,
+        address1: userProfile.data["getCompany"].address1,
+        address2: userProfile.data["getCompany"].address2,
+        city: userProfile.data["getCompany"].city,
+        postcode: userProfile.data["getCompany"].postcode,
+        region: userProfile.data["getCompany"].region,
+        company_number: userProfile.data["getCompany"].company_number,
+        years_trading: userProfile.data["getCompany"].years_trading,
+        yearly_turnover: userProfile.data["getCompany"].yearly_turnover,
+        num_employees: userProfile.data["getCompany"].num_employees,
+        industry: userProfile.data["getCompany"].industry
+      });
+    } catch(e){
+      console.log(e)
+    }
   }
 
   onChangeText(key, value) {

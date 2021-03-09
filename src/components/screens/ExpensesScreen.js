@@ -56,60 +56,65 @@ export default class ExpensesScreen extends React.Component {
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
     const savings = [];
     const activeServices = [];
-    let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
-        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-            if(!isNaN(parseFloat(current.cost_year))){
-                return prev + +parseFloat(current.cost_year) 
+    var userServices = {};
+    try{
+      userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+        let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
+            if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+                if(!isNaN(parseFloat(current.cost_year))){
+                    return prev + +parseFloat(current.cost_year) 
+                }
             }
-        }
-        return prev
-    }, 0);
+            return prev
+        }, 0);
 
-    let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
-        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-            if(!isNaN(parseFloat(current.cost_month))){
-                return prev + +parseFloat(current.cost_month) 
+        let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
+            if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+                if(!isNaN(parseFloat(current.cost_month))){
+                    return prev + +parseFloat(current.cost_month) 
+                }
             }
-        }
-        return prev
-    }, 0);
+            return prev
+        }, 0);
 
-    let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
-        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-            if(!isNaN(parseFloat(current.savings))){
-                return prev + +parseFloat(current.savings) 
+        let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
+            if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+                if(!isNaN(parseFloat(current.savings))){
+                    return prev + +parseFloat(current.savings) 
+                }
             }
-        }
-        return prev
-    }, 0);
-    this.setState({annualCost: sum.toFixed(2)})
-    this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
-    this.setState({moneySaved: parseFloat(sum3).toFixed(2)})
+            return prev
+        }, 0);
+        this.setState({annualCost: sum.toFixed(2)})
+        this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
+        this.setState({moneySaved: parseFloat(sum3).toFixed(2)})
 
-    userServices.data["getServices"].items.map(lead => {
-        if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
-            var date = new Date(lead.contract_end);
-            if(isNaN(date)){
-                date = new Date()
+        userServices.data["getServices"].items.map(lead => {
+            if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
+                var date = new Date(lead.contract_end);
+                if(isNaN(date)){
+                    date = new Date()
+                }
+                var dateString = date.toLocaleString();
+                const newValue = {
+                    service_name: lead.service_name,
+                    contract_length: lead.contract_length,
+                    contract_end: dateString.substring(0, 10),
+                    cost_year: lead.cost_year,
+                    cost_month: lead.cost_month,
+                    savings: lead.savings
+                }
+                activeServices.push(newValue);
+                if(lead.savings){
+                    savings.push(newValue);
+                }
             }
-            var dateString = date.toLocaleString();
-            const newValue = {
-                service_name: lead.service_name,
-                contract_length: lead.contract_length,
-                contract_end: dateString.substring(0, 10),
-                cost_year: lead.cost_year,
-                cost_month: lead.cost_month,
-                savings: lead.savings
-            }
-            activeServices.push(newValue);
-            if(lead.savings){
-                savings.push(newValue);
-            }
-        }
-    })
+        })
+    } catch(e){
+        console.log(e)
+    }
     this.setState({
         activeServices: activeServices,
         savings: savings,
@@ -307,7 +312,7 @@ export default class ExpensesScreen extends React.Component {
         '#97e8bb'
     ]
 
-    const NewMonthTotal = monthTotals.filter(function(e, index){
+    monthTotals.filter(function(e, index){
         if(e > 0){
             //get index and value from existing labels and add to new 
             let newLabel = labelsData[index];
@@ -323,7 +328,7 @@ export default class ExpensesScreen extends React.Component {
         }
     });
 
-    const NewYearTotal = yearTotals.filter(function(e, index){
+    yearTotals.filter(function(e, index){
         if(e > 0){
             //get index and value from existing labels and add to new 
             let newLabel = labelsData[index];
@@ -338,7 +343,7 @@ export default class ExpensesScreen extends React.Component {
             return e
         }
     });
-    const NewSavingsTotal = this.state.savings.map((anObjectMapped) => {
+    this.state.savings.map((anObjectMapped) => {
         if(anObjectMapped.savings > 0){
             //get index and value from existing labels and add to new 
             var index = labelsData.findIndex(obj => obj === anObjectMapped.service_name)

@@ -108,39 +108,50 @@ export default class ServicesScreen extends React.Component {
 
   async componentDidMount(){
     let user = await Auth.currentAuthenticatedUser();
-    const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    this.setState({ email: user.email});
-    this.setState({ userProfile: userProfile.data["user"]});
-    this.setState({ userCompany: userProfile.data["getCompany"]});
+    var userProfile = {};
+    try{
+      userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+      this.setState({ email: user.email});
+      this.setState({ userProfile: userProfile.data["user"]});
+      this.setState({ userCompany: userProfile.data["getCompany"]});
+    } catch(e){
+      console.log(e)
+    }
     const currentArray = [];
     const endedArray = [];
     const activeRowArray = [];
-    userServices.data["getServices"].items.map(lead => {
-      if(lead.status === "CUSTOMER DELETED"){
-      } else {
-        let bills = []
-        if(lead.uploaded_documents && lead.uploaded_documents.length > 0){
-            let str = lead.uploaded_documents.slice(1,-1);
-            bills = str.split(', ')
+    var userServices = {};
+    try{
+      userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+      userServices.data["getServices"].items.map(lead => {
+        if(lead.status === "CUSTOMER DELETED"){
+        } else {
+          let bills = []
+          if(lead.uploaded_documents && lead.uploaded_documents.length > 0){
+              let str = lead.uploaded_documents.slice(1,-1);
+              bills = str.split(', ')
+          }
+          var dateCurrent = new Date();
+          var contractEndDate = new Date(lead.contract_end);
+          if(isNaN(contractEndDate)){
+            contractEndDate = new Date()
+          }
+          if(contractEndDate.toISOString() < dateCurrent.toISOString()){
+            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
+            endedArray.push(arrayRow)
+          } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
+            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
+            activeRowArray.push(arrayRow)
+          }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
+            const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
+            currentArray.push(arrayRow)
+          }
         }
-        var dateCurrent = new Date();
-        var contractEndDate = new Date(lead.contract_end);
-        if(isNaN(contractEndDate)){
-          contractEndDate = new Date()
-        }
-        if(contractEndDate.toISOString() < dateCurrent.toISOString()){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
-          endedArray.push(arrayRow)
-        } else if(lead.status === "CURRENT" || lead.status === "LIVE" || lead.status === "Live" || lead.status === "Live Contract"){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
-          activeRowArray.push(arrayRow)
-        }else if(lead.status !== "CURRENT" || lead.status !== "LIVE" || lead.status !== "Live" || lead.status !== "Live Contract"){
-          const arrayRow = [lead.service_name, lead.current_supplier, contractEndDate.toLocaleDateString(), lead.status, lead.id, bills]
-          currentArray.push(arrayRow)
-        }
-      }
-    });
+      });
+    } catch(e){
+      console.log(e)
+    }
+    
     this.onChange('rowsCurrent', currentArray);
     this.onChange('rowsActiveArray', activeRowArray);
     this.onChange('rowsEnded', endedArray);
@@ -171,7 +182,13 @@ export default class ServicesScreen extends React.Component {
     const currentArray = [];
     const activeArray = [];
     const endedArray = [];
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: this.state.userProfile.user_name}));
+    var userServices = {}
+    try{
+      userServices = await API.graphql(graphqlOperation(getServices, { user_name: "luke.sharples@powersolutionsuk.com"}));
+      console.log(userServices)
+    } catch(e){
+      console.log(e)
+    }
     userServices.data["getServices"].items.map(lead => {
       if(lead.status === "CUSTOMER DELETED"){
       } else {
