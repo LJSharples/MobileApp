@@ -31,6 +31,9 @@ export class AddServiceCosts extends Component {
     if(state.cost_month !== "" && state.cost_year !== ""){
       pass=false
     }
+    if(!state.hasOwnProperty('cost_year')){
+      pass=true
+    }
     return {
       totalSteps: getTotalSteps(),
       currentStep: getCurrentStep(),

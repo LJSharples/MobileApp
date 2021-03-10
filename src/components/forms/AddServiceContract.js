@@ -33,8 +33,11 @@ class AddServiceContract extends Component {
     const { getTotalSteps, getCurrentStep, getState } = props;
     const state = getState();
     var pass = true
-    if(state.contract !== "" && state.contractDate !== ""){
+    if(state.contract_length !== "" && state.contractDate !== ""){
       pass=false
+    }
+    if(!state.hasOwnProperty('contract_length')){
+      pass=true
     }
     return {
       totalSteps: getTotalSteps(),

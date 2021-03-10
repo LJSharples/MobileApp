@@ -27,8 +27,11 @@ class AddServiceProvider extends Component {
         const { getTotalSteps, getCurrentStep, getState } = props;
         const state = getState();
         var pass = true
-        if(state.service !== "" && state.supplier !== ""){
+        if(state.service_name !== "" && state.current_supplier !== ""){
           pass=false
+        }
+        if(!state.hasOwnProperty('service_name')){
+          pass=true
         }
         return {
             totalSteps: getTotalSteps(),
