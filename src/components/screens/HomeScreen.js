@@ -105,60 +105,67 @@ export default class HomeScreen extends React.Component {
   }
 
   getUserProfile = async (user) => {
-    const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
-    this.setState({ 
-      username: userProfile.data["user"].username,
-      firstName: userProfile.data["user"].first_name,
-      userProfile: userProfile.data["user"],
-      userCompany: userProfile.data["getCompany"]
-    });
+    try{
+      const userProfile = await API.graphql(graphqlOperation(getUserDetails, { user_name: user.username}));
+      this.setState({ 
+        username: userProfile.data["user"].username,
+        firstName: userProfile.data["user"].first_name,
+        userProfile: userProfile.data["user"],
+        userCompany: userProfile.data["getCompany"]
+      });
+    } catch(e){
+      
+    }
   }
 
   getServiceAndFinance = async (user) => {
-    const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
-    let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
-      var dateCurrent = new Date();
-      var contractEndDate = new Date(current.contract_end);
-      if(isNaN(contractEndDate)){
-        contractEndDate = new Date()
-      }
-      if(contractEndDate.toISOString() > dateCurrent.toISOString()){
-        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-            return prev + +1 
-         }
-      }
-      return prev
-    }, 0);
-    this.setState({activeServices: serviceSum });
-    let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
-      if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-          if(!isNaN(parseFloat(current.cost_year))){
-            return prev + +parseFloat(current.cost_year) 
+    try{
+      const userServices = await API.graphql(graphqlOperation(getServices, { user_name: user.username}));
+      let serviceSum = userServices.data["getServices"].items.reduce(function(prev, current) {
+        var dateCurrent = new Date();
+        var contractEndDate = new Date(current.contract_end);
+        if(isNaN(contractEndDate)){
+          contractEndDate = new Date()
+        }
+        if(contractEndDate.toISOString() > dateCurrent.toISOString()){
+          if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+              return prev + +1 
           }
-       }
-       return prev
-    }, 0);
-    let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
-      if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-          if(!isNaN(parseFloat(current.cost_month))){
-            return prev + +parseFloat(current.cost_month) 
-          }
-       }
-       return prev
-    }, 0);
-    let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
+        }
+        return prev
+      }, 0);
+      this.setState({activeServices: serviceSum });
+      let sum = userServices.data["getServices"].items.reduce(function(prev, current) {
         if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
-            if(!isNaN(parseFloat(current.savings))){
-                return prev + +parseFloat(current.savings) 
+            if(!isNaN(parseFloat(current.cost_year))){
+              return prev + +parseFloat(current.cost_year) 
             }
         }
         return prev
-    }, 0);
-    this.setState({annualCost: parseFloat(sum).toFixed(2)})
-    this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
-    this.setState({annualSave: parseFloat(sum3).toFixed(2)})
-    if(isNaN(sum3)){
-        this.setState({annualSave: '0.00'})
+      }, 0);
+      let sum2 = userServices.data["getServices"].items.reduce(function(prev, current) {
+        if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+            if(!isNaN(parseFloat(current.cost_month))){
+              return prev + +parseFloat(current.cost_month) 
+            }
+        }
+        return prev
+      }, 0);
+      let sum3 = userServices.data["getServices"].items.reduce(function(prev, current) {
+          if(current.status === "CURRENT" || current.status === "LIVE" || current.status === "Live" || current.status === "Live Contract"){
+              if(!isNaN(parseFloat(current.savings))){
+                  return prev + +parseFloat(current.savings) 
+              }
+          }
+          return prev
+      }, 0);
+      this.setState({annualCost: parseFloat(sum).toFixed(2)})
+      this.setState({monthlyCost: parseFloat(sum2).toFixed(2)})
+      this.setState({annualSave: parseFloat(sum3).toFixed(2)})
+      if(isNaN(sum3)){
+          this.setState({annualSave: '0.00'})
+      }
+    }catch(e){
     }
   }
 
