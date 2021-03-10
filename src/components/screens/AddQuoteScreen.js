@@ -149,7 +149,18 @@ export default class addQuoteScreen extends React.Component {
               <Item style={[ t.mT8, t.alignCenter, t.justifyCenter, t.wFull, t.borderTransparent]}>
                 <Text style={[ t.text2xl, t.textWhite]}>Get A Quote</Text>
               </Item>
-                {this.state.isLoading ? <ActivityIndicator/> : (
+                {this.state.isLoading ? (
+                  <AnimatedMultistep
+                    steps={allSteps}
+                    onFinish={this.finish}
+                    onBack={this.onBack}
+                    onNext={this.onNext}//fadeInLeft
+                    comeInOnNext="fadeInRight"
+                    OutOnNext="fadeOutRight"
+                    comeInOnBack="fadeInRight"
+                    OutOnBack="fadeOutRight"
+                  />
+                ) : (
                   <AnimatedMultistep
                     steps={allSteps}
                     onFinish={this.finish}
