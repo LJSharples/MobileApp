@@ -50,12 +50,17 @@ export default class addQuoteScreen extends React.Component {
         cost_month: '',
         uploaded_documents: [],
         user_name: '',
-        displayModal: false
+        displayModal: false,
+        isLoading : true
     };
 
     async componentDidMount(){
       let user = await Auth.currentAuthenticatedUser();
       this.setState({ user_name: user.username})
+      this.props.navigation.addListener('didFocus', () => {
+        console.log("LOAD")
+        this.setState({ isLoading: false});
+      })
     }
 
     handleRoute = async (destination) => {
