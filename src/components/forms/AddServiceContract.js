@@ -101,7 +101,7 @@ class AddServiceContract extends Component {
             style={[ t.textWhite, t.textXl]}
           >{`Step ${currentStep} of ${totalSteps}`}</Text>
         </View>
-        <View style={[ t.mT2, t.w3_4, t.flexRow]}>
+        <View style={[ t.mT2, t.w3_4, t.flexRow, t.z10]}>
             <DropDownPicker
               items={[
                   { label: '12 Months', value: '12 Months' },
@@ -116,6 +116,7 @@ class AddServiceContract extends Component {
                   fontSize: 18,
                   textAlign: 'center'
               }}
+              zIndex={3000}
               containerStyle={{height: 50, width: "100%"}}
               labelStyle={{
                 fontSize: 18,
