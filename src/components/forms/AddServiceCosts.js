@@ -27,11 +27,16 @@ export class AddServiceCosts extends Component {
   static getDerivedStateFromProps = props => {
     const { getTotalSteps, getCurrentStep, getState } = props;
     const state = getState();
+    var pass = true
+    if(state.cost_month !== "" && state.cost_year !== ""){
+      pass=false
+    }
     return {
       totalSteps: getTotalSteps(),
       currentStep: getCurrentStep(),
       month: state.cost_month,
-      year: state.cost_year
+      year: state.cost_year,
+      verify: pass
     };
   };
 
@@ -41,14 +46,15 @@ export class AddServiceCosts extends Component {
   };
 
   saveState(key, value, highlight) {
-      const { saveState } = this.props;
+      const { saveState, getState } = this.props;
+      const state = getState();
       saveState({ [key]: value});
       this.setState({ [highlight]: true});
-      this.verifyState()
+      this.verifyState(state)
   }
 
-  verifyState = () => {
-    if(this.state.month_h && this.state.year_h){
+  verifyState = (state) => {
+    if(state.cost_year !== "" && state.cost_month !== ""){
       this.setState({ verify: false})
     }
   }

@@ -26,11 +26,16 @@ class AddServiceProvider extends Component {
     static getDerivedStateFromProps = props => {
         const { getTotalSteps, getCurrentStep, getState } = props;
         const state = getState();
+        var pass = true
+        if(state.service !== "" && state.supplier !== ""){
+          pass=false
+        }
         return {
             totalSteps: getTotalSteps(),
             currentStep: getCurrentStep(),
             currentSupplier: state.current_supplier,
-            service_name: state.service_name
+            service_name: state.service_name,
+            verify: pass
         };
     };
 
@@ -50,15 +55,16 @@ class AddServiceProvider extends Component {
     }
 
     saveState(key, value, highlight) {
-        const { saveState } = this.props;
+        const { saveState, getState } = this.props;
         saveState({ [key]: value});
+        const state = getState();
         //do highlight
         this.setState({ [highlight]: true});
-        this.verifyState();
+        this.verifyState(state);
     }
 
-    verifyState = () => {
-      if(this.state.service && this.state.supplier){
+    verifyState = (state) => {
+      if(state.service !== "" && state.supplier !== ""){
         this.setState({ verify: false})
       }
     }
@@ -66,14 +72,14 @@ class AddServiceProvider extends Component {
   render() {
     const { currentStep, totalSteps, currentSupplier } = this.state;
     return (
-      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.mT6]}>
+      <View style={[t.flex1, t.itemsCenter, t.alignCenter, t.contentCenter, t.mT6]}>
         <View>
             <Text
             style={[ t.textWhite, t.textXl]}
             >{`Step ${currentStep} of ${totalSteps}`}</Text>
         </View>
-        
-            <DropDownPicker
+        <View style={[ t.mT2, t.w3_4, t.flexRow]}>
+          <DropDownPicker
               items={[
                   { label: 'Electricity', value: 'Electric' },
                   { label: 'Gas', value: 'Gas' },
@@ -95,7 +101,7 @@ class AddServiceProvider extends Component {
                   fontSize: 18,
                   textAlign: 'center'
               }}
-              containerStyle={{height: 50, width: "76%"}}
+              containerStyle={{height: 50, width: "100%"}}
               labelStyle={{
                 fontSize: 18,
                 textAlign: 'center'
@@ -105,12 +111,16 @@ class AddServiceProvider extends Component {
               dropDownMaxHeight={350}
               onChangeItem={item => this.saveState('service_name', item.value, "service")}
             />
-              {this.state.service ? 
+          <View style={[t.wPx]}/>
+          <View> 
+            {this.state.service ? 
               <Image
-                style={[ t.w10, t.h10, t.mT2]}
+                style={[ t.w10, t.h10, t.mL2, t.mT2]}
                   source={check}
                   resizeMode="cover"
                 /> : null } 
+          </View>
+        </View>
         <Item style={[ t.mT2, t.borderTransparent, t.w3_4, t.z0]}>
           <View style={[t.roundedLg, t.bgWhite, t.wFull, t.pX4, t.pY4, t.pt8]}>
             <TextInput
@@ -125,7 +135,7 @@ class AddServiceProvider extends Component {
           <View> 
             {this.state.supplier ? 
               <Image
-                  style={[ t.w10, t.h10, t.mL1]}
+                  style={[ t.w10, t.h10, t.mL2]}
                   source={check}
                   resizeMode="cover"
                 /> : null } 

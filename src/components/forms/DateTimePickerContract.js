@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Button, Platform, Text} from 'react-native';
+import {View, Button, Platform, Text, Image} from 'react-native';
 import {
   Item
 } from 'native-base';
@@ -12,6 +12,7 @@ export const DateTimePickerContract = (props) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [display, showDisplay] = useState(false);
+  const check = require('../images/pngegg.png')
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -40,7 +41,11 @@ export const DateTimePickerContract = (props) => {
       <View>
         {display ? 
             <Item style={[t.alignCenter, t.justifyCenter, t.itemsCenter, t.mT1, t.borderTransparent]}>
-              <Text style={[t.textLg]}>Contract End Date: {date.toLocaleDateString()}{'   '}</Text><FontAwesome5 name="check" size={24}  color="green" />
+              <Text style={[t.textLg]}>Contract End Date: {date.toLocaleDateString()}{'   '}</Text><Image
+              style={[ t.w10, t.h10, t.mL1]}
+                  source={check}
+                  resizeMode="cover"
+                />
             </Item> 
           : 
           <Button onPress={showDatepicker} title="Select Contract End Date" color="#000000"/> 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Button, Platform, Text} from 'react-native';
+import {View, Button, Platform, Text, Image} from 'react-native';
 import {
   Item
 } from 'native-base';
@@ -11,6 +11,7 @@ export const DateTimePickerForm = (props) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const check = require('../images/pngegg.png')
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -41,7 +42,11 @@ export const DateTimePickerForm = (props) => {
         <Button onPress={showTimepicker} title="Select Callback Time" color="#000000"/>
       </View>
       <Item style={[t.alignCenter, t.justifyCenter, t.borderTransparent]}>
-        <Text style={[t.textXl]}>{date.toLocaleDateString()}{''}</Text><FontAwesome5 name="check" size={24}  color="green" />
+        <Text style={[t.textXl]}>{date.toLocaleDateString()}{''}</Text><Image
+              style={[ t.w10, t.h10, t.mL1]}
+                  source={check}
+                  resizeMode="cover"
+                />
       </Item> 
       {show && (
         <DateTimePicker

@@ -103,13 +103,21 @@ export class AddServiceCallback extends Component {
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity disabled={this.state.verify} onPress={this.nextStep} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
-            <FontAwesome5 name="plus" size={28} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.cancel} style={[ t.borderWhite, t.border2, t.roundedFull, t.w16, t.h16, t.justifyCenter, t.alignCenter, t.itemsCenter, t.mX6]}>
-            <FontAwesome5 name="minus" size={24} color="white" />
-          </TouchableOpacity>
         </View>
+          <TouchableOpacity
+            style={[t.mT4, t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
+            onPress={this.nextStep}>
+            <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
+              Add Service
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[t.mT2, t.itemsCenter, t.justifyCenter, t.borderTransparent, t.w9_12, t.pX2, t.pY2,t.roundedLg, t.bgWhite]}
+            onPress={this.cancel}>
+            <Text style={[ t.textBlue100, t.textXl, t.p2, t.textCenter]}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
         <Modal
           animationType="slide"
           transparent={true}

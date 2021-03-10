@@ -19,6 +19,7 @@ class AddServiceContract extends Component {
           currentStep: "",
           key: '',
           value: '',
+          contractDate: '',
           picturesTaken: 0,
           contract: false,
           upload: false,
@@ -31,10 +32,16 @@ class AddServiceContract extends Component {
   static getDerivedStateFromProps = props => {
     const { getTotalSteps, getCurrentStep, getState } = props;
     const state = getState();
+    var pass = true
+    if(state.contract !== "" && state.contractDate !== ""){
+      pass=false
+    }
     return {
       totalSteps: getTotalSteps(),
       currentStep: getCurrentStep(),
-      contract: state.contract_length
+      contract: state.contract_length,
+      contractDate: state.contractDate,
+      verify: pass
     };
   };
 
@@ -43,21 +50,22 @@ class AddServiceContract extends Component {
     next();
   };
   saveState = (key, value, highlight) => {
-    const { saveState } = this.props;
+    const { saveState, getState } = this.props;
+    const state = getState();
     saveState({ [key]: value});
     this.setState({ [highlight]: true});
-    this.verifyState(highlight)
+    this.verifyState(state)
   }
 
   onChange = (key, value, highlight) =>{
-    const { saveState } = this.props;
+    const { saveState, getState } = this.props;
+    const state = getState();
     saveState({ [key]: value});
-    this.verifyState(highlight)
+    this.verifyState(state)
   }
 
-  verifyState = (highlight) => {
-    console.log("VERIFY")
-    if(this.state.contract && highlight === 'upload'){
+  verifyState = (state) => {
+    if(state.contract !== "" && state.contractDate !== ""){
       console.log("CLEARED")
       this.setState({ verify: false})
     }
@@ -90,6 +98,7 @@ class AddServiceContract extends Component {
             style={[ t.textWhite, t.textXl]}
           >{`Step ${currentStep} of ${totalSteps}`}</Text>
         </View>
+        <View style={[ t.mT2, t.w3_4, t.flexRow]}>
             <DropDownPicker
               items={[
                   { label: '12 Months', value: '12 Months' },
@@ -104,7 +113,7 @@ class AddServiceContract extends Component {
                   fontSize: 18,
                   textAlign: 'center'
               }}
-              containerStyle={{height: 50, width: "76%"}}
+              containerStyle={{height: 50, width: "100%"}}
               labelStyle={{
                 fontSize: 18,
                 textAlign: 'center'
@@ -118,11 +127,12 @@ class AddServiceContract extends Component {
           <View> 
             {this.state.contract ? 
               <Image
-              style={[ t.w10, t.h10, t.mL1]}
+                style={[ t.w10, t.h10, t.mL2, t.mT2]}
                   source={check}
                   resizeMode="cover"
                 /> : null } 
           </View>
+        </View>
         <Modal
           animationType="slide"
           transparent={true}
